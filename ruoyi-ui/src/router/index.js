@@ -114,6 +114,21 @@ export const constantRoutes = [
       }
     ]
   }
+  ,
+  {
+    path: '/news',
+    component: Layout,
+    meta: { title: '实时新闻', icon: 'chart' },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'news',
+        component: () => import('@/views/news/News'),
+        name: 'News',
+        meta: { title: '新闻', icon: 'chart' }
+      }
+    ]
+  }
 ]
 
 // 动态路由，基于用户权限动态去加载
