@@ -1,5 +1,15 @@
 <template>
   <div class="analysis-page">
+    <div class="select-row">
+      <label for="crop">选择作物：</label>
+      <select v-model="crop" @change="onCropOrYearChange" id="crop">
+        <option v-for="c in cropOptions" :key="c.value" :value="c.value">{{ c.label }}</option>
+      </select>
+      <label for="year">选择年份：</label>
+      <select v-model="year" @change="onCropOrYearChange" id="year">
+        <option v-for="y in yearOptions" :key="y" :value="y">{{ y }}</option>
+      </select>
+    </div>
     <div class="top-section">
       <div class="top-col top-col-1">上1</div>
       <div class="top-col top-col-2">
@@ -20,6 +30,7 @@
 
 <script>
 import * as echarts from 'echarts';
+import { getYieldMapData } from '@/api/analysis/yield'
 
 export default {
   name: "YieldAnalysis",
@@ -27,7 +38,23 @@ export default {
     return {
       chinaMapChart: null,
       radarChart: null,
-      lineChart: null
+      lineChart: null,
+      mapData: [],
+      crop: 'corn',
+      cropOptions: [
+        { value: 'corn', label: '玉米' },
+        { value: 'cotton', label: '棉花' },
+        { value: 'peanut', label: '花生' },
+        { value: 'potato', label: '马铃薯' },
+        { value: 'rice', label: '水稻' },
+        { value: 'sorghum', label: '高粱' },
+        { value: 'sugarcane', label: '甘蔗' },
+        { value: 'wheat', label: '小麦' },
+        { value: 'tobacco', label: '烟叶' },
+        { value: 'soybean', label: '大豆' }
+      ],
+      year: 2023,
+      yearOptions: Array.from({length: 2023-2000+1}, (_,i)=>2000+i)
     };
   },
   mounted() {
@@ -62,20 +89,21 @@ export default {
       const chinaJson = await res.json();
       echarts.registerMap('china', chinaJson);
       this.chinaMapChart = echarts.init(chartDom);
+      // 获取后端数据
+      const result = await getYieldMapData(this.crop, this.year);
+      if (result.code === 200) {
+        this.mapData = result.data;
+      }
       const option = {
-        tooltip: {
-          show: false
-        },
+        tooltip: { show: true },
         visualMap: {
           min: 0,
-          max: 100,
+          max: 100000, // 可根据实际数据调整
           left: 'left',
           top: 'bottom',
           text: ['高','低'],
-          inRange: {
-            color: ['#e0ffff', '#006edd']
-          },
-          show: false
+          inRange: { color: ['#e0ffff', '#006edd'] },
+          show: true
         },
         series: [
           {
@@ -83,15 +111,16 @@ export default {
             type: 'map',
             map: 'china',
             roam: true,
-            label: {
-              show: false
-            },
-            data: []
+            label: { show: false },
+            data: this.mapData // 这里填充后端数据
           }
         ]
       };
       this.chinaMapChart.setOption(option);
       this.resizeChinaMap();
+    },
+    onCropOrYearChange() {
+      this.initChinaMap();
     },
     resizeChinaMap() {
       if (this.chinaMapChart) {
@@ -179,6 +208,15 @@ export default {
 </script>
 
 <style scoped>
+.select-row {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.year-select {
+  margin-bottom: 12px;
+}
 .analysis-page {
   padding: 24px;
   display: flex;
