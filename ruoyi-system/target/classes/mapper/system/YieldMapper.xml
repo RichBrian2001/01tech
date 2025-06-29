@@ -2,8 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.YieldMapper">
   <select id="selectProvinceYieldByYearAndCrop" resultType="map">
-    SELECT province, yield
-    FROM ${crop}_yield
-    WHERE year = #{year}
+    <!-- 添加参数检查，确保作物表名合法 -->
+    <if test="crop != null and crop != ''">
+      SELECT province, yield
+      FROM ${crop}_yield
+      WHERE year = #{year}
+    </if>
+  </select>
+  <select id="selectAverageYieldByCropAndYear" resultType="map">
+    <!-- 当不指定省份时，计算全国平均产量 -->
+    <if test="province == null or province == ''">
+      SELECT crop, year, AVG(yield) as yield
+      FROM (
+        SELECT 'corn' as crop, year, AVG(yield) as yield FROM corn_yield WHERE year = #{year}
+        UNION ALL SELECT 'cotton' as crop, year, AVG(yield) FROM cotton_yield WHERE year = #{year}
+        UNION ALL SELECT 'peanut' as crop, year, AVG(yield) FROM peanut_yield WHERE year = #{year}
+        UNION ALL SELECT 'potato' as crop, year, AVG(yield) FROM potato_yield WHERE year = #{year}
+        UNION ALL SELECT 'rice' as crop, year, AVG(yield) FROM rice_yield WHERE year = #{year}
+        UNION ALL SELECT 'sorghum' as crop, year, AVG(yield) FROM sorghum_yield WHERE year = #{year}
+        UNION ALL SELECT 'sugarcane' as crop, year, AVG(yield) FROM sugarcane_yield WHERE year = #{year}
+        UNION ALL SELECT 'wheat' as crop, year, AVG(yield) FROM wheat_yield WHERE year = #{year}
+        UNION ALL SELECT 'tobacco' as crop, year, AVG(yield) FROM tobacco_yield WHERE year = #{year}
+        UNION ALL SELECT 'soybean' as crop, year, AVG(yield) FROM soybean_yield WHERE year = #{year}
+      ) t
+      GROUP BY crop, year
+    </if>
+  </select>
+  <select id="selectProvinceYieldByYearAndCropTable" resultType="java.lang.Double">
+    SELECT yield FROM ${tableName}
+    WHERE province = #{province} AND year = #{year}
   </select>
 </mapper>

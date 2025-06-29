@@ -4,16 +4,275 @@ Navicat MySQL Data Transfer
 Source Server         : a
 Source Server Version : 80042
 Source Host           : localhost:3306
-Source Database       : ry-vue
+Source Database       : agriculturaldata
 
 Target Server Type    : MYSQL
 Target Server Version : 80042
 File Encoding         : 65001
 
-Date: 2025-06-27 21:17:56
+Date: 2025-06-29 17:58:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for average_yield
+-- ----------------------------
+DROP TABLE IF EXISTS `average_yield`;
+CREATE TABLE `average_yield` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `crop` varchar(50) NOT NULL COMMENT '作物名称',
+  `year` year NOT NULL COMMENT '年份',
+  `yield` decimal(10,4) NOT NULL COMMENT '平均产量(万吨)',
+  PRIMARY KEY (`id`),
+  KEY `idx_crop` (`crop`),
+  KEY `idx_year` (`year`)
+) ENGINE=InnoDB AUTO_INCREMENT=311 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- ----------------------------
+-- Records of average_yield
+-- ----------------------------
+INSERT INTO `average_yield` VALUES ('1', 'corn', '2000', '8.7194');
+INSERT INTO `average_yield` VALUES ('2', 'corn', '2001', '9.0613');
+INSERT INTO `average_yield` VALUES ('3', 'corn', '2002', '9.4000');
+INSERT INTO `average_yield` VALUES ('4', 'corn', '2003', '9.7387');
+INSERT INTO `average_yield` VALUES ('5', 'corn', '2004', '10.0774');
+INSERT INTO `average_yield` VALUES ('6', 'corn', '2005', '10.4161');
+INSERT INTO `average_yield` VALUES ('7', 'corn', '2006', '10.7548');
+INSERT INTO `average_yield` VALUES ('8', 'corn', '2007', '11.0935');
+INSERT INTO `average_yield` VALUES ('9', 'corn', '2008', '11.4323');
+INSERT INTO `average_yield` VALUES ('10', 'corn', '2009', '11.7710');
+INSERT INTO `average_yield` VALUES ('11', 'corn', '2010', '12.1097');
+INSERT INTO `average_yield` VALUES ('12', 'corn', '2011', '12.4484');
+INSERT INTO `average_yield` VALUES ('13', 'corn', '2012', '12.7871');
+INSERT INTO `average_yield` VALUES ('14', 'corn', '2013', '13.1258');
+INSERT INTO `average_yield` VALUES ('15', 'corn', '2014', '13.4645');
+INSERT INTO `average_yield` VALUES ('16', 'corn', '2015', '13.8032');
+INSERT INTO `average_yield` VALUES ('17', 'corn', '2016', '14.1419');
+INSERT INTO `average_yield` VALUES ('18', 'corn', '2017', '14.4806');
+INSERT INTO `average_yield` VALUES ('19', 'corn', '2018', '14.8194');
+INSERT INTO `average_yield` VALUES ('20', 'corn', '2019', '15.1581');
+INSERT INTO `average_yield` VALUES ('21', 'corn', '2020', '15.4968');
+INSERT INTO `average_yield` VALUES ('22', 'corn', '2021', '15.8355');
+INSERT INTO `average_yield` VALUES ('23', 'corn', '2022', '16.1742');
+INSERT INTO `average_yield` VALUES ('24', 'corn', '2023', '16.5129');
+INSERT INTO `average_yield` VALUES ('32', 'cotton', '2000', '17.1185');
+INSERT INTO `average_yield` VALUES ('33', 'cotton', '2001', '19.2909');
+INSERT INTO `average_yield` VALUES ('34', 'cotton', '2002', '18.4869');
+INSERT INTO `average_yield` VALUES ('35', 'cotton', '2003', '19.0661');
+INSERT INTO `average_yield` VALUES ('36', 'cotton', '2004', '18.9969');
+INSERT INTO `average_yield` VALUES ('37', 'cotton', '2005', '19.6864');
+INSERT INTO `average_yield` VALUES ('38', 'cotton', '2006', '18.2339');
+INSERT INTO `average_yield` VALUES ('39', 'cotton', '2007', '17.2350');
+INSERT INTO `average_yield` VALUES ('40', 'cotton', '2008', '19.0561');
+INSERT INTO `average_yield` VALUES ('41', 'cotton', '2009', '20.3208');
+INSERT INTO `average_yield` VALUES ('42', 'cotton', '2010', '20.2631');
+INSERT INTO `average_yield` VALUES ('43', 'cotton', '2011', '21.3162');
+INSERT INTO `average_yield` VALUES ('44', 'cotton', '2012', '21.0286');
+INSERT INTO `average_yield` VALUES ('45', 'cotton', '2013', '18.6142');
+INSERT INTO `average_yield` VALUES ('46', 'cotton', '2014', '20.1156');
+INSERT INTO `average_yield` VALUES ('47', 'cotton', '2015', '24.0798');
+INSERT INTO `average_yield` VALUES ('48', 'cotton', '2016', '24.5069');
+INSERT INTO `average_yield` VALUES ('49', 'cotton', '2017', '24.3083');
+INSERT INTO `average_yield` VALUES ('50', 'cotton', '2018', '18.4328');
+INSERT INTO `average_yield` VALUES ('51', 'cotton', '2019', '21.0025');
+INSERT INTO `average_yield` VALUES ('52', 'cotton', '2020', '15.6765');
+INSERT INTO `average_yield` VALUES ('53', 'cotton', '2021', '15.8588');
+INSERT INTO `average_yield` VALUES ('54', 'cotton', '2022', '17.1726');
+INSERT INTO `average_yield` VALUES ('55', 'cotton', '2023', '14.2495');
+INSERT INTO `average_yield` VALUES ('63', 'peanut', '2000', '62.0348');
+INSERT INTO `average_yield` VALUES ('64', 'peanut', '2001', '59.1271');
+INSERT INTO `average_yield` VALUES ('65', 'peanut', '2002', '59.0581');
+INSERT INTO `average_yield` VALUES ('66', 'peanut', '2003', '58.0416');
+INSERT INTO `average_yield` VALUES ('67', 'peanut', '2004', '56.5148');
+INSERT INTO `average_yield` VALUES ('68', 'peanut', '2005', '55.9097');
+INSERT INTO `average_yield` VALUES ('69', 'peanut', '2006', '54.7313');
+INSERT INTO `average_yield` VALUES ('70', 'peanut', '2007', '51.1831');
+INSERT INTO `average_yield` VALUES ('71', 'peanut', '2008', '51.4877');
+INSERT INTO `average_yield` VALUES ('72', 'peanut', '2009', '51.2923');
+INSERT INTO `average_yield` VALUES ('73', 'peanut', '2010', '51.9645');
+INSERT INTO `average_yield` VALUES ('74', 'peanut', '2011', '50.9432');
+INSERT INTO `average_yield` VALUES ('75', 'peanut', '2012', '49.3626');
+INSERT INTO `average_yield` VALUES ('76', 'peanut', '2013', '48.8245');
+INSERT INTO `average_yield` VALUES ('77', 'peanut', '2014', '47.1097');
+INSERT INTO `average_yield` VALUES ('78', 'peanut', '2015', '47.2123');
+INSERT INTO `average_yield` VALUES ('79', 'peanut', '2016', '44.6440');
+INSERT INTO `average_yield` VALUES ('80', 'peanut', '2017', '42.8963');
+INSERT INTO `average_yield` VALUES ('81', 'peanut', '2018', '46.2639');
+INSERT INTO `average_yield` VALUES ('82', 'peanut', '2019', '46.2632');
+INSERT INTO `average_yield` VALUES ('83', 'peanut', '2020', '43.2890');
+INSERT INTO `average_yield` VALUES ('84', 'peanut', '2021', '47.7981');
+INSERT INTO `average_yield` VALUES ('85', 'peanut', '2022', '46.5023');
+INSERT INTO `average_yield` VALUES ('86', 'peanut', '2023', '46.5690');
+INSERT INTO `average_yield` VALUES ('94', 'potato', '2000', '47.4271');
+INSERT INTO `average_yield` VALUES ('95', 'potato', '2001', '56.7981');
+INSERT INTO `average_yield` VALUES ('96', 'potato', '2002', '57.4497');
+INSERT INTO `average_yield` VALUES ('97', 'potato', '2003', '56.3013');
+INSERT INTO `average_yield` VALUES ('98', 'potato', '2004', '56.4148');
+INSERT INTO `average_yield` VALUES ('99', 'potato', '2005', '57.1848');
+INSERT INTO `average_yield` VALUES ('100', 'potato', '2006', '55.9616');
+INSERT INTO `average_yield` VALUES ('101', 'potato', '2007', '54.6971');
+INSERT INTO `average_yield` VALUES ('102', 'potato', '2008', '53.6016');
+INSERT INTO `average_yield` VALUES ('103', 'potato', '2009', '54.2300');
+INSERT INTO `average_yield` VALUES ('104', 'potato', '2010', '53.7861');
+INSERT INTO `average_yield` VALUES ('105', 'potato', '2011', '53.0942');
+INSERT INTO `average_yield` VALUES ('106', 'potato', '2012', '49.1035');
+INSERT INTO `average_yield` VALUES ('107', 'potato', '2013', '48.1710');
+INSERT INTO `average_yield` VALUES ('108', 'potato', '2014', '43.9494');
+INSERT INTO `average_yield` VALUES ('109', 'potato', '2015', '42.3481');
+INSERT INTO `average_yield` VALUES ('110', 'potato', '2016', '38.4665');
+INSERT INTO `average_yield` VALUES ('111', 'potato', '2017', '45.1803');
+INSERT INTO `average_yield` VALUES ('112', 'potato', '2018', '44.9097');
+INSERT INTO `average_yield` VALUES ('113', 'potato', '2019', '43.4013');
+INSERT INTO `average_yield` VALUES ('114', 'potato', '2020', '45.1406');
+INSERT INTO `average_yield` VALUES ('115', 'potato', '2021', '48.4745');
+INSERT INTO `average_yield` VALUES ('116', 'potato', '2022', '42.4374');
+INSERT INTO `average_yield` VALUES ('117', 'potato', '2023', '16.9635');
+INSERT INTO `average_yield` VALUES ('125', 'rice', '2000', '666.4619');
+INSERT INTO `average_yield` VALUES ('126', 'rice', '2001', '672.5645');
+INSERT INTO `average_yield` VALUES ('127', 'rice', '2002', '686.5884');
+INSERT INTO `average_yield` VALUES ('128', 'rice', '2003', '683.4177');
+INSERT INTO `average_yield` VALUES ('129', 'rice', '2004', '676.1739');
+INSERT INTO `average_yield` VALUES ('130', 'rice', '2005', '684.2874');
+INSERT INTO `average_yield` VALUES ('131', 'rice', '2006', '686.0510');
+INSERT INTO `average_yield` VALUES ('132', 'rice', '2007', '680.9490');
+INSERT INTO `average_yield` VALUES ('133', 'rice', '2008', '684.3287');
+INSERT INTO `average_yield` VALUES ('134', 'rice', '2009', '676.1581');
+INSERT INTO `average_yield` VALUES ('135', 'rice', '2010', '665.4374');
+INSERT INTO `average_yield` VALUES ('136', 'rice', '2011', '666.2335');
+INSERT INTO `average_yield` VALUES ('137', 'rice', '2012', '654.4594');
+INSERT INTO `average_yield` VALUES ('138', 'rice', '2013', '636.2119');
+INSERT INTO `average_yield` VALUES ('139', 'rice', '2014', '632.8932');
+INSERT INTO `average_yield` VALUES ('140', 'rice', '2015', '621.3300');
+INSERT INTO `average_yield` VALUES ('141', 'rice', '2016', '601.2287');
+INSERT INTO `average_yield` VALUES ('142', 'rice', '2017', '586.1881');
+INSERT INTO `average_yield` VALUES ('143', 'rice', '2018', '582.5432');
+INSERT INTO `average_yield` VALUES ('144', 'rice', '2019', '577.7019');
+INSERT INTO `average_yield` VALUES ('145', 'rice', '2020', '518.2439');
+INSERT INTO `average_yield` VALUES ('146', 'rice', '2021', '563.0274');
+INSERT INTO `average_yield` VALUES ('147', 'rice', '2022', '572.8397');
+INSERT INTO `average_yield` VALUES ('148', 'rice', '2023', '606.1539');
+INSERT INTO `average_yield` VALUES ('156', 'sorghum', '2000', '0.0000');
+INSERT INTO `average_yield` VALUES ('157', 'sorghum', '2001', '9.6688');
+INSERT INTO `average_yield` VALUES ('158', 'sorghum', '2002', '10.5544');
+INSERT INTO `average_yield` VALUES ('159', 'sorghum', '2003', '9.2809');
+INSERT INTO `average_yield` VALUES ('160', 'sorghum', '2004', '9.8034');
+INSERT INTO `average_yield` VALUES ('161', 'sorghum', '2005', '9.0922');
+INSERT INTO `average_yield` VALUES ('162', 'sorghum', '2006', '7.7028');
+INSERT INTO `average_yield` VALUES ('163', 'sorghum', '2007', '6.9872');
+INSERT INTO `average_yield` VALUES ('164', 'sorghum', '2008', '6.8831');
+INSERT INTO `average_yield` VALUES ('165', 'sorghum', '2009', '7.8147');
+INSERT INTO `average_yield` VALUES ('166', 'sorghum', '2010', '7.5838');
+INSERT INTO `average_yield` VALUES ('167', 'sorghum', '2011', '6.2181');
+INSERT INTO `average_yield` VALUES ('168', 'sorghum', '2012', '5.9141');
+INSERT INTO `average_yield` VALUES ('169', 'sorghum', '2013', '6.0438');
+INSERT INTO `average_yield` VALUES ('170', 'sorghum', '2014', '4.7056');
+INSERT INTO `average_yield` VALUES ('171', 'sorghum', '2015', '5.4650');
+INSERT INTO `average_yield` VALUES ('172', 'sorghum', '2016', '5.4756');
+INSERT INTO `average_yield` VALUES ('173', 'sorghum', '2017', '6.8322');
+INSERT INTO `average_yield` VALUES ('174', 'sorghum', '2018', '8.2155');
+INSERT INTO `average_yield` VALUES ('175', 'sorghum', '2019', '7.5071');
+INSERT INTO `average_yield` VALUES ('176', 'sorghum', '2020', '9.2394');
+INSERT INTO `average_yield` VALUES ('177', 'sorghum', '2021', '10.7416');
+INSERT INTO `average_yield` VALUES ('178', 'sorghum', '2022', '8.7068');
+INSERT INTO `average_yield` VALUES ('179', 'sorghum', '2023', '8.2516');
+INSERT INTO `average_yield` VALUES ('187', 'sugarcane', '2000', '337.3087');
+INSERT INTO `average_yield` VALUES ('188', 'sugarcane', '2001', '333.4877');
+INSERT INTO `average_yield` VALUES ('189', 'sugarcane', '2002', '344.0771');
+INSERT INTO `average_yield` VALUES ('190', 'sugarcane', '2003', '348.7777');
+INSERT INTO `average_yield` VALUES ('191', 'sugarcane', '2004', '352.8642');
+INSERT INTO `average_yield` VALUES ('192', 'sugarcane', '2005', '348.7006');
+INSERT INTO `average_yield` VALUES ('193', 'sugarcane', '2006', '336.7884');
+INSERT INTO `average_yield` VALUES ('194', 'sugarcane', '2007', '332.9532');
+INSERT INTO `average_yield` VALUES ('195', 'sugarcane', '2008', '345.3687');
+INSERT INTO `average_yield` VALUES ('196', 'sugarcane', '2009', '373.5106');
+INSERT INTO `average_yield` VALUES ('197', 'sugarcane', '2010', '384.7206');
+INSERT INTO `average_yield` VALUES ('198', 'sugarcane', '2011', '373.3742');
+INSERT INTO `average_yield` VALUES ('199', 'sugarcane', '2012', '350.5600');
+INSERT INTO `average_yield` VALUES ('200', 'sugarcane', '2013', '341.8787');
+INSERT INTO `average_yield` VALUES ('201', 'sugarcane', '2014', '361.3023');
+INSERT INTO `average_yield` VALUES ('202', 'sugarcane', '2015', '392.0026');
+INSERT INTO `average_yield` VALUES ('203', 'sugarcane', '2016', '360.6274');
+INSERT INTO `average_yield` VALUES ('204', 'sugarcane', '2017', '313.0458');
+INSERT INTO `average_yield` VALUES ('205', 'sugarcane', '2018', '279.6258');
+INSERT INTO `average_yield` VALUES ('206', 'sugarcane', '2019', '289.8342');
+INSERT INTO `average_yield` VALUES ('207', 'sugarcane', '2020', '291.0794');
+INSERT INTO `average_yield` VALUES ('208', 'sugarcane', '2021', '290.6642');
+INSERT INTO `average_yield` VALUES ('209', 'sugarcane', '2022', '244.0313');
+INSERT INTO `average_yield` VALUES ('210', 'sugarcane', '2023', '220.3032');
+INSERT INTO `average_yield` VALUES ('218', 'wheat', '2000', '440.6126');
+INSERT INTO `average_yield` VALUES ('219', 'wheat', '2001', '444.2681');
+INSERT INTO `average_yield` VALUES ('220', 'wheat', '2002', '441.7565');
+INSERT INTO `average_yield` VALUES ('221', 'wheat', '2003', '433.0768');
+INSERT INTO `average_yield` VALUES ('222', 'wheat', '2004', '430.9558');
+INSERT INTO `average_yield` VALUES ('223', 'wheat', '2005', '424.0013');
+INSERT INTO `average_yield` VALUES ('224', 'wheat', '2006', '433.0371');
+INSERT INTO `average_yield` VALUES ('225', 'wheat', '2007', '429.6403');
+INSERT INTO `average_yield` VALUES ('226', 'wheat', '2008', '427.5977');
+INSERT INTO `average_yield` VALUES ('227', 'wheat', '2009', '413.6623');
+INSERT INTO `average_yield` VALUES ('228', 'wheat', '2010', '398.8368');
+INSERT INTO `average_yield` VALUES ('229', 'wheat', '2011', '395.0797');
+INSERT INTO `average_yield` VALUES ('230', 'wheat', '2012', '382.4823');
+INSERT INTO `average_yield` VALUES ('231', 'wheat', '2013', '374.4948');
+INSERT INTO `average_yield` VALUES ('232', 'wheat', '2014', '373.5355');
+INSERT INTO `average_yield` VALUES ('233', 'wheat', '2015', '364.1974');
+INSERT INTO `average_yield` VALUES ('234', 'wheat', '2016', '353.1981');
+INSERT INTO `average_yield` VALUES ('235', 'wheat', '2017', '349.8900');
+INSERT INTO `average_yield` VALUES ('236', 'wheat', '2018', '314.3390');
+INSERT INTO `average_yield` VALUES ('237', 'wheat', '2019', '296.6187');
+INSERT INTO `average_yield` VALUES ('238', 'wheat', '2020', '278.9952');
+INSERT INTO `average_yield` VALUES ('239', 'wheat', '2021', '291.2581');
+INSERT INTO `average_yield` VALUES ('240', 'wheat', '2022', '302.8174');
+INSERT INTO `average_yield` VALUES ('241', 'wheat', '2023', '321.4058');
+INSERT INTO `average_yield` VALUES ('249', 'tobacco', '2000', '7.2609');
+INSERT INTO `average_yield` VALUES ('250', 'tobacco', '2001', '7.0584');
+INSERT INTO `average_yield` VALUES ('251', 'tobacco', '2002', '6.8632');
+INSERT INTO `average_yield` VALUES ('252', 'tobacco', '2003', '6.8842');
+INSERT INTO `average_yield` VALUES ('253', 'tobacco', '2004', '6.9471');
+INSERT INTO `average_yield` VALUES ('254', 'tobacco', '2005', '7.2287');
+INSERT INTO `average_yield` VALUES ('255', 'tobacco', '2006', '7.7142');
+INSERT INTO `average_yield` VALUES ('256', 'tobacco', '2007', '8.3026');
+INSERT INTO `average_yield` VALUES ('257', 'tobacco', '2008', '8.6355');
+INSERT INTO `average_yield` VALUES ('258', 'tobacco', '2009', '9.1832');
+INSERT INTO `average_yield` VALUES ('259', 'tobacco', '2010', '10.3845');
+INSERT INTO `average_yield` VALUES ('260', 'tobacco', '2011', '10.4710');
+INSERT INTO `average_yield` VALUES ('261', 'tobacco', '2012', '9.6706');
+INSERT INTO `average_yield` VALUES ('262', 'tobacco', '2013', '9.1355');
+INSERT INTO `average_yield` VALUES ('263', 'tobacco', '2014', '9.5545');
+INSERT INTO `average_yield` VALUES ('264', 'tobacco', '2015', '8.9010');
+INSERT INTO `average_yield` VALUES ('265', 'tobacco', '2016', '7.8190');
+INSERT INTO `average_yield` VALUES ('266', 'tobacco', '2017', '7.9184');
+INSERT INTO `average_yield` VALUES ('267', 'tobacco', '2018', '8.6555');
+INSERT INTO `average_yield` VALUES ('268', 'tobacco', '2019', '7.9393');
+INSERT INTO `average_yield` VALUES ('269', 'tobacco', '2020', '7.2855');
+INSERT INTO `average_yield` VALUES ('270', 'tobacco', '2021', '7.8955');
+INSERT INTO `average_yield` VALUES ('271', 'tobacco', '2022', '7.5774');
+INSERT INTO `average_yield` VALUES ('272', 'tobacco', '2023', '8.2171');
+INSERT INTO `average_yield` VALUES ('280', 'soybean', '2000', '67.2310');
+INSERT INTO `average_yield` VALUES ('281', 'soybean', '2001', '65.4306');
+INSERT INTO `average_yield` VALUES ('282', 'soybean', '2002', '52.8884');
+INSERT INTO `average_yield` VALUES ('283', 'soybean', '2003', '63.2313');
+INSERT INTO `average_yield` VALUES ('284', 'soybean', '2004', '58.3600');
+INSERT INTO `average_yield` VALUES ('285', 'soybean', '2005', '51.5071');
+INSERT INTO `average_yield` VALUES ('286', 'soybean', '2006', '49.2990');
+INSERT INTO `average_yield` VALUES ('287', 'soybean', '2007', '43.8565');
+INSERT INTO `average_yield` VALUES ('288', 'soybean', '2008', '39.8948');
+INSERT INTO `average_yield` VALUES ('289', 'soybean', '2009', '40.9226');
+INSERT INTO `average_yield` VALUES ('290', 'soybean', '2010', '40.0232');
+INSERT INTO `average_yield` VALUES ('291', 'soybean', '2011', '43.3426');
+INSERT INTO `average_yield` VALUES ('292', 'soybean', '2012', '47.9952');
+INSERT INTO `average_yield` VALUES ('293', 'soybean', '2013', '49.7094');
+INSERT INTO `average_yield` VALUES ('294', 'soybean', '2014', '50.2070');
+INSERT INTO `average_yield` VALUES ('295', 'soybean', '2015', '50.6745');
+INSERT INTO `average_yield` VALUES ('296', 'soybean', '2016', '41.2690');
+INSERT INTO `average_yield` VALUES ('297', 'soybean', '2017', '48.6513');
+INSERT INTO `average_yield` VALUES ('298', 'soybean', '2018', '52.7352');
+INSERT INTO `average_yield` VALUES ('299', 'soybean', '2019', '56.1335');
+INSERT INTO `average_yield` VALUES ('300', 'soybean', '2020', '49.6555');
+INSERT INTO `average_yield` VALUES ('301', 'soybean', '2021', '53.2432');
+INSERT INTO `average_yield` VALUES ('302', 'soybean', '2022', '49.6955');
+INSERT INTO `average_yield` VALUES ('303', 'soybean', '2023', '49.7065');
+INSERT INTO `average_yield` VALUES ('304', 'soybean', '2024', '16.2000');
 
 -- ----------------------------
 -- Table structure for corn_yield
@@ -1545,26 +1804,26 @@ INSERT INTO `cotton_yield` VALUES ('744', '新疆维吾尔自治区', '2023', '1
 DROP TABLE IF EXISTS `gen_table`;
 CREATE TABLE `gen_table` (
   `table_id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
-  `table_name` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '表名称',
-  `table_comment` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '表描述',
-  `sub_table_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '关联子表的表名',
-  `sub_table_fk_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '子表关联的外键名',
-  `class_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '实体类名称',
-  `tpl_category` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT 'crud' COMMENT '使用的模板（crud单表操作 tree树表操作）',
-  `tpl_web_type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '前端模板类型（element-ui模版 element-plus模版）',
-  `package_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '生成包路径',
-  `module_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '生成模块名',
-  `business_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '生成业务名',
-  `function_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '生成功能名',
-  `function_author` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '生成功能作者',
-  `gen_type` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '生成代码方式（0zip压缩包 1自定义路径）',
-  `gen_path` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT '/' COMMENT '生成路径（不填默认项目路径）',
-  `options` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '其它生成选项',
-  `create_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
+  `table_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '表名称',
+  `table_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '表描述',
+  `sub_table_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '关联子表的表名',
+  `sub_table_fk_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '子表关联的外键名',
+  `class_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '实体类名称',
+  `tpl_category` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'crud' COMMENT '使用的模板（crud单表操作 tree树表操作）',
+  `tpl_web_type` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '前端模板类型（element-ui模版 element-plus模版）',
+  `package_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '生成包路径',
+  `module_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '生成模块名',
+  `business_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '生成业务名',
+  `function_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '生成功能名',
+  `function_author` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '生成功能作者',
+  `gen_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '生成代码方式（0zip压缩包 1自定义路径）',
+  `gen_path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '/' COMMENT '生成路径（不填默认项目路径）',
+  `options` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '其它生成选项',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`table_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='代码生成业务表';
 
@@ -1579,25 +1838,25 @@ DROP TABLE IF EXISTS `gen_table_column`;
 CREATE TABLE `gen_table_column` (
   `column_id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
   `table_id` bigint DEFAULT NULL COMMENT '归属表编号',
-  `column_name` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '列名称',
-  `column_comment` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '列描述',
-  `column_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '列类型',
-  `java_type` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'JAVA类型',
-  `java_field` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'JAVA字段名',
-  `is_pk` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否主键（1是）',
-  `is_increment` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否自增（1是）',
-  `is_required` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否必填（1是）',
-  `is_insert` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否为插入字段（1是）',
-  `is_edit` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否编辑字段（1是）',
-  `is_list` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否列表字段（1是）',
-  `is_query` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否查询字段（1是）',
-  `query_type` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT 'EQ' COMMENT '查询方式（等于、不等于、大于、小于、范围）',
-  `html_type` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）',
-  `dict_type` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '字典类型',
+  `column_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '列名称',
+  `column_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '列描述',
+  `column_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '列类型',
+  `java_type` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'JAVA类型',
+  `java_field` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'JAVA字段名',
+  `is_pk` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否主键（1是）',
+  `is_increment` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否自增（1是）',
+  `is_required` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否必填（1是）',
+  `is_insert` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否为插入字段（1是）',
+  `is_edit` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否编辑字段（1是）',
+  `is_list` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否列表字段（1是）',
+  `is_query` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否查询字段（1是）',
+  `query_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'EQ' COMMENT '查询方式（等于、不等于、大于、小于、范围）',
+  `html_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）',
+  `dict_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '字典类型',
   `sort` int DEFAULT NULL COMMENT '排序',
-  `create_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`column_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='代码生成业务表字段';
@@ -3135,9 +3394,9 @@ INSERT INTO `potato_yield` VALUES ('744', '新疆维吾尔自治区', '2023', '0
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_blob_triggers`;
 CREATE TABLE `qrtz_blob_triggers` (
-  `sched_name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
-  `trigger_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
-  `trigger_group` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
   `blob_data` blob COMMENT '存放持久化Trigger对象',
   PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
   CONSTRAINT `qrtz_blob_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
@@ -3152,8 +3411,8 @@ CREATE TABLE `qrtz_blob_triggers` (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_calendars`;
 CREATE TABLE `qrtz_calendars` (
-  `sched_name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
-  `calendar_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '日历名称',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
+  `calendar_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '日历名称',
   `calendar` blob NOT NULL COMMENT '存放持久化calendar对象',
   PRIMARY KEY (`sched_name`,`calendar_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='日历信息表';
@@ -3167,11 +3426,11 @@ CREATE TABLE `qrtz_calendars` (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_cron_triggers`;
 CREATE TABLE `qrtz_cron_triggers` (
-  `sched_name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
-  `trigger_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
-  `trigger_group` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
-  `cron_expression` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'cron表达式',
-  `time_zone_id` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '时区',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `cron_expression` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'cron表达式',
+  `time_zone_id` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '时区',
   PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
   CONSTRAINT `qrtz_cron_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Cron类型的触发器表';
@@ -3185,19 +3444,19 @@ CREATE TABLE `qrtz_cron_triggers` (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_fired_triggers`;
 CREATE TABLE `qrtz_fired_triggers` (
-  `sched_name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
-  `entry_id` varchar(95) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度器实例id',
-  `trigger_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
-  `trigger_group` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
-  `instance_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度器实例名',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
+  `entry_id` varchar(95) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度器实例id',
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度器实例名',
   `fired_time` bigint NOT NULL COMMENT '触发的时间',
   `sched_time` bigint NOT NULL COMMENT '定时器制定的时间',
   `priority` int NOT NULL COMMENT '优先级',
-  `state` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '状态',
-  `job_name` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务名称',
-  `job_group` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务组名',
-  `is_nonconcurrent` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否并发',
-  `requests_recovery` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否接受恢复执行',
+  `state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '状态',
+  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务名称',
+  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '任务组名',
+  `is_nonconcurrent` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否并发',
+  `requests_recovery` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '是否接受恢复执行',
   PRIMARY KEY (`sched_name`,`entry_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='已触发的触发器表';
 
@@ -3210,15 +3469,15 @@ CREATE TABLE `qrtz_fired_triggers` (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_job_details`;
 CREATE TABLE `qrtz_job_details` (
-  `sched_name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
-  `job_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务名称',
-  `job_group` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务组名',
-  `description` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '相关介绍',
-  `job_class_name` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '执行任务类名称',
-  `is_durable` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '是否持久化',
-  `is_nonconcurrent` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '是否并发',
-  `is_update_data` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '是否更新数据',
-  `requests_recovery` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '是否接受恢复执行',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
+  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务名称',
+  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务组名',
+  `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '相关介绍',
+  `job_class_name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '执行任务类名称',
+  `is_durable` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '是否持久化',
+  `is_nonconcurrent` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '是否并发',
+  `is_update_data` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '是否更新数据',
+  `requests_recovery` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '是否接受恢复执行',
   `job_data` blob COMMENT '存放持久化job对象',
   PRIMARY KEY (`sched_name`,`job_name`,`job_group`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='任务详细信息表';
@@ -3232,8 +3491,8 @@ CREATE TABLE `qrtz_job_details` (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_locks`;
 CREATE TABLE `qrtz_locks` (
-  `sched_name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
-  `lock_name` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '悲观锁名称',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
+  `lock_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '悲观锁名称',
   PRIMARY KEY (`sched_name`,`lock_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='存储的悲观锁信息表';
 
@@ -3246,8 +3505,8 @@ CREATE TABLE `qrtz_locks` (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_paused_trigger_grps`;
 CREATE TABLE `qrtz_paused_trigger_grps` (
-  `sched_name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
-  `trigger_group` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
   PRIMARY KEY (`sched_name`,`trigger_group`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='暂停的触发器表';
 
@@ -3260,8 +3519,8 @@ CREATE TABLE `qrtz_paused_trigger_grps` (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_scheduler_state`;
 CREATE TABLE `qrtz_scheduler_state` (
-  `sched_name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
-  `instance_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '实例名称',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
+  `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '实例名称',
   `last_checkin_time` bigint NOT NULL COMMENT '上次检查时间',
   `checkin_interval` bigint NOT NULL COMMENT '检查间隔时间',
   PRIMARY KEY (`sched_name`,`instance_name`)
@@ -3276,9 +3535,9 @@ CREATE TABLE `qrtz_scheduler_state` (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_simple_triggers`;
 CREATE TABLE `qrtz_simple_triggers` (
-  `sched_name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
-  `trigger_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
-  `trigger_group` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
   `repeat_count` bigint NOT NULL COMMENT '重复的次数统计',
   `repeat_interval` bigint NOT NULL COMMENT '重复的间隔时间',
   `times_triggered` bigint NOT NULL COMMENT '已经触发的次数',
@@ -3295,20 +3554,20 @@ CREATE TABLE `qrtz_simple_triggers` (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_simprop_triggers`;
 CREATE TABLE `qrtz_simprop_triggers` (
-  `sched_name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
-  `trigger_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
-  `trigger_group` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
-  `str_prop_1` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'String类型的trigger的第一个参数',
-  `str_prop_2` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'String类型的trigger的第二个参数',
-  `str_prop_3` varchar(512) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'String类型的trigger的第三个参数',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `str_prop_1` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'String类型的trigger的第一个参数',
+  `str_prop_2` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'String类型的trigger的第二个参数',
+  `str_prop_3` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'String类型的trigger的第三个参数',
   `int_prop_1` int DEFAULT NULL COMMENT 'int类型的trigger的第一个参数',
   `int_prop_2` int DEFAULT NULL COMMENT 'int类型的trigger的第二个参数',
   `long_prop_1` bigint DEFAULT NULL COMMENT 'long类型的trigger的第一个参数',
   `long_prop_2` bigint DEFAULT NULL COMMENT 'long类型的trigger的第二个参数',
   `dec_prop_1` decimal(13,4) DEFAULT NULL COMMENT 'decimal类型的trigger的第一个参数',
   `dec_prop_2` decimal(13,4) DEFAULT NULL COMMENT 'decimal类型的trigger的第二个参数',
-  `bool_prop_1` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Boolean类型的trigger的第一个参数',
-  `bool_prop_2` varchar(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Boolean类型的trigger的第二个参数',
+  `bool_prop_1` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Boolean类型的trigger的第一个参数',
+  `bool_prop_2` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Boolean类型的trigger的第二个参数',
   PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
   CONSTRAINT `qrtz_simprop_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='同步机制的行锁表';
@@ -3322,20 +3581,20 @@ CREATE TABLE `qrtz_simprop_triggers` (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_triggers`;
 CREATE TABLE `qrtz_triggers` (
-  `sched_name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
-  `trigger_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '触发器的名字',
-  `trigger_group` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '触发器所属组的名字',
-  `job_name` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_job_details表job_name的外键',
-  `job_group` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_job_details表job_group的外键',
-  `description` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '相关介绍',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调度名称',
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '触发器的名字',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '触发器所属组的名字',
+  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_job_details表job_name的外键',
+  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'qrtz_job_details表job_group的外键',
+  `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '相关介绍',
   `next_fire_time` bigint DEFAULT NULL COMMENT '上一次触发时间（毫秒）',
   `prev_fire_time` bigint DEFAULT NULL COMMENT '下一次触发时间（默认为-1表示不触发）',
   `priority` int DEFAULT NULL COMMENT '优先级',
-  `trigger_state` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '触发器状态',
-  `trigger_type` varchar(8) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '触发器的类型',
+  `trigger_state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '触发器状态',
+  `trigger_type` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '触发器的类型',
   `start_time` bigint NOT NULL COMMENT '开始时间',
   `end_time` bigint DEFAULT NULL COMMENT '结束时间',
-  `calendar_name` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '日程表名称',
+  `calendar_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '日程表名称',
   `misfire_instr` smallint DEFAULT NULL COMMENT '补偿执行的策略',
   `job_data` blob COMMENT '存放持久化job对象',
   PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
@@ -6419,15 +6678,15 @@ INSERT INTO `sugarcane_yield` VALUES ('744', '新疆维吾尔自治区', '2023',
 DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE `sys_config` (
   `config_id` int NOT NULL AUTO_INCREMENT COMMENT '参数主键',
-  `config_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '参数名称',
-  `config_key` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '参数键名',
-  `config_value` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '参数键值',
-  `config_type` char(1) COLLATE utf8mb4_unicode_ci DEFAULT 'N' COMMENT '系统内置（Y是 N否）',
-  `create_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
+  `config_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '参数名称',
+  `config_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '参数键名',
+  `config_value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '参数键值',
+  `config_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'N' COMMENT '系统内置（Y是 N否）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`config_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='参数配置表';
 
@@ -6450,17 +6709,17 @@ DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept` (
   `dept_id` bigint NOT NULL AUTO_INCREMENT COMMENT '部门id',
   `parent_id` bigint DEFAULT '0' COMMENT '父部门id',
-  `ancestors` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '祖级列表',
-  `dept_name` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '部门名称',
+  `ancestors` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '祖级列表',
+  `dept_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '部门名称',
   `order_num` int DEFAULT '0' COMMENT '显示顺序',
-  `leader` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '负责人',
-  `phone` varchar(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '联系电话',
-  `email` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '邮箱',
-  `status` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '部门状态（0正常 1停用）',
-  `del_flag` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
-  `create_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
+  `leader` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '负责人',
+  `phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '联系电话',
+  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '邮箱',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '部门状态（0正常 1停用）',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`dept_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='部门表';
@@ -6486,18 +6745,18 @@ DROP TABLE IF EXISTS `sys_dict_data`;
 CREATE TABLE `sys_dict_data` (
   `dict_code` bigint NOT NULL AUTO_INCREMENT COMMENT '字典编码',
   `dict_sort` int DEFAULT '0' COMMENT '字典排序',
-  `dict_label` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '字典标签',
-  `dict_value` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '字典键值',
-  `dict_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '字典类型',
-  `css_class` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '样式属性（其他样式扩展）',
-  `list_class` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '表格回显样式',
-  `is_default` char(1) COLLATE utf8mb4_unicode_ci DEFAULT 'N' COMMENT '是否默认（Y是 N否）',
-  `status` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '状态（0正常 1停用）',
-  `create_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
+  `dict_label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '字典标签',
+  `dict_value` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '字典键值',
+  `dict_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '字典类型',
+  `css_class` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '样式属性（其他样式扩展）',
+  `list_class` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '表格回显样式',
+  `is_default` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'N' COMMENT '是否默认（Y是 N否）',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='字典数据表';
 
@@ -6540,14 +6799,14 @@ INSERT INTO `sys_dict_data` VALUES ('29', '2', '失败', '1', 'sys_common_status
 DROP TABLE IF EXISTS `sys_dict_type`;
 CREATE TABLE `sys_dict_type` (
   `dict_id` bigint NOT NULL AUTO_INCREMENT COMMENT '字典主键',
-  `dict_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '字典名称',
-  `dict_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '字典类型',
-  `status` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '状态（0正常 1停用）',
-  `create_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
+  `dict_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '字典名称',
+  `dict_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '字典类型',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_id`),
   UNIQUE KEY `dict_type` (`dict_type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='字典类型表';
@@ -6572,18 +6831,18 @@ INSERT INTO `sys_dict_type` VALUES ('10', '系统状态', 'sys_common_status', '
 DROP TABLE IF EXISTS `sys_job`;
 CREATE TABLE `sys_job` (
   `job_id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务ID',
-  `job_name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '任务名称',
-  `job_group` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'DEFAULT' COMMENT '任务组名',
-  `invoke_target` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调用目标字符串',
-  `cron_expression` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT 'cron执行表达式',
-  `misfire_policy` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT '3' COMMENT '计划执行错误策略（1立即执行 2执行一次 3放弃执行）',
-  `concurrent` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '1' COMMENT '是否并发执行（0允许 1禁止）',
-  `status` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '状态（0正常 1暂停）',
-  `create_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
+  `job_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '任务名称',
+  `job_group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'DEFAULT' COMMENT '任务组名',
+  `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调用目标字符串',
+  `cron_expression` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT 'cron执行表达式',
+  `misfire_policy` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '3' COMMENT '计划执行错误策略（1立即执行 2执行一次 3放弃执行）',
+  `concurrent` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '1' COMMENT '是否并发执行（0允许 1禁止）',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '状态（0正常 1暂停）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '备注信息',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`job_id`,`job_name`,`job_group`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='定时任务调度表';
 
@@ -6600,12 +6859,12 @@ INSERT INTO `sys_job` VALUES ('3', '系统默认（多参）', 'DEFAULT', 'ryTas
 DROP TABLE IF EXISTS `sys_job_log`;
 CREATE TABLE `sys_job_log` (
   `job_log_id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务日志ID',
-  `job_name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务名称',
-  `job_group` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务组名',
-  `invoke_target` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调用目标字符串',
-  `job_message` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '日志信息',
-  `status` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '执行状态（0正常 1失败）',
-  `exception_info` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '异常信息',
+  `job_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务名称',
+  `job_group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务组名',
+  `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '调用目标字符串',
+  `job_message` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '日志信息',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '执行状态（0正常 1失败）',
+  `exception_info` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '异常信息',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`job_log_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='定时任务调度日志表';
@@ -6620,24 +6879,26 @@ CREATE TABLE `sys_job_log` (
 DROP TABLE IF EXISTS `sys_logininfor`;
 CREATE TABLE `sys_logininfor` (
   `info_id` bigint NOT NULL AUTO_INCREMENT COMMENT '访问ID',
-  `user_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '用户账号',
-  `ipaddr` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '登录IP地址',
-  `login_location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '登录地点',
-  `browser` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '浏览器类型',
-  `os` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '操作系统',
-  `status` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '登录状态（0成功 1失败）',
-  `msg` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '提示消息',
+  `user_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '用户账号',
+  `ipaddr` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '登录IP地址',
+  `login_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '登录地点',
+  `browser` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '浏览器类型',
+  `os` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '操作系统',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '登录状态（0成功 1失败）',
+  `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '提示消息',
   `login_time` datetime DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`info_id`),
   KEY `idx_sys_logininfor_s` (`status`),
   KEY `idx_sys_logininfor_lt` (`login_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统访问记录';
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='系统访问记录';
 
 -- ----------------------------
 -- Records of sys_logininfor
 -- ----------------------------
 INSERT INTO `sys_logininfor` VALUES ('100', 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-06-27 15:29:19');
 INSERT INTO `sys_logininfor` VALUES ('101', 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-06-27 16:08:44');
+INSERT INTO `sys_logininfor` VALUES ('102', 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-06-29 15:21:20');
+INSERT INTO `sys_logininfor` VALUES ('103', 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-06-29 16:19:53');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -6645,25 +6906,25 @@ INSERT INTO `sys_logininfor` VALUES ('101', 'admin', '127.0.0.1', '内网IP', 'C
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
   `menu_id` bigint NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
-  `menu_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '菜单名称',
+  `menu_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '菜单名称',
   `parent_id` bigint DEFAULT '0' COMMENT '父菜单ID',
   `order_num` int DEFAULT '0' COMMENT '显示顺序',
-  `path` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '路由地址',
-  `component` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组件路径',
-  `query` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '路由参数',
-  `route_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '路由名称',
+  `path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '路由地址',
+  `component` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '组件路径',
+  `query` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '路由参数',
+  `route_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '路由名称',
   `is_frame` int DEFAULT '1' COMMENT '是否为外链（0是 1否）',
   `is_cache` int DEFAULT '0' COMMENT '是否缓存（0缓存 1不缓存）',
-  `menu_type` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '菜单类型（M目录 C菜单 F按钮）',
-  `visible` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '菜单状态（0显示 1隐藏）',
-  `status` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '菜单状态（0正常 1停用）',
-  `perms` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '权限标识',
-  `icon` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '#' COMMENT '菜单图标',
-  `create_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
+  `menu_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '菜单类型（M目录 C菜单 F按钮）',
+  `visible` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '菜单状态（0显示 1隐藏）',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '菜单状态（0正常 1停用）',
+  `perms` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '权限标识',
+  `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '#' COMMENT '菜单图标',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '备注',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='菜单权限表';
 
@@ -6762,15 +7023,15 @@ INSERT INTO `sys_menu` VALUES ('1060', '生成代码', '116', '6', '#', '', '', 
 DROP TABLE IF EXISTS `sys_notice`;
 CREATE TABLE `sys_notice` (
   `notice_id` int NOT NULL AUTO_INCREMENT COMMENT '公告ID',
-  `notice_title` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '公告标题',
-  `notice_type` char(1) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '公告类型（1通知 2公告）',
+  `notice_title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '公告标题',
+  `notice_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '公告类型（1通知 2公告）',
   `notice_content` longblob COMMENT '公告内容',
-  `status` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '公告状态（0正常 1关闭）',
-  `create_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '公告状态（0正常 1关闭）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`notice_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='通知公告表';
 
@@ -6786,20 +7047,20 @@ INSERT INTO `sys_notice` VALUES ('2', '维护通知：2018-07-01 若依系统凌
 DROP TABLE IF EXISTS `sys_oper_log`;
 CREATE TABLE `sys_oper_log` (
   `oper_id` bigint NOT NULL AUTO_INCREMENT COMMENT '日志主键',
-  `title` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '模块标题',
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '模块标题',
   `business_type` int DEFAULT '0' COMMENT '业务类型（0其它 1新增 2修改 3删除）',
-  `method` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '方法名称',
-  `request_method` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '请求方式',
+  `method` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '方法名称',
+  `request_method` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '请求方式',
   `operator_type` int DEFAULT '0' COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
-  `oper_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '操作人员',
-  `dept_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '部门名称',
-  `oper_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '请求URL',
-  `oper_ip` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '主机地址',
-  `oper_location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '操作地点',
-  `oper_param` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '请求参数',
-  `json_result` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '返回参数',
+  `oper_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '操作人员',
+  `dept_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '部门名称',
+  `oper_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '请求URL',
+  `oper_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '主机地址',
+  `oper_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '操作地点',
+  `oper_param` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '请求参数',
+  `json_result` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '返回参数',
   `status` int DEFAULT '0' COMMENT '操作状态（0正常 1异常）',
-  `error_msg` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '错误消息',
+  `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime DEFAULT NULL COMMENT '操作时间',
   `cost_time` bigint DEFAULT '0' COMMENT '消耗时间',
   PRIMARY KEY (`oper_id`),
@@ -6818,15 +7079,15 @@ CREATE TABLE `sys_oper_log` (
 DROP TABLE IF EXISTS `sys_post`;
 CREATE TABLE `sys_post` (
   `post_id` bigint NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
-  `post_code` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '岗位编码',
-  `post_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '岗位名称',
+  `post_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '岗位编码',
+  `post_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '岗位名称',
   `post_sort` int NOT NULL COMMENT '显示顺序',
-  `status` char(1) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '状态（0正常 1停用）',
-  `create_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`post_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='岗位信息表';
 
@@ -6844,19 +7105,19 @@ INSERT INTO `sys_post` VALUES ('4', 'user', '普通员工', '4', '0', 'admin', '
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
   `role_id` bigint NOT NULL AUTO_INCREMENT COMMENT '角色ID',
-  `role_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色名称',
-  `role_key` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色权限字符串',
+  `role_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色名称',
+  `role_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色权限字符串',
   `role_sort` int NOT NULL COMMENT '显示顺序',
-  `data_scope` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '1' COMMENT '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
+  `data_scope` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '1' COMMENT '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
   `menu_check_strictly` tinyint(1) DEFAULT '1' COMMENT '菜单树选择项是否关联显示',
   `dept_check_strictly` tinyint(1) DEFAULT '1' COMMENT '部门树选择项是否关联显示',
-  `status` char(1) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色状态（0正常 1停用）',
-  `del_flag` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
-  `create_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色状态（0正常 1停用）',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`role_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='角色信息表';
 
@@ -6989,31 +7250,31 @@ DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `user_id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `dept_id` bigint DEFAULT NULL COMMENT '部门ID',
-  `user_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户账号',
-  `nick_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户昵称',
-  `user_type` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT '00' COMMENT '用户类型（00系统用户）',
-  `email` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '用户邮箱',
-  `phonenumber` varchar(11) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '手机号码',
-  `sex` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '用户性别（0男 1女 2未知）',
-  `avatar` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '头像地址',
-  `password` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '密码',
-  `status` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '账号状态（0正常 1停用）',
-  `del_flag` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
-  `login_ip` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '最后登录IP',
+  `user_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户账号',
+  `nick_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '用户昵称',
+  `user_type` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '00' COMMENT '用户类型（00系统用户）',
+  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '用户邮箱',
+  `phonenumber` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '手机号码',
+  `sex` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '用户性别（0男 1女 2未知）',
+  `avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '头像地址',
+  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '密码',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '账号状态（0正常 1停用）',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `login_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '最后登录IP',
   `login_date` datetime DEFAULT NULL COMMENT '最后登录时间',
   `pwd_update_date` datetime DEFAULT NULL COMMENT '密码最后更新时间',
-  `create_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户信息表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '103', 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-06-27 16:08:44', '2025-06-27 14:50:21', 'admin', '2025-06-27 14:50:21', '', '2025-06-27 16:08:44', '管理员');
+INSERT INTO `sys_user` VALUES ('1', '103', 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-06-29 16:19:53', '2025-06-27 14:50:21', 'admin', '2025-06-27 14:50:21', '', '2025-06-29 16:19:53', '管理员');
 INSERT INTO `sys_user` VALUES ('2', '105', 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-06-27 14:50:21', '2025-06-27 14:50:21', 'admin', '2025-06-27 14:50:21', '', null, '测试员');
 
 -- ----------------------------
