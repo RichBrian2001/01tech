@@ -92,17 +92,23 @@ export default {
       // 获取后端数据
       const result = await getYieldMapData(this.crop, this.year);
       if (result.code === 200) {
-        this.mapData = result.data;
+        // 将后端 province/yield 字段映射为 ECharts 需要的 name/value
+        this.mapData = result.data.map(item => ({
+          name: item.province,
+          value: item.yield
+        }));
       }
+      // 计算最大产量
+      const maxYield = this.mapData.length > 0 ? Math.max(...this.mapData.map(item => item.value)) : 100000;
       const option = {
         tooltip: { show: true },
         visualMap: {
           min: 0,
-          max: 100000, // 可根据实际数据调整
+          max: maxYield,
           left: 'left',
           top: 'bottom',
           text: ['高','低'],
-          inRange: { color: ['#e0ffff', '#006edd'] },
+          inRange: { color: ['#fff5f5', '#ff0000'] }, // 红色深浅
           show: true
         },
         series: [

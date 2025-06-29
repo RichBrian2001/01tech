@@ -16,8 +16,8 @@ public class YieldController {
     private YieldService yieldService;
 
     @GetMapping("/mapData")
-    public AjaxResult getMapData(@RequestParam Integer year) {
-        List<Map<String, Object>> data = yieldService.getProvinceYieldByYear(year);
+    public AjaxResult getMapData(@RequestParam String crop, @RequestParam Integer year) {
+        List<Map<String, Object>> data = yieldService.getProvinceYieldByYearAndCrop(crop, year);
         return AjaxResult.success(data);
     }
 }

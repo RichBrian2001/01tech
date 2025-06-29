@@ -13,8 +13,8 @@ public class YieldServiceImpl implements YieldService {
     private YieldMapper yieldMapper;
 
     @Override
-    public List<Map<String, Object>> getProvinceYieldByYear(Integer year) {
-        return yieldMapper.selectProvinceYieldByYear(year);
+    public List<Map<String, Object>> getProvinceYieldByYearAndCrop(String crop, Integer year) {
+        // MyBatis参数名需与Mapper.xml一致，建议使用@Param注解
+        return yieldMapper.selectProvinceYieldByYearAndCrop(crop, year);
     }
 }
-
