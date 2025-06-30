@@ -306,7 +306,6 @@ export default {
       }
 
       const option = {
-        title: { text: `${this.year}年主要作物产量对比` },
         tooltip: {
           trigger: 'item',
           formatter: (params) => {
@@ -386,7 +385,7 @@ export default {
     },
     onCropOrYearChange() {
       this.provinceRadarData = null; // 清空省份数据
-      this.fetchAverageYield();  // 只���新全国数据
+      this.fetchAverageYield();  // 只更新全国数据
       this.initChinaMap();
     },
     getCropLabel(crop) {
@@ -477,8 +476,8 @@ export default {
   background: #fff;
 }
 .radar-chart-fixed {
-  width: 95%;
-  height: 95%;
+  width: 100%;
+  height: 100%;
   min-width: 0;
   min-height: 0;
   max-width: 100%;
