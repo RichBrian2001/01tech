@@ -26,4 +26,13 @@ public class YieldController {
         List<Map<String, Object>> data = yieldService.getAverageYieldByCropAndYear(crop, year, province);
         return AjaxResult.success(data);
     }
+
+    @GetMapping("/history")
+    public AjaxResult getYieldHistory(@RequestParam String crop,
+                                    @RequestParam Integer startYear,
+                                    @RequestParam Integer endYear,
+                                    @RequestParam(required = false) String province) {
+        List<Map<String, Object>> data = yieldService.getYieldHistory(crop, startYear, endYear, province);
+        return AjaxResult.success(data);
+    }
 }

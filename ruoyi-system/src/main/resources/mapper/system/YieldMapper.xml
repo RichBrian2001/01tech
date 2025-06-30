@@ -32,4 +32,13 @@
     SELECT yield FROM ${tableName}
     WHERE province = #{province} AND year = #{year}
   </select>
+  <select id="selectYieldHistory" resultType="map">
+    SELECT year, province, yield
+    FROM ${tableName}
+    WHERE year BETWEEN #{startYear} AND #{endYear}
+    <if test="province != null and province != ''">
+        AND province = #{province}
+    </if>
+    ORDER BY year ASC
+  </select>
 </mapper>

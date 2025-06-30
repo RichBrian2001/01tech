@@ -42,4 +42,11 @@ public class YieldServiceImpl implements YieldService {
             return result;
         }
     }
+
+    @Override
+    public List<Map<String, Object>> getYieldHistory(String crop, Integer startYear, Integer endYear, String province) {
+        System.out.println("查询历年产量数据: crop=" + crop + ", startYear=" + startYear + ", endYear=" + endYear + ", province=" + province);
+        String tableName = crop + "_yield";
+        return yieldMapper.selectYieldHistory(tableName, startYear, endYear, province);
+    }
 }
