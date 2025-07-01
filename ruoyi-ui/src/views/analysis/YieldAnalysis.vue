@@ -127,10 +127,11 @@ export default {
     };
   },
   mounted() {
+    this.fetchData();
     this.$nextTick(() => {
-      this.initChinaMap();
-      this.initRadarChart();
-      this.initLineChart();
+      if (!this.chinaMapChart) this.initChinaMap();
+      if (!this.radarChart) this.initRadarChart();
+      if (!this.lineChart) this.initLineChart();
       window.addEventListener('resize', this.resizeChinaMap);
       window.addEventListener('resize', this.resizeRadarChart);
       window.addEventListener('resize', this.resizeLineChart);
@@ -551,6 +552,29 @@ export default {
     getCropLabel(crop) {
       const obj = this.cropOptions.find(c => c.value === crop);
       return obj ? obj.label : crop;
+    },
+    async fetchData() {
+      try {
+        // 调用爬取数据的接口
+        await this.crawlLatestData();
+        // 确保页面不会初始化
+        console.log('数据爬取成功，无需初始化页面');
+      } catch (error) {
+        console.error('数据爬取失败:', error);
+      }
+    },
+    async crawlLatestData() {
+      // 模拟爬取数据的接口调用
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          console.log('数据爬取成功');
+          resolve();
+        }, 1000);
+      });
+    },
+    initializePage() {
+      // 页面初始化逻辑
+      console.log('页面初始化完成');
     }
   }
 };

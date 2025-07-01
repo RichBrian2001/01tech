@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <router-view />
+    <keep-alive :max="10">
+      <router-view v-if="$route.meta.keepAlive" />
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive" />
     <theme-picker />
   </div>
 </template>

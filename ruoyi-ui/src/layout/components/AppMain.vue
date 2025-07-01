@@ -1,45 +1,24 @@
 <template>
   <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
-      <keep-alive :include="cachedViews">
-        <router-view v-if="!$route.meta.link" :key="key" />
-      </keep-alive>
-    </transition>
-    <iframe-toggle />
-    <copyright />
+    <keep-alive>
+      <router-view :key="!$route.path.includes('/analysis/price') ? $route.path : 'PriceAnalysis'" />
+    </keep-alive>
   </section>
 </template>
 
 <script>
-import copyright from "./Copyright/index"
-import iframeToggle from "./IframeToggle/index"
-
 export default {
   name: 'AppMain',
-  components: { iframeToggle, copyright },
-  computed: {
-    cachedViews() {
-      return this.$store.state.tagsView.cachedViews
-    },
-    key() {
-      return this.$route.path
+  data() {
+    return {
+      refreshFlag: false
     }
   },
-  watch: {
-    $route() {
-      this.addIframe()
+  beforeRouteUpdate(to, from, next) {
+    if (to.path.includes('/analysis/price')) {
+      this.refreshFlag = false
     }
-  },
-  mounted() {
-    this.addIframe()
-  },
-  methods: {
-    addIframe() {
-      const { name } = this.$route
-      if (name && this.$route.meta.link) {
-        this.$store.dispatch('tagsView/addIframeView', this.$route)
-      }
-    }
+    next()
   }
 }
 </script>
@@ -70,6 +49,11 @@ export default {
   .fixed-header + .app-main {
     padding-top: 84px;
   }
+}
+
+.fade-transform-enter-active,
+.fade-transform-leave-active {
+  transition: all .5s;
 }
 </style>
 
