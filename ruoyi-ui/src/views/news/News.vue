@@ -1,145 +1,156 @@
+<script>
+import { getNews1, getNews2, getNews3, getNews4, getNews5, runPythonScript } from '@/api/news/news';
+
+export default {
+  name: "News",
+  data() {
+    return {
+      newsData: {
+        news1: [],
+        news2: [],
+        news3: [],
+        news4: [],
+        news5: []
+      },
+      pythonScriptOutput: "" // 用于存储 Python 脚本的输出
+    };
+  },
+  methods: {
+    async fetchNews() {
+      try {
+        const response1 = await getNews1();
+        this.newsData.news1 = response1 || [];
+
+        const response2 = await getNews2();
+        this.newsData.news2 = response2 || [];
+
+        const response3 = await getNews3();
+        this.newsData.news3 = response3 || [];
+
+        const response4 = await getNews4();
+        this.newsData.news4 = response4 || [];
+
+        const response5 = await getNews5();
+        this.newsData.news5 = response5 || [];
+
+        console.log(this.newsData);
+      } catch (error) {
+        console.error('Error fetching news data:', error);
+      }
+    },
+    async runPythonScript() {
+      try {
+        const response = await runPythonScript();
+        this.pythonScriptOutput = response || "";
+        console.log('Python Script Running');
+      } catch (error) {
+        console.error('Error running Python script:', error);
+      }
+    },
+    async refreshPage() {
+      await this.fetchNews(); // 刷新时重新获取新闻数据
+      this.$message.success('页面已刷新，新闻数据已更新！');
+    }
+  },
+  async mounted() {
+    await this.fetchNews(); // 页面加载完成时直接读取新闻数据
+    await this.runPythonScript(); // 页面加载完成时调用 Python 脚本
+  }
+};
+</script>
+
 <template>
-  <div class="app-container">
-    <div class="news-container">
-      <el-card class="news-header">
-        <h2>农业新闻</h2>
-      </el-card>
-      <el-card class="news-list" v-loading="loading">
-        <div v-for="(item, index) in newsList" :key="index" class="news-item">
-          <el-card shadow="hover">
-            <div class="news-title">
-              <h3>{{ item.title }}</h3>
-            </div>
-            <div class="news-content">
-              <p>{{ item.content }}</p>
-            </div>
-            <div class="news-footer">
-              <span class="news-time">{{ item.publishTime }}</span>
-              <span class="news-source">来源：{{ item.source }}</span>
-            </div>
-          </el-card>
-        </div>
-        <div class="pagination-container" v-if="total > 0">
-          <el-pagination
-            background
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="queryParams.pageNum"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="queryParams.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total">
-          </el-pagination>
-        </div>
-      </el-card>
+  <div class="news-page">
+    <div class="boxes-container">
+      <div class="box">
+        <div class="box-title">要闻速览</div>
+        <ul>
+          <li v-for="item in newsData.news1" :key="item.href">
+            <a :href="item.href" class="title" target="_blank">{{ item.title }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="box">
+        <div class="box-title">惠农政策</div>
+        <ul>
+          <li v-for="item in newsData.news2" :key="item.href">
+            <a :href="item.href" class="title" target="_blank">{{ item.title }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="box">
+        <div class="box-title">各地动态</div>
+        <ul>
+          <li v-for="item in newsData.news3" :key="item.href">
+            <a :href="item.href" class="title" target="_blank">{{ item.title }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="box">
+        <div class="box-title">农业科技</div>
+        <ul>
+          <li v-for="item in newsData.news4" :key="item.href">
+            <a :href="item.href" class="title" target="_blank">{{ item.title }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="box">
+        <div class="box-title">聚焦杨凌</div>
+        <ul>
+          <li v-for="item in newsData.news5" :key="item.href">
+            <a :href="item.href" class="title" target="_blank">{{ item.title }}</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'News',
-  data() {
-    return {
-      loading: true,
-      // 遍历新闻列表
-      newsList: [],
-      // 总条数
-      total: 0,
-      // 查询参数
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10
+<style scoped lang="scss">
+.news-page {
+  padding: 24px;
+
+  .boxes-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping to next line */
+    gap: 50px; /* Space between boxes */
+    justify-content: center; /* Center the boxes */
+
+    .box {
+      width: 750px; /* Fixed width */
+      height: 375px; /* 45px * 7 +60px */
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      overflow: auto;
+      .box-title {
+        text-align: center;
+        font-weight: bold;
+        color: #4a89cf;
+        padding: 16px;
+        font-size: 20px;
       }
-    }
-  },
-  created() {
-    this.getList()
-  },
-  methods: {
-    /** 查询新闻列表 */
-    getList() {
-      this.loading = true
-      // TODO: 这里需要调用后端API获取真实数据
-      // 目前使用模拟数据
-      setTimeout(() => {
-        this.newsList = Array(10).fill(null).map((_, index) => ({
-          id: index + 1,
-          title: `农业新闻标题 ${index + 1}`,
-          content: '这里是新闻内容的预览，包含农业相关的重要信息...',
-          publishTime: '2023-06-30',
-          source: '农业新闻网'
-        }))
-        this.total = 100
-        this.loading = false
-      }, 1000)
-    },
-    /** 每页数量改变 */
-    handleSizeChange(val) {
-      this.queryParams.pageSize = val
-      this.getList()
-    },
-    /** 当前页改变 */
-    handleCurrentChange(val) {
-      this.queryParams.pageNum = val
-      this.getList()
     }
   }
 }
-</script>
-
-<style scoped>
-.news-container {
-  padding: 20px;
-}
-
-.news-header {
-  margin-bottom: 20px;
-}
-
-.news-header h2 {
-  margin: 0;
+.title{
+  height: 45px;
+  line-height: 35px;
+  padding: 0 16px;
   color: #333;
-}
+  text-decoration: none;
+  &:hover {
+    color: #4a89cf;
+    text-decoration: underline;
+  }
+  &:active {
+    color: #4a89cf;
+  }
+  &:focus {
+    outline: none;
+    color: #4a89cf;
+  }
 
-.news-list {
-  min-height: 300px;
-}
 
-.news-item {
-  margin-bottom: 20px;
-}
-
-.news-item:last-child {
-  margin-bottom: 0;
-}
-
-.news-title h3 {
-  margin: 0;
-  color: #1890ff;
-  cursor: pointer;
-}
-
-.news-title h3:hover {
-  color: #40a9ff;
-}
-
-.news-content {
-  margin: 10px 0;
-  color: #666;
-}
-
-.news-footer {
-  color: #999;
-  font-size: 12px;
-}
-
-.news-time {
-  margin-right: 20px;
-}
-
-.pagination-container {
-  margin-top: 20px;
-  text-align: center;
 }
 </style>
