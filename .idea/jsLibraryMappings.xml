@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$" libraries="{Node.js Core}" />
+    <file url="file://$PROJECT_DIR$/ruoyi-admin" libraries="{Node.js Core}" />
+    <file url="file://$PROJECT_DIR$/ruoyi-common" libraries="{Node.js Core}" />
+    <file url="file://$PROJECT_DIR$/ruoyi-framework" libraries="{Node.js Core}" />
+    <file url="file://$PROJECT_DIR$/ruoyi-generator" libraries="{Node.js Core}" />
+    <file url="file://$PROJECT_DIR$/ruoyi-quartz" libraries="{Node.js Core}" />
+    <file url="file://$PROJECT_DIR$/ruoyi-system" libraries="{Node.js Core}" />
+  </component>
+</project>
