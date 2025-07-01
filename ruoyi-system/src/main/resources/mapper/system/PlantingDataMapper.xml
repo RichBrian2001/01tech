@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PlantingDataMapper">
+
+    <resultMap type="com.ruoyi.system.domain.PlantingData" id="PlantingDataResult">
+        <result property="id"           column="id"/>
+        <result property="region"       column="region"/>
+        <result property="year"         column="year"/>
+        <result property="area"         column="area"/>
+        <result property="productName"  column="product_name"/>
+    </resultMap>
+
+    <!-- 定义地区分类 -->
+    <sql id="region_case">
+        CASE
+            WHEN region IN ('黑龙江省', '吉林省', '辽宁省') THEN '东北地区'
+            WHEN region IN ('新疆维吾尔自治区', '陕西省', '甘肃省', '宁夏回族自治区', '青海省', '内蒙古自治区') THEN '西北地区'
+            WHEN region IN ('山东省', '江苏省', '安徽省', '浙江省', '福建省', '上海市', '广东省', '海南省') THEN '东部地区'
+            WHEN region IN ('四川省', '重庆市', '贵州省', '云南省', '西藏自治区', '广西壮族自治区') THEN '西南地区'
+            WHEN region IN ('河南省', '湖北省', '湖南省', '江西省', '河北省', '山西省', '北京市', '天津市') THEN '中部地区'
+            ELSE region
+        END
+    </sql>
+
+    <select id="selectPlantingDataByYear" parameterType="Integer" resultMap="PlantingDataResult">
+        WITH regional_data AS (
+            -- 小麦数据按地区汇总
+            SELECT
+                '小麦' as product_name,
+                <include refid="region_case"/> as region,
+                SUM(area) * 15 as area,
+                #{year} as year,
+                MIN(id) as id
+            FROM wheat_planting_area
+            WHERE year = #{year} AND area > 0
+            GROUP BY <include refid="region_case"/>
+
+            UNION ALL
+
+            -- 玉米数据按地区汇总
+            SELECT
+                '玉米',
+                <include refid="region_case"/>,
+                SUM(area) * 15,
+                #{year},
+                MIN(id)
+            FROM corn_planting_area
+            WHERE year = #{year} AND area > 0
+            GROUP BY <include refid="region_case"/>
+
+            UNION ALL
+
+            -- 大豆数据按地区汇总
+            SELECT
+                '大豆',
+                <include refid="region_case"/>,
+                SUM(area) * 15,
+                #{year},
+                MIN(id)
+            FROM soybean_planting_area
+            WHERE year = #{year} AND area > 0
+            GROUP BY <include refid="region_case"/>
+
+            UNION ALL
+
+            -- 甘蔗数据按地区汇总
+            SELECT
+                '甘蔗',
+                <include refid="region_case"/>,
+                SUM(area) * 15,
+                #{year},
+                MIN(id)
+            FROM sugarcane_planting_area
+            WHERE year = #{year} AND area > 0
+            GROUP BY <include refid="region_case"/>
+
+            UNION ALL
+
+            -- 高粱数据按地区汇总
+            SELECT
+                '高粱',
+                <include refid="region_case"/>,
+                SUM(area) * 15,
+                #{year},
+                MIN(id)
+            FROM sorghum_planting_area
+            WHERE year = #{year} AND area > 0
+            GROUP BY <include refid="region_case"/>
+
+            UNION ALL
+
+            -- 谷子数据按地区汇总
+            SELECT
+                '谷子',
+                <include refid="region_case"/>,
+                SUM(area) * 15,
+                #{year},
+                MIN(id)
+            FROM millet_planting_area
+            WHERE year = #{year} AND area > 0
+            GROUP BY <include refid="region_case"/>
+
+            UNION ALL
+
+            -- 花生数据按地区汇总
+            SELECT
+                '花生',
+                <include refid="region_case"/>,
+                SUM(area) * 15,
+                #{year},
+                MIN(id)
+            FROM peanut_planting_area
+            WHERE year = #{year} AND area > 0
+            GROUP BY <include refid="region_case"/>
+
+            UNION ALL
+
+            -- 马铃薯数据按地区汇总
+            SELECT
+                '马铃薯',
+                <include refid="region_case"/>,
+                SUM(area) * 15,
+                #{year},
+                MIN(id)
+            FROM potato_planting_area
+            WHERE year = #{year} AND area > 0
+            GROUP BY <include refid="region_case"/>
+
+            UNION ALL
+
+            -- 棉花数据按地区汇总
+            SELECT
+                '棉花',
+                <include refid="region_case"/>,
+                SUM(area) * 15,
+                #{year},
+                MIN(id)
+            FROM cotton_planting_area
+            WHERE year = #{year} AND area > 0
+            GROUP BY <include refid="region_case"/>
+
+            UNION ALL
+
+            -- 烟叶数据按地区汇总
+            SELECT
+                '烟叶',
+                <include refid="region_case"/>,
+                SUM(area) * 15,
+                #{year},
+                MIN(id)
+            FROM tobacco_planting_area
+            WHERE year = #{year} AND area > 0
+            GROUP BY <include refid="region_case"/>
+        )
+        SELECT * FROM regional_data
+        WHERE area > 0
+        ORDER BY product_name, area DESC
+    </select>
+
+</mapper>
