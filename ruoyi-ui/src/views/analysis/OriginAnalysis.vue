@@ -2,8 +2,11 @@
   <div class="analysis-page">
     <div class="columns">
       <div class="column">
-        <div class="section section-top">
-          <div id="cycle-chart" style="width: 100%; height: 100%;"></div>
+        <div class="section section-top chart-container">
+          <div id="cycle-chart" class="chart-area"></div>
+          <div v-if="!selectedCrop" class="placeholder-text">
+            点击左侧农作物查看生长周期
+          </div>
         </div>
         <div class="section section-bottom">
           <div v-if="selectedCrop && cropRecommendations[selectedCrop]" class="recommendation-box">
@@ -21,6 +24,7 @@
       </div>
       <div class="column center-column">
         <div class="year-selector">
+          <span class="year-label">选择年份：</span>
           <el-select v-model="selectedYear" placeholder="请选择年份" @change="handleYearChange">
             <el-option
               v-for="year in years"
@@ -35,8 +39,11 @@
         </div>
       </div>
       <div class="column">
-        <div class="section section-top">
-          <div id="region-pie-chart" style="width: 100%; height: 100%;"></div>
+        <div class="section section-top chart-container">
+          <div id="region-pie-chart" class="chart-area"></div>
+          <div v-if="!selectedRegion" class="placeholder-text">
+            点击右侧地区查看种植作物占比
+          </div>
         </div>
         <div class="section section-bottom">
           <div v-if="selectedRegion && regionSummary" class="region-summary">
@@ -80,26 +87,40 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.initSankeyChart();
-      this.initCycleChart();
-      this.initRegionPieChart();
+      // 初始化所���图表
+      this.initCharts();
       this.loadData(this.selectedYear);
       window.addEventListener('resize', this.resizeCharts);
     });
   },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.resizeCharts);
-    if (this.sankeyChart) {
-      this.sankeyChart.dispose();
-    }
-    if (this.cycleChart) {
-      this.cycleChart.dispose();
-    }
-    if (this.regionPieChart) {
-      this.regionPieChart.dispose();
-    }
-  },
   methods: {
+    initCharts() {
+      this.initSankeyChart();
+
+      // 初始化生长周期图表
+      const cycleChartDom = document.getElementById('cycle-chart');
+      if (cycleChartDom) {
+        this.cycleChart = echarts.init(cycleChartDom);
+        this.cycleChart.setOption({
+          title: {
+            text: '作物生��周期',
+            left: 'center'
+          }
+        });
+      }
+
+      // 初始化地区饼图
+      const regionPieChartDom = document.getElementById('region-pie-chart');
+      if (regionPieChartDom) {
+        this.regionPieChart = echarts.init(regionPieChartDom);
+        this.regionPieChart.setOption({
+          title: {
+            text: '地区种植占比',
+            left: 'center'
+          }
+        });
+      }
+    },
     handleYearChange(year) {
       this.loadData(year);
     },
@@ -159,42 +180,44 @@ export default {
         series: {
           type: 'sankey',
           layout: 'none',
-          focusNodeAdjacency: true, // 鼠标移入高亮相邻节点
+          focusNodeAdjacency: true,
           emphasis: {
             focus: 'adjacency'
           },
-          nodeAlign: 'left', // 节点水平对齐方式
+          nodeAlign: 'left',
           data: [
+            // 农作物节点
             { name: '小麦' },
             { name: '玉米' },
             { name: '水稻' },
             { name: '大豆' },
-            // 省份节点
-            { name: '河南' },
-            { name: '山东' },
-            { name: '河北' },
-            { name: '四川' },
-            { name: '安徽' },
-            { name: '江苏' },
-            { name: '湖南' },
-            { name: '黑龙江' }
+            // 地区节点
+            { name: '东北地区' },
+            { name: '西北地区' },
+            { name: '中部地区' },
+            { name: '西南地区' },
+            { name: '东南地区' }
           ],
           links: [
-            { source: '小麦', target: '河南', value: 800 },
-            { source: '小麦', target: '山东', value: 750 },
-            { source: '小麦', target: '河北', value: 600 },
-            { source: '小麦', target: '安徽', value: 450 },
-            { source: '玉米', target: '黑龙江', value: 900 },
-            { source: '玉米', target: '吉林', value: 750 },
-            { source: '玉米', target: '山东', value: 650 },
-            { source: '玉米', target: '河南', value: 500 },
-            { source: '水稻', target: '湖南', value: 680 },
-            { source: '水稻', target: '江苏', value: 620 },
-            { source: '水稻', target: '四川', value: 580 },
-            { source: '水稻', target: '安徽', value: 520 },
-            { source: '大豆', target: '黑龙江', value: 450 },
-            { source: '大豆', target: '内蒙古', value: 380 },
-            { source: '大豆', target: '河南', value: 320 }
+            // 小麦种植分布
+            { source: '小麦', target: '中部地区', value: 800 },
+            { source: '小麦', target: '东南地区', value: 750 },
+            { source: '小麦', target: '西北地区', value: 600 },
+
+            // 玉米种植分布
+            { source: '玉米', target: '东北地区', value: 900 },
+            { source: '玉米', target: '中部地区', value: 650 },
+            { source: '玉米', target: '西北地区', value: 500 },
+
+            // 水稻种植分布
+            { source: '水稻', target: '东南地区', value: 850 },
+            { source: '水稻', target: '西南地区', value: 620 },
+            { source: '水稻', target: '中部地区', value: 580 },
+
+            // 大豆种植分布
+            { source: '大豆', target: '东北地区', value: 750 },
+            { source: '大豆', target: '西北地区', value: 380 },
+            { source: '大豆', target: '中部地区', value: 320 }
           ]
         }
       };
@@ -261,6 +284,25 @@ export default {
       const chartDom = document.getElementById('cycle-chart');
       if (!chartDom) return;
       this.cycleChart = echarts.init(chartDom);
+
+      // 设置初始提示信息
+      const option = {
+        title: {
+          text: '作物生长周期',
+          left: 'center'
+        },
+        graphic: {
+          type: 'text',
+          left: 'center',
+          top: 'middle',
+          style: {
+            text: '点击左侧农作物查看生长周期',
+            fontSize: 14,
+            fill: '#999'
+          }
+        }
+      };
+      this.cycleChart.setOption(option);
     },
     updateCycleChart(cropName) {
       if (!this.cycleChart || !cropName || !cropGrowthCycles[cropName]) return;
@@ -275,6 +317,8 @@ export default {
           trigger: 'item',
           formatter: '{b}: {c}个月'
         },
+        // 清除提示信息
+        graphic: null,
         series: [
           {
             name: '生长周期',
@@ -320,6 +364,25 @@ export default {
       const chartDom = document.getElementById('region-pie-chart');
       if (!chartDom) return;
       this.regionPieChart = echarts.init(chartDom);
+
+      // 设置初始提示信息
+      const option = {
+        title: {
+          text: '地区种植占比',
+          left: 'center'
+        },
+        graphic: {
+          type: 'text',
+          left: 'center',
+          top: 'middle',
+          style: {
+            text: '点击右侧地区查看种植作物占比',
+            fontSize: 14,
+            fill: '#999'
+          }
+        }
+      };
+      this.regionPieChart.setOption(option);
     },
 
     updateRegionPieChart(region) {
@@ -327,11 +390,7 @@ export default {
 
       // 筛选当前地区的数据
       const regionData = this.currentData.filter(item => item.region === region);
-
-      // 计算总播种面积
       const totalArea = regionData.reduce((sum, item) => sum + item.area, 0);
-
-      // 准备饼图数据
       const pieData = regionData.map(item => ({
         name: item.productName,
         value: item.area,
@@ -417,27 +476,96 @@ export default {
     handleSankeyClick(params) {
       if (params.dataType === 'node') {
         const nodeName = params.name;
+        const isRegion = params.name.includes('地区');
 
-        if (!nodeName.includes('地区')) {
-          // 点击农作物节点的逻辑保持不变
+        // 添加地区名称的反向映射
+        const reverseRegionMapping = {
+          '东南地区': '东部地区'
+        };
+
+        if (!isRegion) {
+          // 点击农作物节点时，只更新左侧数据，不影响右侧
           this.selectedCrop = nodeName;
-          this.updateCycleChart(nodeName);
-          this.selectedRegion = null;
-          this.regionSummary = null;
+          if (this.cycleChart && cropGrowthCycles[nodeName]) {
+            const cycleData = cropGrowthCycles[nodeName];
+            this.cycleChart.setOption({
+              title: { text: nodeName + '生长周期' },
+              tooltip: {
+                trigger: 'item',
+                formatter: '{b}: {c}个月'
+              },
+              series: [{
+                type: 'pie',
+                radius: ['40%', '70%'],
+                data: [
+                  { value: cycleData.sowingPeriod.length, name: '播种期', itemStyle: { color: '#91cc75' } },
+                  { value: cycleData.growthPeriod.length, name: '生长期', itemStyle: { color: '#fac858' } },
+                  { value: cycleData.maturityPeriod.length, name: '成熟期', itemStyle: { color: '#ee6666' } }
+                ]
+              }]
+            });
+          }
         } else {
-          // 点击地区节点时更新右侧的图表和信息
-          this.updateRegionPieChart(nodeName);
+          // 点击地区节点时，根据映射关系获取正确的地区名称
+          const queryRegion = reverseRegionMapping[nodeName] || nodeName;
           this.selectedRegion = nodeName;
-          this.regionSummary = this.calculateRegionSummary(nodeName);
-          this.selectedCrop = null;
+
+          if (this.regionPieChart && this.currentData) {
+            // 使用映射后的地区名称查询数据
+            const regionData = this.currentData.filter(item => item.region === queryRegion);
+            const totalArea = regionData.reduce((sum, item) => sum + item.area, 0);
+            const pieData = regionData.map(item => ({
+              name: item.productName,
+              value: item.area,
+              percentage: ((item.area / totalArea) * 100).toFixed(2)
+            }));
+
+            this.regionPieChart.setOption({
+              title: { text: nodeName + '农作物播种占比', left: 'center', top: 10 },
+              tooltip: {
+                trigger: 'item',
+                formatter: function(params) {
+                  return `${params.name}<br />播种面积: ${params.data.value.toFixed(2)}万亩<br />占比: ${params.data.percentage}%`;
+                }
+              },
+              legend: {
+                orient: 'vertical',
+                right: '5%',
+                top: 'middle',
+                itemWidth: 10,
+                itemHeight: 10,
+                textStyle: { fontSize: 12 },
+                formatter: name => name.length > 4 ? name.substring(0, 4) + '...' : name
+              },
+              series: [{
+                type: 'pie',
+                radius: ['40%', '65%'],
+                center: ['40%', '50%'],
+                data: pieData,
+                itemStyle: {
+                  borderRadius: 6,
+                  borderColor: '#fff',
+                  borderWidth: 2
+                },
+                label: {
+                  show: true,
+                  position: 'outside',
+                  formatter: '{b}\n{d}%',
+                  fontSize: 11,
+                  lineHeight: 14
+                }
+              }]
+            });
+          }
+          // 使用映射后的地区名称计算汇总信息
+          this.regionSummary = this.calculateRegionSummary(queryRegion);
         }
 
-        // 获取当前图表的所有数据
+        // 高亮相关节点的逻辑保持不变
         const seriesModel = this.sankeyChart.getModel().getSeriesByIndex(0);
         const data = seriesModel.getData();
         const edgeData = seriesModel.getEdgeData();
 
-        // 使用动画过渡更新透明度
         const option = {
           series: [{
             data: data.map((item, idx) => ({
@@ -473,6 +601,25 @@ export default {
       return isRelated;
     },
     updateChartData(year, sankeyData) {
+      // 确保使用正确的地区名称
+      const regionMapping = {
+        '东部地区': '东南地区',
+        '东部': '东南地区'
+      };
+
+      const mappedData = sankeyData.data.map(item => ({
+        name: regionMapping[item.name] || item.name,
+        itemStyle: {
+          color: item.name.includes('地区') ? '#b3cde3' : '#fbb4ae'
+        }
+      }));
+
+      const mappedLinks = sankeyData.links.map(link => ({
+        source: link.source,
+        target: regionMapping[link.target] || link.target,
+        value: link.value
+      }));
+
       const option = {
         title: {
           text: year + '年全国农产品种植区域分布',
@@ -491,10 +638,10 @@ export default {
         },
         series: {
           type: 'sankey',
-          left: '8%',    // 增加左边距
-          right: '12%',  // 增加右边距，给右侧文字留更多空间
-          top: '12%',    // 从顶部开始的距离
-          bottom: '8%',  // 距底部的距离
+          left: '8%',
+          right: '12%',
+          top: '12%',
+          bottom: '8%',
           emphasis: {
             focus: 'adjacency'
           },
@@ -505,21 +652,14 @@ export default {
           label: {
             position: 'right',
             fontSize: 12,
-            distance: 5  // 增加标签与节点的距离
+            distance: 5
           },
-          data: sankeyData.data.map(item => ({
-            name: item.name,
-            itemStyle: {
-              color: item.name.includes('地区') ? '#b3cde3' : '#fbb4ae'
-            }
-          })),
-          links: sankeyData.links
+          data: mappedData,
+          links: mappedLinks
         }
       };
 
       this.sankeyChart.setOption(option, true);
-
-      // 更新事件绑定
       this.sankeyChart.off('click');
       this.sankeyChart.on('click', this.handleSankeyClick);
     },
@@ -593,6 +733,7 @@ export default {
   box-sizing: border-box;
 }
 .section-top {
+  position: relative;
   flex: 2;
   min-height: 0;
 }
@@ -603,6 +744,14 @@ export default {
 .year-selector {
   margin-bottom: 20px;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.year-label {
+  color: #606266;
+  font-size: 14px;
 }
 .year-selector .el-select {
   width: 200px;
@@ -631,13 +780,36 @@ export default {
   color: #409EFF;
 }
 
-.placeholder-text {
+.chart-container {
+  position: relative;
+  width: 100%;
   height: 100%;
+}
+
+.chart-area {
+  width: 100%;
+  height: 100%;
+}
+
+.placeholder-text {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #909399;
   font-size: 14px;
+  text-align: center;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.section-bottom .placeholder-text {
+  position: relative;
+  height: 100%;
 }
 
 .region-summary {
