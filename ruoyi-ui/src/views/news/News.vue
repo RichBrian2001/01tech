@@ -146,12 +146,14 @@ export default {
     justify-content: center; /* Center the boxes */
 
     .box {
-      width: 750px; /* Fixed width */
+      width: 720px; /* Fixed width */
       height: 375px; /* 45px * 7 +60px */
-      background-color: #ffffff;
-      border-radius: 12px;
+      background-color: #d3e3a9;
+      border-radius: 50px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
       overflow: auto;
+      color: #5886c8;
+
       .box-title {
         text-align: center;
         font-weight: bold;
