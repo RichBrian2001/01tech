@@ -63,69 +63,62 @@ export default {
       crawling: false,
       currentCrop: '',
       crops: [],
-      priceData: []
+      priceData: [],
+      // 添加状态控制
+      isFirstActivation: true,
+      needRefresh: false
     }
   },
-  beforeRouteEnter(to, from, next) {
-    // 进入路由时禁止自动刷新
-    next(vm => {
-      vm.$nextTick(() => {
-        document.querySelector('#app')?.classList.remove('loading')
-      })
-    })
-  },
-  beforeRouteLeave(to, from, next) {
-    // 离开路由时确保清理所有加载状态
-    this.loading = false
-    this.crawling = false
-    document.querySelector('#app')?.classList.remove('loading')
-    document.querySelector('#loader-wrapper')?.classList.remove('loading')
-    next()
-  },
-  mounted() {
-    // 组件挂载时确保移除所有加载状态
-    this.$nextTick(() => {
-      document.querySelector('#app')?.classList.remove('loading')
-      document.querySelector('#loader-wrapper')?.classList.remove('loading')
-    })
-  },
+  // 组件被 keep-alive 缓存时调用
   activated() {
-    // 被 keep-alive 激活时禁止自动刷新
-    this.$nextTick(() => {
-      document.querySelector('#app')?.classList.remove('loading')
-      document.querySelector('#loader-wrapper')?.classList.remove('loading')
-    })
+    // 只在第一次激活时加载数据
+    if (this.isFirstActivation) {
+      this.loadCrops()
+      // 从 sessionStorage 恢复选中的作物
+      const savedCrop = sessionStorage.getItem('selectedCrop')
+      if (savedCrop) {
+        this.currentCrop = savedCrop
+      }
+      this.isFirstActivation = false
+    }
+    // 如果标记了需要刷新，则刷新数据
+    if (this.needRefresh && this.currentCrop) {
+      this.refreshData()
+      this.needRefresh = false
+    }
   },
+  // 组件被 keep-alive 停用时调用
   deactivated() {
-    // 被 keep-alive 停用时清理状态
+    // 保存当前状态
+    if (this.currentCrop) {
+      sessionStorage.setItem('selectedCrop', this.currentCrop)
+    }
+  },
+  // 组件即将被销毁时调用
+  beforeDestroy() {
+    // 清理资源
     this.loading = false
     this.crawling = false
-  },
-  created() {
-    // 只加载作物列表，不自动刷新数据
-    this.loadCrops()
-
-    // 从 sessionStorage 恢复选中的作物，但不自动刷新数据
-    const savedCrop = sessionStorage.getItem('selectedCrop')
-    if (savedCrop) {
-      this.currentCrop = savedCrop
-    }
+    sessionStorage.removeItem('selectedCrop')
   },
   methods: {
-    // 加载支持的作物列表
-    loadCrops() {
-      request({
-        url: '/system/crawler/crops',
-        method: 'get',
-        headers: {
-          'repeatSubmit': false,  // 禁用防重复提交检查
-          'isToken': true         // 保持token检查
-        }
-      }).then(response => {
+    // 加载作物列表
+    async loadCrops() {
+      try {
+        const response = await request({
+          url: '/system/crawler/crops',
+          method: 'get',
+          headers: {
+            'X-No-Refresh': 'true',
+            'repeatSubmit': false
+          }
+        })
         if (response.code === 200) {
           this.crops = response.data || []
         }
-      })
+      } catch (error) {
+        console.error('加载作物列表失败:', error)
+      }
     },
     // 运行爬虫获取最新数据
     async runCrawlerData(e) {
@@ -136,61 +129,49 @@ export default {
 
       if (!this.currentCrop) {
         this.$message.warning('请先选择作物')
-        return false
+        return
       }
 
-      try {
-        this.crawling = true
+      if (this.crawling) return
 
-        // 发送爬虫请求
+      this.crawling = true
+      try {
         const response = await request({
           url: `/system/crawler/run/${encodeURIComponent(this.currentCrop)}`,
           method: 'post',
           headers: {
-            'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-No-Refresh': 'true',  // 添加禁止刷新的标记
+            'X-No-Refresh': 'true',
             'repeatSubmit': false
           }
         })
 
-        // 根据爬虫执行结果显示相应消息
         if (response.code === 200) {
-          this.$message({
-            message: '数据爬取成功，请点击"刷新显示"按钮查看最新数据',
-            type: 'success',
-            duration: 3000,
-            showClose: true
-          })
+          this.$message.success('数据爬取成功，请点击"刷新显示"按钮查看最新数据')
+          // 标记需要刷新，但不立即刷新
+          this.needRefresh = true
         } else {
           this.$message.error(response.msg || '数据爬取失败')
         }
       } catch (error) {
         console.error('运行爬虫出错：', error)
-        this.$message.error(error.message === 'Network Error' ? '网络连接超时，请稍后重试' : '爬虫运行失败')
+        this.$message.error(error.message || '爬虫运行失败')
       } finally {
         this.crawling = false
-        // 确保清除所有可能导致刷新的状态
-        document.querySelector('#app')?.classList.remove('loading')
-        document.querySelector('#loader-wrapper')?.classList.remove('loading')
       }
     },
-
     // 刷新价格数据显示
     async refreshData() {
-      if (!this.currentCrop) return false
+      if (!this.currentCrop || this.loading) return
 
+      this.loading = true
       try {
-        this.loading = true
-        this.priceData = []
-
         const response = await request({
           url: `/system/crawler/price/${encodeURIComponent(this.currentCrop)}`,
           method: 'get',
           headers: {
-            'X-No-Refresh': 'true',  // 添加禁止刷新的标记
+            'X-No-Refresh': 'true',
             'repeatSubmit': false,
-            'isToken': true
+            'Cache-Control': 'no-cache'
           }
         })
 
@@ -208,24 +189,21 @@ export default {
         this.$message.error('获取价格数据失败')
       } finally {
         this.loading = false
-        // 确保清除所有可能导致刷新的状态
-        document.querySelector('#app')?.classList.remove('loading')
-        document.querySelector('#loader-wrapper')?.classList.remove('loading')
       }
-    },
+    }
   },
   watch: {
     currentCrop: {
       handler(newVal) {
         if (newVal) {
-          // 仅保存选择到 sessionStorage，不自动刷新数据
           sessionStorage.setItem('selectedCrop', newVal)
+          // 当选择新作物时，自动获取其数据
+          this.refreshData()
         } else {
           sessionStorage.removeItem('selectedCrop')
           this.priceData = []
         }
-      },
-      immediate: true
+      }
     }
   }
 }

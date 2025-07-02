@@ -12,7 +12,9 @@ export default {
         news4: [],
         news5: []
       },
-      pythonScriptOutput: "" // 用于存储 Python 脚本的输出
+      pythonScriptOutput: "", // 用于存储 Python 脚本的输出
+      isFirstActivation: true,
+      loading: false
     };
   },
   methods: {
@@ -51,6 +53,33 @@ export default {
       await this.fetchNews(); // 刷新时重新获取新闻数据
       this.$message.success('页面已刷新，新闻数据已更新！');
     }
+  },
+  // 组件第一次创建时
+  created() {
+    // 仅初始化数据结构，不加载数据
+  },
+  // 组件被激活时（使用 keep-alive 后）
+  activated() {
+    if (this.isFirstActivation) {
+      this.fetchNews();
+      this.isFirstActivation = false;
+    }
+  },
+  // 组件被停用时（使用 keep-alive 后）
+  deactivated() {
+    // 保持状态，不清空数据
+  },
+  // 组件被销毁前
+  beforeDestroy() {
+    // 清理资源
+    this.newsData = {
+      news1: [],
+      news2: [],
+      news3: [],
+      news4: [],
+      news5: []
+    };
+    this.pythonScriptOutput = "";
   },
   async mounted() {
     await this.fetchNews(); // 页面加载完成时直接读取新闻数据

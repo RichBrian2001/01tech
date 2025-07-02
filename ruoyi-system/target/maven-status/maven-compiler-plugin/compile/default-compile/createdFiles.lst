@@ -3,6 +3,7 @@ com\ruoyi\system\domain\SysUserRole.class
 com\ruoyi\system\mapper\SysRoleMapper.class
 com\ruoyi\system\service\ISysDeptService.class
 com\ruoyi\system\service\impl\YieldServiceImpl.class
+com\ruoyi\system\service\NewsService.class
 com\ruoyi\system\service\ISysDictTypeService.class
 com\ruoyi\system\domain\SysOperLog.class
 com\ruoyi\system\domain\SysRoleDept.class
@@ -35,6 +36,7 @@ com\ruoyi\system\service\impl\SysConfigServiceImpl.class
 com\ruoyi\system\service\impl\SysLogininforServiceImpl.class
 com\ruoyi\system\mapper\SysDeptMapper.class
 com\ruoyi\system\domain\PlantingData.class
+com\ruoyi\system\controller\NewsController.class
 com\ruoyi\system\mapper\SysUserPostMapper.class
 com\ruoyi\system\domain\SysUserOnline.class
 com\ruoyi\system\mapper\SysUserRoleMapper.class

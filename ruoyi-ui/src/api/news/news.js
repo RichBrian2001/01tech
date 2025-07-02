@@ -48,3 +48,4 @@ export function runPythonScript() {
         method: 'get'
     }).then(response => response.data);
 }
+

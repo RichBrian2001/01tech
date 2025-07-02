@@ -51,7 +51,7 @@ public class NewsController {
     public AjaxResult runPythonScript() {
         try {
             // 定义 Python 脚本路径
-            String pythonScriptPath = "d:/ZoreOneTech/01tech/ruoyi-admin/src/main/python/news.py";
+            String pythonScriptPath = "ruoyi-admin/src/main/python/news.py";
 
             // 构建命令
             ProcessBuilder processBuilder = new ProcessBuilder("python", pythonScriptPath);

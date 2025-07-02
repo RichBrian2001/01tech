@@ -18,17 +18,22 @@ const isWhiteList = (path) => {
 router.beforeEach((to, from, next) => {
   NProgress.start()
 
-  // 检查是否是爬虫分析页面
-  const isCrawlerPage = to.name === 'PriceAnalysis'
+  // 检查是否是需要保持缓存的页面
+  const keepAlivePages = ['/analysis/price', '/news']
+  const needKeepAlive = keepAlivePages.some(path => to.path.includes(path))
 
   if (getToken()) {
     to.meta.title && store.dispatch('settings/setTitle', to.meta.title)
 
+    // 对于需要保持缓存的页面，确保不会重新加载
+    if (needKeepAlive) {
+      to.meta.keepAlive = true
+      to.meta.noCache = false
+    }
+
     if (to.path === '/login') {
       next({ path: '/' })
       NProgress.done()
-    } else if (isWhiteList(to.path)) {
-      next()
     } else {
       if (store.getters.roles.length === 0) {
         isRelogin.show = true
@@ -36,12 +41,7 @@ router.beforeEach((to, from, next) => {
           isRelogin.show = false
           store.dispatch('GenerateRoutes').then(accessRoutes => {
             router.addRoutes(accessRoutes)
-            // 对于爬虫页面，使用普通的 next 避免触发刷新
-            if (isCrawlerPage) {
-              next({ ...to, replace: false })
-            } else {
-              next({ ...to, replace: true })
-            }
+            next({ ...to, replace: !needKeepAlive })
           })
         }).catch(err => {
           store.dispatch('LogOut').then(() => {
@@ -50,7 +50,6 @@ router.beforeEach((to, from, next) => {
           })
         })
       } else {
-        // 对于爬虫页面，避免使用 replace
         next()
       }
     }

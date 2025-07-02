@@ -1,22 +1,34 @@
 <template>
   <section class="app-main">
-    <keep-alive>
-      <router-view :key="!$route.path.includes('/analysis/price') ? $route.path : 'PriceAnalysis'" />
+    <keep-alive :include="cachedViews">
+      <router-view :key="key" v-if="!$route.meta.link" />
     </keep-alive>
+    <router-view v-if="$route.meta.link" />
   </section>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'AppMain',
-  data() {
-    return {
-      refreshFlag: false
+  computed: {
+    ...mapGetters([
+      'cachedViews'
+    ]),
+    key() {
+      // 特殊处理需要缓存的页面
+      const specialRoutes = ['/analysis/price', '/news']
+      if (specialRoutes.some(route => this.$route.path.includes(route))) {
+        return this.$route.name || this.$route.path
+      }
+      return this.$route.path
     }
   },
   beforeRouteUpdate(to, from, next) {
-    if (to.path.includes('/analysis/price')) {
-      this.refreshFlag = false
+    // 如果是爬虫相关页面，不触发刷新
+    if (to.path.includes('/analysis/price') || to.path.includes('/news')) {
+      to.meta.keepAlive = true
     }
     next()
   }

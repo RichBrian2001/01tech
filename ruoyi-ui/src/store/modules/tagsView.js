@@ -1,6 +1,6 @@
 const state = {
   visitedViews: [],
-  cachedViews: [],
+  cachedViews: ['PriceAnalysis', 'News'],  // 默认缓存这些视图
   iframeViews: []
 }
 
@@ -23,7 +23,8 @@ const mutations = {
   },
   ADD_CACHED_VIEW: (state, view) => {
     if (state.cachedViews.includes(view.name)) return
-    if (view.meta && !view.meta.noCache) {
+    // 对于特定页面，强制缓存
+    if (view.name === 'PriceAnalysis' || view.name === 'News' || (!view.meta || !view.meta.noCache)) {
       state.cachedViews.push(view.name)
     }
   },
@@ -40,6 +41,8 @@ const mutations = {
     state.iframeViews = state.iframeViews.filter(item => item.path !== view.path)
   },
   DEL_CACHED_VIEW: (state, view) => {
+    // 对于特定页面，不允许删除缓存
+    if (view.name === 'PriceAnalysis' || view.name === 'News') return
     const index = state.cachedViews.indexOf(view.name)
     index > -1 && state.cachedViews.splice(index, 1)
   },

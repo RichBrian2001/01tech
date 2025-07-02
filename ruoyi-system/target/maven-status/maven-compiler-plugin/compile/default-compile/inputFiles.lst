@@ -7,6 +7,7 @@ D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysOper
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\crawler\controller\CrawlerController.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\domain\vo\RouterVo.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysRoleDept.java
+D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\service\NewsService.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysCache.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysUserServiceImpl.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\controller\YieldController.java
@@ -57,6 +58,7 @@ D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysUserPost.j
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysDeptMapper.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysDictTypeMapper.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysUserService.java
+D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\controller\NewsController.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysOperLogService.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\mapper\PlantingDataMapper.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\service\IPlantingDataService.java

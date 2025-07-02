@@ -7,7 +7,7 @@ from mysql.connector import Error
 DB_CONFIG = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'root',
+    'password': '123456',
     'database': 'agriculturaldata'
 }
 

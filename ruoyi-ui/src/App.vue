@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <keep-alive :max="10">
+    <keep-alive :include="cachedViews">
       <router-view v-if="$route.meta.keepAlive" />
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive" />
@@ -10,10 +10,16 @@
 
 <script>
 import ThemePicker from "@/components/ThemePicker"
+import { mapGetters } from 'vuex'
 
 export default {
   name: "App",
-  components: { ThemePicker }
+  components: { ThemePicker },
+  computed: {
+    ...mapGetters([
+      'cachedViews'
+    ])
+  }
 }
 </script>
 <style scoped>
