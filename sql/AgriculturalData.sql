@@ -11,7 +11,7 @@
  Target Server Version : 80042
  File Encoding         : 65001
 
- Date: 01/07/2025 16:28:31
+ Date: 02/07/2025 15:41:49
 */
 
 SET NAMES utf8mb4;
@@ -1640,13 +1640,13 @@ CREATE TABLE `news1`  (
 -- ----------------------------
 -- Records of news1
 -- ----------------------------
-INSERT INTO `news1` VALUES (1, 'http://www.nkb.com.cn/2025/0627/504243.html', '我国农业科技进步贡献率超63%', '2025-07-01 16:27:14');
-INSERT INTO `news1` VALUES (2, 'http://www.nkb.com.cn/2025/0626/504222.html', '共赴农业现代化新征程，2025中非农业科技产业合作论坛成功举办！', '2025-07-01 16:27:14');
-INSERT INTO `news1` VALUES (3, 'http://www.nkb.com.cn/2025/0626/504190.html', '农业农村部部署推进全国设施园艺提档升级工作', '2025-07-01 16:27:14');
-INSERT INTO `news1` VALUES (4, 'http://www.nkb.com.cn/2025/0625/504143.html', '农业农村部公布十起涉种典型案例', '2025-07-01 16:27:14');
-INSERT INTO `news1` VALUES (5, 'http://www.nkb.com.cn/2025/0625/504142.html', '三部门发布防范“订单农业”骗局风险提示', '2025-07-01 16:27:14');
-INSERT INTO `news1` VALUES (6, 'http://www.nkb.com.cn/2025/0625/504129.html', '全国供销合作社系统这样服务“三夏”', '2025-07-01 16:27:14');
-INSERT INTO `news1` VALUES (7, 'http://www.nkb.com.cn/2025/0625/504126.html', '农业农村部政务通APP正式上线运行', '2025-07-01 16:27:14');
+INSERT INTO `news1` VALUES (1, 'http://www.nkb.com.cn/2025/0627/504243.html', '我国农业科技进步贡献率超63%', '2025-07-02 15:38:03');
+INSERT INTO `news1` VALUES (2, 'http://www.nkb.com.cn/2025/0626/504222.html', '共赴农业现代化新征程，2025中非农业科技产业合作论坛成功举办！', '2025-07-02 15:38:03');
+INSERT INTO `news1` VALUES (3, 'http://www.nkb.com.cn/2025/0626/504190.html', '农业农村部部署推进全国设施园艺提档升级工作', '2025-07-02 15:38:03');
+INSERT INTO `news1` VALUES (4, 'http://www.nkb.com.cn/2025/0625/504143.html', '农业农村部公布十起涉种典型案例', '2025-07-02 15:38:03');
+INSERT INTO `news1` VALUES (5, 'http://www.nkb.com.cn/2025/0625/504142.html', '三部门发布防范“订单农业”骗局风险提示', '2025-07-02 15:38:03');
+INSERT INTO `news1` VALUES (6, 'http://www.nkb.com.cn/2025/0625/504129.html', '全国供销合作社系统这样服务“三夏”', '2025-07-02 15:38:03');
+INSERT INTO `news1` VALUES (7, 'http://www.nkb.com.cn/2025/0625/504126.html', '农业农村部政务通APP正式上线运行', '2025-07-02 15:38:03');
 
 -- ----------------------------
 -- Table structure for news2
@@ -1663,13 +1663,13 @@ CREATE TABLE `news2`  (
 -- ----------------------------
 -- Records of news2
 -- ----------------------------
-INSERT INTO `news2` VALUES (1, 'http://www.nkb.com.cn/2025/0625/504128.html', '医疗保障法草案首次亮相', '2025-07-01 16:27:14');
-INSERT INTO `news2` VALUES (2, 'http://www.nkb.com.cn/2025/0625/504127.html', '两部门紧急预拨3亿元支持洪涝救灾工作', '2025-07-01 16:27:14');
-INSERT INTO `news2` VALUES (3, 'http://www.nkb.com.cn/2025/0619/503809.html', '政策“组合拳”加大力度稳岗促就业', '2025-07-01 16:27:14');
-INSERT INTO `news2` VALUES (4, 'http://www.nkb.com.cn/2025/0611/503348.html', '事关孩子上学、育儿补贴、社保……六部门最新安排', '2025-07-01 16:27:14');
-INSERT INTO `news2` VALUES (5, 'http://www.nkb.com.cn/2025/0610/503312.html', '首批传统优势食品产区和地方特色食品产业重点培育名单发布', '2025-07-01 16:27:14');
-INSERT INTO `news2` VALUES (6, 'http://www.nkb.com.cn/2025/0609/503253.html', '《2025年数字乡村发展工作要点》印发——数字红利将惠及更多乡村', '2025-07-01 16:27:14');
-INSERT INTO `news2` VALUES (7, 'http://www.nkb.com.cn/2025/0609/503239.html', '两部门下达水利救灾资金5.8亿元', '2025-07-01 16:27:14');
+INSERT INTO `news2` VALUES (1, 'http://www.nkb.com.cn/2025/0625/504128.html', '医疗保障法草案首次亮相', '2025-07-02 15:38:03');
+INSERT INTO `news2` VALUES (2, 'http://www.nkb.com.cn/2025/0625/504127.html', '两部门紧急预拨3亿元支持洪涝救灾工作', '2025-07-02 15:38:03');
+INSERT INTO `news2` VALUES (3, 'http://www.nkb.com.cn/2025/0619/503809.html', '政策“组合拳”加大力度稳岗促就业', '2025-07-02 15:38:03');
+INSERT INTO `news2` VALUES (4, 'http://www.nkb.com.cn/2025/0611/503348.html', '事关孩子上学、育儿补贴、社保……六部门最新安排', '2025-07-02 15:38:03');
+INSERT INTO `news2` VALUES (5, 'http://www.nkb.com.cn/2025/0610/503312.html', '首批传统优势食品产区和地方特色食品产业重点培育名单发布', '2025-07-02 15:38:03');
+INSERT INTO `news2` VALUES (6, 'http://www.nkb.com.cn/2025/0609/503253.html', '《2025年数字乡村发展工作要点》印发——数字红利将惠及更多乡村', '2025-07-02 15:38:03');
+INSERT INTO `news2` VALUES (7, 'http://www.nkb.com.cn/2025/0609/503239.html', '两部门下达水利救灾资金5.8亿元', '2025-07-02 15:38:03');
 
 -- ----------------------------
 -- Table structure for news3
@@ -1686,13 +1686,13 @@ CREATE TABLE `news3`  (
 -- ----------------------------
 -- Records of news3
 -- ----------------------------
-INSERT INTO `news3` VALUES (1, 'http://www.nkb.com.cn/2025/0701/504497.html', '职业警觉识破骗局！陕西洋县联社成功拦截45万元涉诈贷款', '2025-07-01 16:27:14');
-INSERT INTO `news3` VALUES (2, 'http://www.nkb.com.cn/2025/0701/504490.html', '看《旱塬》 庆“七一”传承科学家精神 践行初心使命', '2025-07-01 16:27:14');
-INSERT INTO `news3` VALUES (3, 'http://www.nkb.com.cn/2025/0701/504485.html', '十年奔出好“椿”光', '2025-07-01 16:27:14');
-INSERT INTO `news3` VALUES (4, 'http://www.nkb.com.cn/2025/0701/504487.html', '安徽省亳州市蒙城县许疃村：党建领航产业兴  乡风润心绘新篇', '2025-07-01 16:27:14');
-INSERT INTO `news3` VALUES (5, 'http://www.nkb.com.cn/2025/0701/504484.html', '新疆维吾尔自治区2025年乡村产业振兴带头人培育“头雁”项目（乳制品加工）培训班顺利开班', '2025-07-01 16:27:14');
-INSERT INTO `news3` VALUES (6, 'http://www.nkb.com.cn/2025/0701/504473.html', '陕西留坝联社：警银携手辨真伪  暖心服务获赞誉', '2025-07-01 16:27:14');
-INSERT INTO `news3` VALUES (7, 'http://www.nkb.com.cn/2025/0701/504470.html', '西乡农商银行开展“七一”节前慰问 老党员、困难党员活动', '2025-07-01 16:27:14');
+INSERT INTO `news3` VALUES (1, 'http://www.nkb.com.cn/2025/0702/504543.html', '四川省农业产业发展促进会：以“产业旺”促“乡村兴”', '2025-07-02 15:38:03');
+INSERT INTO `news3` VALUES (2, 'http://www.nkb.com.cn/2025/0702/504542.html', '陕西神木：拧紧建筑施工“安全阀” 筑牢安全生产“防护网”', '2025-07-02 15:38:03');
+INSERT INTO `news3` VALUES (3, 'http://www.nkb.com.cn/2025/0702/504541.html', '乡村蝶变满目新', '2025-07-02 15:38:03');
+INSERT INTO `news3` VALUES (4, 'http://www.nkb.com.cn/2025/0702/504540.html', '陕西榆林市府谷县：梯次上市“巧”增收 西瓜富农有“蜜”诀', '2025-07-02 15:38:03');
+INSERT INTO `news3` VALUES (5, 'http://www.nkb.com.cn/2025/0702/504539.html', '陕西榆林市佳县：“三剂良方”激活农经改革新动能', '2025-07-02 15:38:03');
+INSERT INTO `news3` VALUES (6, 'http://www.nkb.com.cn/2025/0702/504537.html', '故事里的岐山', '2025-07-02 15:38:04');
+INSERT INTO `news3` VALUES (7, 'http://www.nkb.com.cn/2025/0702/504536.html', '雷塬综合服务中心开展“感悟红色精神 践行时代使命”主题党日活动', '2025-07-02 15:38:04');
 
 -- ----------------------------
 -- Table structure for news4
@@ -1709,13 +1709,13 @@ CREATE TABLE `news4`  (
 -- ----------------------------
 -- Records of news4
 -- ----------------------------
-INSERT INTO `news4` VALUES (1, 'http://www.nkb.com.cn/2025/0626/504223.html', '青春扎根泥土！大学生用液体菌种技术激活乡村“菌”经济', '2025-07-01 16:27:14');
-INSERT INTO `news4` VALUES (2, 'http://www.nkb.com.cn/2025/0624/504061.html', '“微生态调控”技术破解设施蔬菜土壤连作障碍难题', '2025-07-01 16:27:15');
-INSERT INTO `news4` VALUES (3, 'http://www.nkb.com.cn/2025/0624/504058.html', '“烟樱15”“烟樱17”抗寒高产樱桃新品种发布', '2025-07-01 16:27:15');
-INSERT INTO `news4` VALUES (4, 'http://www.nkb.com.cn/2025/0624/504056.html', '木耳新品种“赣脆木”1号育成种植不受季节限制', '2025-07-01 16:27:15');
-INSERT INTO `news4` VALUES (5, 'http://www.nkb.com.cn/2025/0623/503971.html', '水肥一体化提单产 | 渭北旱塬集雨蓄水补灌水肥一体化技术模式', '2025-07-01 16:27:15');
-INSERT INTO `news4` VALUES (6, 'http://www.nkb.com.cn/2025/0619/503810.html', '新型可降解太阳能电池有望助力农业数字化', '2025-07-01 16:27:15');
-INSERT INTO `news4` VALUES (7, 'http://www.nkb.com.cn/2025/0617/503672.html', '从“座果不足”到“亩产翻番” 高效授粉新技术破解白杏授粉难题', '2025-07-01 16:27:15');
+INSERT INTO `news4` VALUES (1, 'http://www.nkb.com.cn/2025/0626/504223.html', '青春扎根泥土！大学生用液体菌种技术激活乡村“菌”经济', '2025-07-02 15:38:04');
+INSERT INTO `news4` VALUES (2, 'http://www.nkb.com.cn/2025/0624/504061.html', '“微生态调控”技术破解设施蔬菜土壤连作障碍难题', '2025-07-02 15:38:04');
+INSERT INTO `news4` VALUES (3, 'http://www.nkb.com.cn/2025/0624/504058.html', '“烟樱15”“烟樱17”抗寒高产樱桃新品种发布', '2025-07-02 15:38:04');
+INSERT INTO `news4` VALUES (4, 'http://www.nkb.com.cn/2025/0624/504056.html', '木耳新品种“赣脆木”1号育成种植不受季节限制', '2025-07-02 15:38:04');
+INSERT INTO `news4` VALUES (5, 'http://www.nkb.com.cn/2025/0623/503971.html', '水肥一体化提单产 | 渭北旱塬集雨蓄水补灌水肥一体化技术模式', '2025-07-02 15:38:04');
+INSERT INTO `news4` VALUES (6, 'http://www.nkb.com.cn/2025/0619/503810.html', '新型可降解太阳能电池有望助力农业数字化', '2025-07-02 15:38:04');
+INSERT INTO `news4` VALUES (7, 'http://www.nkb.com.cn/2025/0617/503672.html', '从“座果不足”到“亩产翻番” 高效授粉新技术破解白杏授粉难题', '2025-07-02 15:38:04');
 
 -- ----------------------------
 -- Table structure for news5
@@ -1732,13 +1732,13 @@ CREATE TABLE `news5`  (
 -- ----------------------------
 -- Records of news5
 -- ----------------------------
-INSERT INTO `news5` VALUES (1, 'http://www.nkb.com.cn/2024/1125/491234.html', '丝路“农科使者”为国际农业合作牵线搭桥', '2025-07-01 16:27:15');
-INSERT INTO `news5` VALUES (2, 'http://www.nkb.com.cn/2024/0814/483547.html', '杨凌：改革创新推行“五联一抓”机制，奋力打造乡村振兴“特色样板”', '2025-07-01 16:27:15');
-INSERT INTO `news5` VALUES (3, 'http://www.nkb.com.cn/2024/0814/483537.html', '杨凌：打造农业合作新高地 塑造开放型经济发展新优势', '2025-07-01 16:27:15');
-INSERT INTO `news5` VALUES (4, 'http://www.nkb.com.cn/2024/0814/483528.html', '杨凌：对外开放能级不断提升 外向型经济持续攀升', '2025-07-01 16:27:15');
-INSERT INTO `news5` VALUES (5, 'http://www.nkb.com.cn/2024/0814/483525.html', '“西北辣椒”何以偏爱杨凌？', '2025-07-01 16:27:15');
-INSERT INTO `news5` VALUES (6, 'http://www.nkb.com.cn/2024/0710/481472.html', '“一带一路”国家农村电子商务研修班在杨凌开班', '2025-07-01 16:27:15');
-INSERT INTO `news5` VALUES (7, 'http://www.nkb.com.cn/2024/0709/481387.html', '4方面15条措施！杨凌加力推动政府职能转变', '2025-07-01 16:27:15');
+INSERT INTO `news5` VALUES (1, 'http://www.nkb.com.cn/2024/1125/491234.html', '丝路“农科使者”为国际农业合作牵线搭桥', '2025-07-02 15:38:04');
+INSERT INTO `news5` VALUES (2, 'http://www.nkb.com.cn/2024/0814/483547.html', '杨凌：改革创新推行“五联一抓”机制，奋力打造乡村振兴“特色样板”', '2025-07-02 15:38:04');
+INSERT INTO `news5` VALUES (3, 'http://www.nkb.com.cn/2024/0814/483537.html', '杨凌：打造农业合作新高地 塑造开放型经济发展新优势', '2025-07-02 15:38:04');
+INSERT INTO `news5` VALUES (4, 'http://www.nkb.com.cn/2024/0814/483528.html', '杨凌：对外开放能级不断提升 外向型经济持续攀升', '2025-07-02 15:38:04');
+INSERT INTO `news5` VALUES (5, 'http://www.nkb.com.cn/2024/0814/483525.html', '“西北辣椒”何以偏爱杨凌？', '2025-07-02 15:38:04');
+INSERT INTO `news5` VALUES (6, 'http://www.nkb.com.cn/2024/0710/481472.html', '“一带一路”国家农村电子商务研修班在杨凌开班', '2025-07-02 15:38:04');
+INSERT INTO `news5` VALUES (7, 'http://www.nkb.com.cn/2024/0709/481387.html', '4方面15条措施！杨凌加力推动政府职能转变', '2025-07-02 15:38:04');
 
 -- ----------------------------
 -- Table structure for peanut_yield
@@ -6742,7 +6742,7 @@ CREATE TABLE `sys_job_log`  (
   `exception_info` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '异常信息',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`job_log_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '定时任务调度日志表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '定时任务调度日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_job_log
@@ -6765,7 +6765,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status` ASC) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 112 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 114 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -6782,6 +6782,8 @@ INSERT INTO `sys_logininfor` VALUES (108, 'admin', '127.0.0.1', '内网IP', 'Chr
 INSERT INTO `sys_logininfor` VALUES (109, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-06-30 19:04:26');
 INSERT INTO `sys_logininfor` VALUES (110, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '1', '验证码已失效', '2025-07-01 15:03:43');
 INSERT INTO `sys_logininfor` VALUES (111, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-01 15:03:47');
+INSERT INTO `sys_logininfor` VALUES (112, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-01 17:10:57');
+INSERT INTO `sys_logininfor` VALUES (113, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-02 15:37:46');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -7157,7 +7159,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-07-01 15:03:47', '2025-06-27 14:50:21', 'admin', '2025-06-27 14:50:21', '', '2025-07-01 15:03:47', '管理员');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-07-02 15:37:47', '2025-06-27 14:50:21', 'admin', '2025-06-27 14:50:21', '', '2025-07-02 15:37:46', '管理员');
 INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-06-27 14:50:21', '2025-06-27 14:50:21', 'admin', '2025-06-27 14:50:21', '', NULL, '测试员');
 
 -- ----------------------------
