@@ -22,12 +22,8 @@ def clear_tables():
         conn = mysql.connector.connect(**DB_CONFIG)
         cursor = conn.cursor()
 
-        cursor.execute("TRUNCATE TABLE news1")
-        cursor.execute("TRUNCATE TABLE news2")
-        cursor.execute("TRUNCATE TABLE news3")
-        cursor.execute("TRUNCATE TABLE news4")
-        cursor.execute("TRUNCATE TABLE news5")
-
+        for table in ["news1", "news2", "news3", "news4", "news5"]:
+            cursor.execute(f"TRUNCATE TABLE {table}")
 
         conn.commit()
         print("已清空news1-5表")
@@ -35,7 +31,7 @@ def clear_tables():
     except Error as e:
         print(f"清空表时出错: {e}")
     finally:
-        if conn.is_connected():
+        if 'conn' in locals() and conn.is_connected():
             cursor.close()
             conn.close()
 
@@ -45,8 +41,7 @@ def save_to_mysql(table_name, url, title):
         conn = mysql.connector.connect(**DB_CONFIG)
         cursor = conn.cursor()
 
-        insert_query = f"INSERT INTO {table_name} (href, title) VALUES (%s, %s)"
-        cursor.execute(insert_query, (url, title))
+        cursor.execute(f"INSERT INTO {table_name} (href, title) VALUES (%s, %s)", (url, title))
 
         conn.commit()
         print(f"已保存到{table_name}: {url},{title}")
@@ -54,7 +49,7 @@ def save_to_mysql(table_name, url, title):
     except Error as e:
         print(f"数据库保存错误: {e}")
     finally:
-        if conn.is_connected():
+        if 'conn' in locals() and conn.is_connected():
             cursor.close()
             conn.close()
 
@@ -78,41 +73,30 @@ if __name__ == "__main__":
             yaowen_section = soup.find('div', class_='main8_z_1_left_nr')
             if yaowen_section:
                 for link in yaowen_section.find_all('a', class_='title_cut'):
-                    href = "http://www.nkb.com.cn" + link.get('href')
-                    title = link.get_text(strip=True)
-                    save_to_mysql('news1', href, title)
+                    save_to_mysql('news1', "http://www.nkb.com.cn" + link.get('href'), link.get_text(strip=True))
 
             # 处理"惠农政策"（存入news2）
             huinong_section = soup.find('div', class_='main8_z_1_right_nr')
             if huinong_section:
                 for link in huinong_section.find_all('a', class_='title_cut'):
-                    href = "http://www.nkb.com.cn" + link.get('href')
-                    title = link.get_text(strip=True)
-                    save_to_mysql('news2', href, title)
+                    save_to_mysql('news2', "http://www.nkb.com.cn" + link.get('href'), link.get_text(strip=True))
 
             # 处理"各地动态"（存入news3）
             gedi_section = soup.find('div', class_='main8_z_3_nr_y')
             if gedi_section:
                 for link in gedi_section.find_all('a', class_='img-tu'):
-                    href = "http://www.nkb.com.cn" + link.get('href')
-                    title = link.get_text(strip=True)
-                    save_to_mysql('news3', href, title)
+                    save_to_mysql('news3', "http://www.nkb.com.cn" + link.get('href'), link.get_text(strip=True))
 
             # 处理"农业科技"（存入news4）
-            nongye_section = soup.find_all('div', class_='main8_z_3_nr_y')
-            if nongye_section[1]:
-                for link in nongye_section[1].find_all('a', class_='img-tu'):
-                    href = "http://www.nkb.com.cn" + link.get('href')
-                    title = link.get_text(strip=True)
-                    save_to_mysql('news4', href, title)
+            nongye_sections = soup.find_all('div', class_='main8_z_3_nr_y')
+            if len(nongye_sections) > 2:
+                for link in nongye_sections[1].find_all('a', class_='img-tu'):
+                    save_to_mysql('news4', "http://www.nkb.com.cn" + link.get('href'), link.get_text(strip=True))
 
             # 处理"聚焦杨凌"（存入news5）
-            nongye_section = soup.find_all('div', class_='main8_z_3_nr_y')
-            if nongye_section[2]:
-                for link in nongye_section[2].find_all('a', class_='img-tu'):
-                    href = "http://www.nkb.com.cn" + link.get('href')
-                    title = link.get_text(strip=True)
-                    save_to_mysql('news5', href, title)
+            if len(nongye_sections) > 2:
+                for link in nongye_sections[2].find_all('a', class_='img-tu'):
+                    save_to_mysql('news5', "http://www.nkb.com.cn" + link.get('href'), link.get_text(strip=True))
 
             print("数据抓取和存储完成！")
 
@@ -121,5 +105,3 @@ if __name__ == "__main__":
 
     except Exception as e:
         print(f"发生错误: {e}")
-
-    

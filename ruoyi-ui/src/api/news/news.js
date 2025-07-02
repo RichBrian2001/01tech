@@ -21,26 +21,19 @@ export function getNews3() {
     }).then(response => response.data);
 }
 
-export function getNews4() {
-    return request({
-        url: '/news/getNews4',
-        method: 'get'
-    }).then(response => response.data);
-}
+// export function getNews4() {
+//     return request({
+//         url: '/news/getNews4',
+//         method: 'get'
+//     }).then(response => response.data);
+// }
 
-export function getNews5() {
-    return request({
-        url: '/news/getNews5',
-        method: 'get'
-    }).then(response => response.data);
-}
-
-export function fetchNewsFromPythonAPI() {
-    return request({
-        url: '/news/fetchPythonNews',
-        method: 'get'
-    });
-}
+// export function getNews5() {
+//     return request({
+//         url: '/news/getNews5',
+//         method: 'get'
+//     }).then(response => response.data);
+// }
 
 export function runPythonScript() {
     return request({
@@ -48,4 +41,3 @@ export function runPythonScript() {
         method: 'get'
     }).then(response => response.data);
 }
-

@@ -9,11 +9,9 @@ export default {
         news1: [],
         news2: [],
         news3: [],
-        news4: [],
-        news5: []
+        // news4: [],
+        // news5: []
       },
-      pythonScriptOutput: "", // 用于存储 Python 脚本的输出
-      isFirstActivation: true,
       loading: false
     };
   },
@@ -29,11 +27,11 @@ export default {
         const response3 = await getNews3();
         this.newsData.news3 = response3 || [];
 
-        const response4 = await getNews4();
-        this.newsData.news4 = response4 || [];
+        // const response4 = await getNews4();
+        // this.newsData.news4 = response4 || [];
 
-        const response5 = await getNews5();
-        this.newsData.news5 = response5 || [];
+        // const response5 = await getNews5();
+        // this.newsData.news5 = response5 || [];
 
         console.log(this.newsData);
       } catch (error) {
@@ -41,17 +39,14 @@ export default {
       }
     },
     async runPythonScript() {
+      this.loading = true;
       try {
-        const response = await runPythonScript();
-        this.pythonScriptOutput = response || "";
-        console.log('Python Script Running');
-      } catch (error) {
-        console.error('Error running Python script:', error);
+        await runPythonScript();
+        this.$message.success('已请求更新新闻数据！');
+        await this.fetchNews();
+      } finally {
+        this.loading = false;
       }
-    },
-    async refreshPage() {
-      await this.fetchNews(); // 刷新时重新获取新闻数据
-      this.$message.success('页面已刷新，新闻数据已更新！');
     }
   },
   // 组件第一次创建时
@@ -76,10 +71,9 @@ export default {
       news1: [],
       news2: [],
       news3: [],
-      news4: [],
-      news5: []
+      // news4: [],
+      // news5: []
     };
-    this.pythonScriptOutput = "";
   },
   async mounted() {
     await this.fetchNews(); // 页面加载完成时直接读取新闻数据
@@ -115,7 +109,7 @@ export default {
           </li>
         </ul>
       </div>
-      <div class="box">
+      <!-- <div class="box">
         <div class="box-title">农业科技</div>
         <ul>
           <li v-for="item in newsData.news4" :key="item.href">
@@ -130,7 +124,7 @@ export default {
             <a :href="item.href" class="title" target="_blank">{{ item.title }}</a>
           </li>
         </ul>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
