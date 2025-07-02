@@ -98,7 +98,7 @@ export const constantRoutes = [
         path: 'origin',
         component: () => import('@/views/analysis/OriginAnalysis'),
         name: 'OriginAnalysis',
-        meta: { title: '作物产地分析', icon: 'location' }
+        meta: { title: '作物产地分析', icon: 'guide' }
       },
       {
         path: 'yield',
@@ -110,7 +110,12 @@ export const constantRoutes = [
         path: 'price',
         component: () => import('@/views/analysis/PriceAnalysis'),
         name: 'PriceAnalysis',
-        meta: { title: '作物价格分析', icon: 'money' }
+        meta: {
+          title: '作物价格分析',
+          icon: 'money',
+          keepAlive: true,     // 启用组件缓存
+          noCache: false       // 允许缓存
+        }
       }
     ]
   }
