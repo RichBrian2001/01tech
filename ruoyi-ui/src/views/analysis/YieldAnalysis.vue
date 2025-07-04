@@ -5,24 +5,39 @@
         <div class="top-col-1-inner">
           <div class="select-row">
             <div class="select-item">
-              <label for="crop">选择作物：</label>
+              <label for="crop">选择作物</label>
               <select v-model="crop" @change="onCropOrYearChange" id="crop">
                 <option v-for="c in cropOptions" :key="c.value" :value="c.value">{{ c.label }}</option>
               </select>
             </div>
             <div class="select-item">
-              <label for="year">选择年份：</label>
+              <label for="year">选择年份</label>
               <select v-model="year" @change="onCropOrYearChange" id="year">
                 <option v-for="y in yearOptions" :key="y" :value="y">{{ y }}</option>
               </select>
             </div>
           </div>
           <div class="top-col-1-content">
-            <div v-if="provinceInfo" class="province-desc">
-              {{ provinceInfo.province }}在{{ year }}年共产出了{{ provinceInfo.yield }}万吨{{ getCropLabel(crop) }}，在全部省份中排名第{{ provinceInfo.rank }}。
+            <div v-if="provinceInfo" class="province-info">
+              <h3 class="info-title"><i class="el-icon-data-analysis"></i> 省份产量分析</h3>
+              <div class="info-content">
+                <p class="info-item">
+                  <i class="el-icon-location"></i>
+                  <strong>{{ provinceInfo.province }}{{ year }}年</strong>
+                </p>
+                <p class="info-item">
+                  <i class="el-icon-box"></i>
+                  共产出 <strong class="highlight">{{ provinceInfo.yield }}</strong> 万吨{{ getCropLabel(crop) }}
+                </p>
+                <p class="info-item">
+                  <i class="el-icon-trophy"></i>
+                  在全国排名第 <strong class="highlight">{{ provinceInfo.rank }}</strong> 位
+                </p>
+              </div>
             </div>
-            <div v-else class="province-desc">
-              省份产量分析
+            <div v-else class="province-placeholder">
+              <i class="el-icon-map-location"></i>
+              <span>点击地图查看省份详细数据</span>
             </div>
           </div>
         </div>
@@ -36,40 +51,75 @@
     </div>
     <div class="bottom-section">
       <div class="bottom-row bottom-row-1">
-        <div class="control-panel">
-          <div class="control-item">
-            <el-select v-model="lineChartCrop" placeholder="选择作物" @change="handleLineChartCropChange" style="width: 120px">
-              <el-option
-                v-for="c in cropOptions"
-                :key="c.value"
-                :label="c.label"
-                :value="c.value">
-              </el-option>
-            </el-select>
-          </div>
-          <div class="control-item">
-            <el-select v-model="lineChartProvince" placeholder="选择省份" clearable @change="handleLineChartProvinceChange" style="width: 120px">
-              <el-option
-                v-for="province in provinceOptions"
-                :key="province"
-                :label="province"
-                :value="province">
-              </el-option>
-            </el-select>
-          </div>
-          <div class="year-slider">
-            <div class="year-range-display">
-              <span class="year-label">{{ lineChartYearRange[0] }}</span>
-              <el-slider
-                v-model="lineChartYearRange"
-                range
-                :min="2000"
-                :max="2023"
-                @change="handleLineChartYearRangeChange"
-                style="margin: 0 10px">
-              </el-slider>
-              <span class="year-label">{{ lineChartYearRange[1] }}</span>
+        <div class="bottom-col-inner">
+          <div class="control-panel">
+            <div class="control-item">
+              <el-select v-model="lineChartCrop" placeholder="选择作物" @change="handleLineChartCropChange" style="width: 120px">
+                <el-option
+                  v-for="c in cropOptions"
+                  :key="c.value"
+                  :label="c.label"
+                  :value="c.value">
+                </el-option>
+              </el-select>
             </div>
+            <div class="control-item">
+              <el-select v-model="lineChartProvince" placeholder="选择省份" clearable @change="handleLineChartProvinceChange" style="width: 120px">
+                <el-option
+                  v-for="province in provinceOptions"
+                  :key="province"
+                  :label="province"
+                  :value="province">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="year-slider">
+              <div class="year-range-display">
+                <span class="year-label"><i class="el-icon-date"></i> {{ lineChartYearRange[0] }}</span>
+                <el-slider
+                  v-model="lineChartYearRange"
+                  range
+                  :min="2000"
+                  :max="2023"
+                  @change="handleLineChartYearRangeChange"
+                  style="margin: 0 10px">
+                </el-slider>
+                <span class="year-label"><i class="el-icon-date"></i> {{ lineChartYearRange[1] }}</span>
+              </div>
+            </div>
+          </div>
+          <div v-if="historyData.length > 0" class="trend-info">
+            <h3 class="info-title"><i class="el-icon-data-analysis"></i> 产量趋势分析</h3>
+            <div class="info-content">
+              <p class="info-item">
+                <i class="el-icon-top"></i>
+                <strong>历史最高：</strong>
+                <strong class="highlight">{{ getMaxYield.value.toFixed(2) }}</strong> 万吨
+                <span class="sub-text">（{{ formatYear(getMaxYield.year) }}年）</span>
+              </p>
+              <p class="info-item">
+                <i class="el-icon-bottom"></i>
+                <strong>历史最低：</strong>
+                <strong class="highlight">{{ getMinYield.value.toFixed(2) }}</strong> 万吨
+                <span class="sub-text">（{{ formatYear(getMinYield.year) }}年）</span>
+              </p>
+              <p class="info-item">
+                <i class="el-icon-top-right"></i>
+                <strong>最大增速：</strong>
+                <strong class="highlight">{{ (getMaxGrowthRate.rate * 100).toFixed(2) }}</strong>%
+                <span class="sub-text">（{{ formatYear(getMaxGrowthRate.year) }}年）</span>
+              </p>
+              <p class="info-item">
+                <i class="el-icon-bell"></i>
+                <strong>产量预测：</strong>
+                <strong class="highlight">{{ getPredictedYield.toFixed(2) }}</strong> 万吨
+                <span class="sub-text">（2024年）</span>
+              </p>
+            </div>
+          </div>
+          <div v-else class="trend-info empty-panel">
+            <i class="el-icon-data-line"></i>
+            <span>请选择作物和地区查看趋势分析</span>
           </div>
         </div>
       </div>
@@ -119,12 +169,84 @@ export default {
         '北京市', '天津市', '河北省', '山西省', '内蒙古自治区',
         '辽宁省', '吉林省', '黑龙江省', '上海市', '江苏省',
         '浙江省', '安徽省', '福建省', '江西省', '山东省',
-        '��南省', '湖北省', '湖南省', '广东省', '广西壮族自治区',
-        '海南省', '重庆市', '四川省', '贵州省', '云南省',
+        '河南省', '湖北省', '湖南省', '广东省', '广西壮族自治区',
+        '海南省', '重庆市', '四川省' , '贵州省', '云南省',
         '西藏自治区', '陕西省', '甘肃省', '青海省', '宁夏回族自治区',
-        '新疆维吾尔自治区'
+        '新疆维吾尔��治区'
       ].sort(),
     };
+  },
+  computed: {
+    getMaxYield() {
+      if (!this.historyData.length) return { value: 0, year: 0 };
+      const sortedData = [...this.historyData].sort((a, b) => b.yield - a.yield);
+      return {
+        value: sortedData[0].yield,
+        year: sortedData[0].year
+      };
+    },
+    getMinYield() {
+      if (!this.historyData.length) return { value: 0, year: 0 };
+      const sortedData = [...this.historyData].sort((a, b) => a.yield - b.yield);
+      return {
+        value: sortedData[0].yield,
+        year: sortedData[0].year
+      };
+    },
+    getMaxGrowthRate() {
+      if (this.historyData.length < 2) return { rate: 0, year: 0 };
+
+      let maxRate = -Infinity;
+      let maxRateYear = 0;
+
+      // 按年份排序
+      const sortedData = [...this.historyData]
+        .sort((a, b) => a.year - b.year);
+
+      // 计算每年的增长率
+      for (let i = 1; i < sortedData.length; i++) {
+        const prevYear = sortedData[i - 1];
+        const currentYear = sortedData[i];
+        const growthRate = (currentYear.yield - prevYear.yield) / prevYear.yield;
+
+        if (growthRate > maxRate) {
+          maxRate = growthRate;
+          maxRateYear = currentYear.year;
+        }
+      }
+
+      return {
+        rate: maxRate,
+        year: maxRateYear
+      };
+    },
+    getPredictedYield() {
+      if (this.historyData.length < 4) return 0;
+
+      // 获取2020-2023年的数据
+      const recentData = this.historyData
+        .filter(item => {
+          const year = parseInt(item.year);
+          return year >= 2020 && year <= 2023;
+        })
+        .sort((a, b) => a.year - b.year);
+
+      if (recentData.length < 4) return 0;
+
+      // 计算平均增长率
+      let totalGrowthRate = 0;
+      for (let i = 1; i < recentData.length; i++) {
+        const prevYear = recentData[i - 1];
+        const currentYear = recentData[i];
+        const growthRate = (currentYear.yield - prevYear.yield) / prevYear.yield;
+        totalGrowthRate += growthRate;
+      }
+      const avgGrowthRate = totalGrowthRate / (recentData.length - 1);
+
+      // 使用2023年的产量和平均增长率预测2024年产量
+      const latestYield = recentData[recentData.length - 1].yield;
+      return latestYield * (1 + avgGrowthRate);
+    }
   },
   mounted() {
     this.fetchData();
@@ -249,7 +371,7 @@ export default {
         rank
       };
 
-      // 获取该省份各作物产量数据并更新雷达图
+      // 获取该省份各��物产量数据并更新雷达图
       this.fetchProvinceRadarData(province);
     },
 
@@ -292,7 +414,7 @@ export default {
           console.warn('全国平均产量无数据');
         }
       } catch (e) {
-        console.error('获取全国平均产量异常', e);
+        console.error('获取全��平均产量异常', e);
         this.radarData = [];
       }
     },
@@ -425,11 +547,21 @@ export default {
           // 处理日期格式，确保只显示年份
           const sortedData = result.data.map(item => ({
             ...item,
-            year: typeof item.year === 'string' ? item.year.substring(0, 4) : item.year
+            year: typeof item.year === 'string' ?
+              (item.year.includes('-') ? item.year.split('-')[0] : item.year) :
+              item.year.toString()
           })).sort((a, b) => a.year - b.year);
 
           const years = sortedData.map(item => item.year);
           const data = sortedData.map(item => item.yield);
+          const lastActualValue = data[data.length - 1];
+
+          // 添加2024年预测数据
+          const predictedValue = this.getPredictedYield;
+          if (predictedValue > 0) {
+            years.push('2024');
+            data.push(predictedValue);
+          }
 
           const option = {
             title: {
@@ -438,7 +570,14 @@ export default {
             },
             tooltip: {
               trigger: 'axis',
-              formatter: '{b}年\n{a}: {c}万吨'
+              formatter: (params) => {
+                const dataPoint = Array.isArray(params) ? params[0] : params;
+                const year = dataPoint.name;
+                if (year === '2024') {
+                  return `${year}年\n预测产量: ${dataPoint.value.toFixed(2)}万吨`;
+                }
+                return `${year}年\n实际产量: ${dataPoint.value.toFixed(2)}万吨`;
+              }
             },
             grid: {
               left: '3%',
@@ -453,13 +592,6 @@ export default {
               data: years,
               axisTick: {
                 alignWithLabel: true
-              },
-              axisLabel: {
-                interval: 0,
-                formatter: (value) => {
-                  // 确保只显示年份数字
-                  return typeof value === 'string' ? value.substring(0, 4) : value;
-                }
               }
             },
             yAxis: {
@@ -479,10 +611,27 @@ export default {
             },
             series: [
               {
-                name: '产量',
+                name: '预测产量',
                 type: 'line',
-                data: data,
-                smooth: true,
+                data: new Array(data.length - 2).fill('-').concat([lastActualValue, predictedValue]),
+                smooth: false,
+                symbol: 'circle',
+                symbolSize: 6,
+                lineStyle: {
+                  type: 'dashed',
+                  width: 2,
+                  color: '#ff4d4f'
+                },
+                itemStyle: {
+                  color: '#ff4d4f'
+                },
+                z: 1  // 设置较低的z值，让预测线在下层
+              },
+              {
+                name: '实际产量',
+                type: 'line',
+                data: data.slice(0, -1),
+                smooth: false,
                 symbol: 'circle',
                 symbolSize: 6,
                 itemStyle: {
@@ -491,24 +640,19 @@ export default {
                 lineStyle: {
                   width: 2
                 },
-                markPoint: {
-                  data: [
-                    { type: 'max', name: '最大值' },
-                    { type: 'min', name: '最小值' }
-                  ]
-                },
                 markLine: {
                   data: [
                     { type: 'average', name: '平均值' }
                   ]
-                }
+                },
+                z: 2  // 设置较高的z值，让实际数据线在上层
               }
             ]
           };
           this.lineChart.setOption(option);
         }
       } catch (error) {
-        console.error('获取历年产量数据异常:', error);
+        console.error('获取历���产量数据异常:', error);
       } finally {
         this.loading = false;
       }
@@ -575,6 +719,14 @@ export default {
     initializePage() {
       // 页面初始化逻辑
       console.log('页面初始化完成');
+    },
+    formatYear(year) {
+      if (!year) return '';
+      // 处理带有日期格式的年份
+      if (typeof year === 'string') {
+        return year.split('-')[0];
+      }
+      return year.toString();
     }
   }
 };
@@ -582,20 +734,36 @@ export default {
 </script>
 
 <style scoped>
-.select-row {
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
 .select-item {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 10px 0;
 }
-.year-select {
-  margin-bottom: 12px;
+
+.select-item label {
+  margin-bottom: 8px;
+  color: #606266;
+  white-space: nowrap;
 }
+
+.select-item select {
+  width: 120px;
+  height: 32px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  padding: 0 8px;
+  color: #606266;
+  background-color: #fff;
+}
+
+.select-row {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
 .analysis-page {
   padding: 24px;
   display: flex;
@@ -612,8 +780,9 @@ export default {
 .top-col {
   height: 100%;
   margin-right: 8px;
-  background: #f5f7fa;
-  border-radius: 4px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -636,15 +805,16 @@ export default {
 .bottom-row {
   height: 100%;
   margin-right: 8px;
-  background: #e9f7ef;
-  border-radius: 4px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .bottom-row-1 {
   flex: 1;
-  padding: 16px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -654,17 +824,7 @@ export default {
   flex: 2;
   margin-right: 0;
 }
-.china-map-fixed {
-  width: 200%;
-  height: 200%;
-  min-width: 0;
-  min-height: 0;
-  max-width: 100%;
-  max-height: 100%;
-  margin: auto;
-  background: #fff;
-}
-.radar-chart-fixed {
+.china-map-fixed, .radar-chart-fixed, .line-chart-fixed {
   width: 100%;
   height: 100%;
   min-width: 0;
@@ -673,22 +833,15 @@ export default {
   max-height: 100%;
   margin: auto;
   background: #fff;
-}
-.line-chart-fixed {
-  width: 95%;
-  height: 95%;
-  min-width: 0;
-  min-height: 0;
-  max-width: 100%;
-  max-height: 100%;
-  margin: auto;
-  background: #fff;
+  border-radius: 8px;
 }
 .top-col-1-inner {
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: space-between;
+  justify-content: flex-start;
+  padding: 20px;
+  box-sizing: border-box;
 }
 .select-row-vertical {
   display: flex;
@@ -696,57 +849,95 @@ export default {
   gap: 16px;
   margin-bottom: 12px;
 }
-.province-desc {
-  position: absolute;
-  top: 33%;
-  left: 0;
-  width: 100%;
-  text-indent: 2em;
+.province-info {
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.info-title {
+  color: #303133;
   font-size: 16px;
-  color: #333;
+  margin-bottom: 12px;
+  text-align: center;
 }
-.top-col-1-content {
-  position: relative;
-  flex: 1;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  min-height: 40px;
+
+.info-content {
+  font-size: 14px;
 }
-.year-selector-container {
+
+.info-item {
+  margin: 8px 0;
+  line-height: 1.6;
+  color: #606266;
+}
+
+.info-item i {
+  margin-right: 8px;
+  color: #409EFF;
+}
+
+.info-item strong {
+  color: #303133;
+  margin: 0 4px;
+}
+
+.info-item strong.highlight {
+  color: #409EFF;
+  font-size: 16px;
+}
+
+.province-placeholder {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  padding: 0 16px;
-  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  color: #909399;
+  font-size: 14px;
 }
-.year-dropdown {
+
+.province-placeholder i {
+  font-size: 24px;
   margin-bottom: 8px;
 }
+
 .year-slider {
-  margin-top: 8px;
-  padding: 0 8px;
+  margin: 15px 0;
 }
-.line-chart-controls {
-  width: 100%;
-  padding: 16px;
+
+.year-range-display {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.year-label {
+  color: #606266;
+  display: flex;
+  align-items: center;
+}
+
+.year-label i {
+  margin-right: 5px;
+  color: #409EFF;
+}
+
+.el-slider {
+  flex: 1;
 }
 
 .control-panel {
-  padding: 16px;
-  background: #f5f7fa;
-  border-radius: 4px;
-  margin-bottom: 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  padding: 12px;
   width: 100%;
   box-sizing: border-box;
 }
 
 .control-item {
-  display: flex;
-  align-items: center;
   margin-bottom: 12px;
 }
 
@@ -754,20 +945,72 @@ export default {
   margin-bottom: 0;
 }
 
-.year-range-display {
+.trend-info {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: -4px;
+}
+
+.trend-info .info-title {
+  color: #303133;
+  font-size: 16px;
+  margin-bottom: 8px;
+  text-align: center;
   display: flex;
   align-items: center;
-  width: 100%;
+  justify-content: center;
 }
 
-.year-label {
-  min-width: 40px;
-  text-align: center;
-  color: #606266;
+.trend-info .info-content {
   font-size: 14px;
+  margin-top: -4px;
 }
 
-.el-slider {
-  flex: 1;
+.trend-info .info-item {
+  margin: 8px 0;
+  line-height: 1.5;
+  color: #606266;
+  display: flex;
+  align-items: center;
+}
+
+.trend-info .info-item i {
+  margin-right: 8px;
+  color: #409EFF;
+  font-size: 16px;
+}
+
+.trend-info .info-item strong {
+  color: #303133;
+  margin: 0 4px;
+}
+
+.trend-info .info-item strong.highlight {
+  color: #409EFF;
+  font-size: 16px;
+}
+
+.trend-info .sub-text {
+  color: #909399;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.trend-info.empty-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #909399;
+  min-height: 120px;
+}
+
+.trend-info.empty-panel i {
+  font-size: 24px;
+  margin-bottom: 8px;
 }
 </style>

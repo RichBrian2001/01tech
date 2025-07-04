@@ -1,59 +1,77 @@
 <template>
   <div class="analysis-page">
-    <el-card class="box-card">
-      <div slot="header" class="clearfix">
-        <span>作物价格分析</span>
-        <div style="float: right;">
-          <el-select v-model="currentCrop" placeholder="请选择作物" style="margin-right: 10px;">
-            <el-option
-              v-for="crop in crops"
-              :key="crop"
-              :label="crop"
-              :value="crop">
-            </el-option>
-          </el-select>
-          <el-button
-            type="button"
-            size="small"
-            @click.prevent="runCrawlerData"
-            :loading="crawling"
-            :disabled="!currentCrop">
-            {{ crawling ? '爬取中...' : '爬取最新数据' }}
-          </el-button>
-          <el-button
-            type="button"
-            style="margin-left: 10px;"
-            @click.prevent="refreshData"
-            :disabled="!currentCrop">刷新显示</el-button>
-        </div>
-      </div>
+    <div class="page-container">
+      <!-- 左侧价格表格区域 -->
+      <div class="left-section">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>作物价格分析</span>
+            <div style="float: right;">
+              <el-select v-model="currentCrop" placeholder="请选择作物" style="margin-right: 10px;">
+                <el-option
+                  v-for="crop in crops"
+                  :key="crop"
+                  :label="crop"
+                  :value="crop">
+                </el-option>
+              </el-select>
+              <el-button
+                type="button"
+                size="small"
+                @click.prevent="runCrawlerData"
+                :loading="crawling"
+                :disabled="!currentCrop">
+                {{ crawling ? '爬取中...' : '爬取最新数据' }}
+              </el-button>
+              <el-button
+                type="button"
+                style="margin-left: 10px;"
+                @click.prevent="refreshData"
+                :disabled="!currentCrop">刷新显示</el-button>
+            </div>
+          </div>
 
-      <!-- 价格数据展示区域 -->
-      <div v-loading="loading">
-        <template v-if="!currentCrop">
-          <div class="empty-data">
-            <el-empty description="请选择要查看的作物"></el-empty>
+          <!-- ��格数据展示区域 -->
+          <div v-loading="loading">
+            <template v-if="!currentCrop">
+              <div class="empty-data">
+                <el-empty description="请选择要查看的作物"></el-empty>
+              </div>
+            </template>
+            <template v-else>
+              <el-table v-if="priceData.length > 0" :data="priceData" style="width: 100%">
+                <el-table-column prop="产品" label="产品" width="120"></el-table-column>
+                <el-table-column prop="价格" label="价格" width="120"></el-table-column>
+                <el-table-column prop="产地" label="产地"></el-table-column>
+                <el-table-column prop="日期" label="日期" width="180"></el-table-column>
+                <el-table-column prop="单位" label="单位" width="100"></el-table-column>
+              </el-table>
+              <div v-else class="empty-data">
+                <el-empty :description="loading ? '加载中...' : '暂无价格数据'"></el-empty>
+              </div>
+            </template>
           </div>
-        </template>
-        <template v-else>
-          <el-table v-if="priceData.length > 0" :data="priceData" style="width: 100%">
-            <el-table-column prop="产品" label="产品" width="120"></el-table-column>
-            <el-table-column prop="价格" label="价格" width="120"></el-table-column>
-            <el-table-column prop="产地" label="产地"></el-table-column>
-            <el-table-column prop="日期" label="日期" width="180"></el-table-column>
-            <el-table-column prop="单位" label="单位" width="100"></el-table-column>
-          </el-table>
-          <div v-else class="empty-data">
-            <el-empty :description="loading ? '加载中...' : '暂无价格数据'"></el-empty>
-          </div>
-        </template>
+        </el-card>
       </div>
-    </el-card>
+      <!-- 右侧区域（价格偏差分析） -->
+      <div class="right-section">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>价格偏差分析</span>
+            <div class="average-price" v-if="averagePrice">
+              平均价格：{{ averagePrice.toFixed(2) }}
+            </div>
+          </div>
+          <div class="chart-container" ref="priceDeviationChart"></div>
+        </el-card>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import request from '@/utils/request'
+import * as echarts from 'echarts'  // 添加 ECharts 导入
 
 export default {
   name: 'PriceAnalysis',
@@ -66,7 +84,9 @@ export default {
       priceData: [],
       // 添加状态控制
       isFirstActivation: true,
-      needRefresh: false
+      needRefresh: false,
+      deviationChart: null, // 价格偏差图表实例
+      averagePrice: 0, // 平均价格
     }
   },
   // 组件被 keep-alive 缓存时调用
@@ -97,9 +117,13 @@ export default {
   // 组件即将被销毁时调用
   beforeDestroy() {
     // 清理资源
-    this.loading = false
-    this.crawling = false
-    sessionStorage.removeItem('selectedCrop')
+    this.loading = false;
+    this.crawling = false;
+    sessionStorage.removeItem('selectedCrop');
+    window.removeEventListener('resize', this.handleResize);
+    if (this.deviationChart) {
+      this.deviationChart.dispose();
+    }
   },
   methods: {
     // 加载作物列表
@@ -176,11 +200,54 @@ export default {
         })
 
         if (response.code === 200 && response.data) {
-          const data = typeof response.data === 'string' ? JSON.parse(response.data) : response.data
-          this.priceData = data.data || []
+          const data = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+
+          // 1. 先处理原始数据
+          const rawData = data.data || [];
+
+          // 2. 计算平均价格
+          const prices = rawData.map(item => parseFloat(item.价格));
+          this.averagePrice = prices.reduce((a, b) => a + b, 0) / prices.length;
+
+          // 3. 按产地分组数据，并计算每个产地的平均偏差
+          const locationGroups = {};
+          rawData.forEach(item => {
+            if (!locationGroups[item.产地]) {
+              locationGroups[item.产地] = {
+                items: [],
+                totalDeviation: 0,
+                count: 0
+              };
+            }
+            const group = locationGroups[item.产地];
+            const price = parseFloat(item.价格);
+            const deviation = price - this.averagePrice;
+
+            group.items.push(item);
+            group.totalDeviation += deviation;
+            group.count++;
+          });
+
+          // 4. 计算每个产地的平均偏差并排序
+          const sortedLocations = Object.entries(locationGroups)
+            .map(([location, data]) => ({
+              location,
+              avgDeviation: data.totalDeviation / data.count,
+              items: data.items
+            }))
+            .sort((a, b) => Math.abs(a.avgDeviation) - Math.abs(b.avgDeviation))
+
+          // 5. 按偏差排序重组数据
+          this.priceData = sortedLocations.flatMap(group => group.items);
+
           if (data.updateTime) {
-            this.$message.success(`数据更新时间：${data.updateTime}`)
+            this.$message.success(`数据更新时间：${data.updateTime}`);
           }
+
+          // 6. 更新图表
+          this.$nextTick(() => {
+            this.updateDeviationChart(sortedLocations);
+          });
         } else {
           this.$message.warning(response.msg || '获取价格数据失败')
         }
@@ -190,6 +257,121 @@ export default {
       } finally {
         this.loading = false
       }
+    },
+
+    updateDeviationChart(sortedLocations) {
+      if (!sortedLocations || !sortedLocations.length) return;
+
+      if (!this.$refs.priceDeviationChart) return;
+
+      if (!this.deviationChart) {
+        this.deviationChart = echarts.init(this.$refs.priceDeviationChart);
+      }
+
+      const option = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: { type: 'shadow' },
+          formatter: function(params) {
+            const param = params[0];
+            return `${param.name}<br/>平均价格偏差：${param.value.toFixed(2)}`;
+          }
+        },
+        grid: {
+          top: '3%',
+          left: '8%',
+          right: '8%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'value',
+          name: '偏差',
+          position: 'bottom',
+          nameTextStyle: {
+            fontSize: 12,
+            padding: [0, 0, 5, 0]
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              type: 'dashed',
+              color: '#E0E0E0'
+            }
+          },
+          axisLabel: {
+            formatter: (value) => value.toFixed(2),
+            fontSize: 12,
+            margin: 8
+          }
+        },
+        yAxis: {
+          type: 'category',
+          data: sortedLocations.map(item => item.location).reverse(), // 移除reverse()，保持自然顺序
+          axisLabel: {
+            fontSize: 12,
+            margin: 16,
+            color: '#606266'
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: true,
+            lineStyle: {
+              color: '#E0E0E0'
+            }
+          }
+        },
+        series: [{
+          name: '价格偏差',
+          type: 'bar',
+          barWidth: '45%',
+          data: sortedLocations.map(item => ({
+            value: item.avgDeviation,
+            itemStyle: {
+              color: item.avgDeviation >= 0 ? '#67C23A' : '#F56C6C',
+              borderRadius: item.avgDeviation >= 0 ? [0, 4, 4, 0] : [4, 0, 0, 4]
+            }
+          })),
+          label: {
+            show: true,
+            position: function(params) {
+              return params.value >= 0 ? 'right' : 'left';
+            },
+            distance: 15, // 从5增加到10
+            fontSize: 12,
+            color: '#000000', // 黑色
+            fontWeight: 'bold',
+            formatter: (params) => params.value.toFixed(2)
+          }
+        }]
+      };
+
+      this.deviationChart.setOption(option, true);
+
+      this.$nextTick(() => {
+        this.deviationChart.resize();
+      });
+    },
+    // 添加���口大小变化时更新图��的方法
+    handleResize() {
+      if (this.deviationChart) {
+        this.deviationChart.resize();
+      }
+    }
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    // 清理资源
+    this.loading = false;
+    this.crawling = false;
+    sessionStorage.removeItem('selectedCrop');
+    window.removeEventListener('resize', this.handleResize);
+    if (this.deviationChart) {
+      this.deviationChart.dispose();
     }
   },
   watch: {
@@ -197,7 +379,7 @@ export default {
       handler(newVal) {
         if (newVal) {
           sessionStorage.setItem('selectedCrop', newVal)
-          // 当选择新作物时，自动获取其数据
+          // 当选择新作物时��自动获��其数据
           this.refreshData()
         } else {
           sessionStorage.removeItem('selectedCrop')
@@ -211,10 +393,90 @@ export default {
 
 <style scoped>
 .analysis-page {
-  padding: 20px;
+  padding: 10px;  /* 减小内边距 */
+  height: calc(100vh - 84px);
+  overflow: hidden;  /* 防止出现滚动条 */
 }
-.empty-data {
-  margin: 40px 0;
-  text-align: center;
+
+.page-container {
+  display: flex;
+  height: 100%;
+  gap: 10px;  /* 减小间距 */
+}
+
+.left-section,
+.right-section {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;  /* 防止溢出 */
+}
+
+.left-section {
+  flex: 5;  /* 从2改为5 */
+}
+
+.right-section {
+  flex: 3;  /* 从1改为3 */
+}
+
+.box-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 减小卡片标题区��的高度 */
+.box-card >>> .el-card__header {
+  padding: 10px;
+  min-height: 20px;
+  line-height: 1.2;
+}
+
+/* 优化表格容器 */
+.box-card >>> .el-card__body {
+  flex: 1;
+  padding: 8px;
+  overflow: auto;
+}
+
+/* 优化表格样式 */
+.el-table {
+  font-size: 12px;
+  .el-table__header th {
+    padding: 6px 0;
+    height: 28px;  /* 减小表头高度 */
+  }
+  .el-table__body td {
+    padding: 4px 0;
+    height: 28px;  /* 减小单元格高度 */
+  }
+}
+
+/* 优化图表容器 */
+.chart-container {
+  width: 100%;
+  height: calc(100% - 20px);  /* 增加图表密度 */
+  min-height: 200px;  /* 增加最小高度 */
+  margin-top: 10px;  /* 增加顶部间距 */
+}
+
+/* 优化按钮和选择器 */
+.el-select {
+  width: 120px;  /* 限制选择器宽度 */
+}
+
+.el-button--small {
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.average-price {
+  float: right;
+  color: #606266;
+  font-size: 12px;
+  line-height: 24px;
+  margin-right: 8px;
 }
 </style>
+
