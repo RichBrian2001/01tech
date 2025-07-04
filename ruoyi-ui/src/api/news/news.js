@@ -41,3 +41,10 @@ export function runPythonScript() {
         method: 'get'
     }).then(response => response.data);
 }
+
+export function getNewsPic() {
+    return request({
+        url: '/news/getNewsPic',
+        method: 'get'
+    }).then(response => response.data);
+}

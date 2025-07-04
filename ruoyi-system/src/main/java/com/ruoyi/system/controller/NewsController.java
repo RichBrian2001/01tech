@@ -58,4 +58,10 @@ public class NewsController {
             return AjaxResult.success("Python 脚本已调用");
         }
     }
+
+    @GetMapping("/getNewsPic")
+    public AjaxResult getNewsPic() {
+        List<Map<String, Object>> newsData = newsService.getNewsPicData();
+        return AjaxResult.success(newsData);
+    }
 }
