@@ -1,13 +1,15 @@
-<template>
+<template xmlns>
   <div>
     <h1>农业产品数据分析平台</h1>
+
     <!-- 其他内容 -->
   </div>
 </template>
 
 <script>
+
 export default {
-  name: "Index",
+  name: "Index"
 };
 </script>
 

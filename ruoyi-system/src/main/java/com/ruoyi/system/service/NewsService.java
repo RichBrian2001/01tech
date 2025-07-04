@@ -27,4 +27,9 @@ public class NewsService {
         String sql = "SELECT href, title FROM " + tableName;
         return jdbcTemplate.queryForList(sql);
     }
+
+    public List<Map<String, Object>> getNewsPicData() {
+        String sql = "SELECT href, pic_href, title FROM news_pic";
+        return jdbcTemplate.queryForList(sql);
+    }
 }
