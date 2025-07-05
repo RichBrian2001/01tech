@@ -172,7 +172,7 @@ export default {
         '河南省', '湖北省', '湖南省', '广东省', '广西壮族自治区',
         '海南省', '重庆市', '四川省' , '贵州省', '云南省',
         '西藏自治区', '陕西省', '甘肃省', '青海省', '宁夏回族自治区',
-        '新疆维吾尔��治区'
+        '新疆维吾尔自治区'
       ].sort(),
     };
   },
@@ -301,6 +301,18 @@ export default {
         console.log('请求地图数据:', this.crop, this.year);
         const result = await getYieldMapData(this.crop, this.year);
         console.log('地图数据返回:', result);
+        if (result.code === 200) {
+          console.log('原始数据:', result.data);
+          this.mapData = result.data.map(item => ({
+            name: item.province,
+            value: item.yield
+          }));
+          console.log('处理后数据:', this.mapData);
+
+          // 检查是否有非零数据
+          const hasNonZeroData = this.mapData.some(item => item.value > 0);
+          console.log('是否存在非零数据:', hasNonZeroData);
+        }
 
         if (result.code === 200) {
           this.mapData = result.data.map(item => ({
@@ -371,7 +383,7 @@ export default {
         rank
       };
 
-      // 获取该省份各��物产量数据并更新雷达图
+      // 获取该省份各作物产量数据并更新雷达图
       this.fetchProvinceRadarData(province);
     },
 
@@ -381,7 +393,7 @@ export default {
         const res = await getAverageYield(this.crop, this.year, province);
         if (res && res.code === 200 && res.data && res.data.length > 0) {
           this.provinceRadarData = res.data;
-          // 获取全国数据进行��比
+          // 获取全国数据进行对比
           const nationalRes = await getAverageYield(this.crop, this.year);
           if (nationalRes && nationalRes.code === 200 && nationalRes.data) {
             this.radarData = nationalRes.data;
