@@ -21,7 +21,7 @@
                 @click.prevent="runCrawlerData"
                 :loading="crawling"
                 :disabled="!currentCrop">
-                {{ crawling ? '爬取中...' : '爬取最新数据' }}
+                {{ crawling ? '爬取中...' : '获取最新数据' }}
               </el-button>
               <el-button
                 type="button"
@@ -31,7 +31,7 @@
             </div>
           </div>
 
-          <!-- ��格数据展示区域 -->
+          <!-- 价格数据展示区域 -->
           <div v-loading="loading">
             <template v-if="!currentCrop">
               <div class="empty-data">
@@ -278,7 +278,7 @@ export default {
           }
         },
         grid: {
-          top: '3%',
+          top: '5%',
           left: '8%',
           right: '8%',
           bottom: '3%',
