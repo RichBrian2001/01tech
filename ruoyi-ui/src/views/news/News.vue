@@ -11,12 +11,17 @@ export default {
         news3: [],
         // news4: [],
         // news5: [],
-        newsPic: []
+        newsPic: [],
+        newsPic_left: [],
+        newsPic_right: []
       },
       loading: false,
       currentSlide: 0,
       slideInterval: null,
       showSlideshow: true,
+      leftSlideIndex: 0,
+      leftSlideInterval: null,
+      showLeftSlider: true,
       boxTitles: ['要闻速览', '惠农政策', '各地动态'/*, '农业科技', '聚焦杨凌'*/],
       focus: {
         visible: false,
@@ -44,7 +49,13 @@ export default {
         // this.newsData.news5 = response5 || [];
 
         const responsePic = await getNewsPic();
-        this.newsData.newsPic = responsePic || [];
+        const allPics = responsePic || [];
+        const half = Math.ceil(allPics.length / 2);
+        const responsePic_left = allPics.slice(0, half);
+        const responsePic_right = allPics.slice(half);
+        this.newsData.newsPic_left = responsePic_left;
+        this.newsData.newsPic_right = responsePic_right;
+        this.newsData.newsPic = allPics; // 保持原有数据兼容性
 
         console.log(this.newsData);
       } catch (error) {
@@ -61,11 +72,12 @@ export default {
         this.loading = false;
       }
     },
+    // 右侧幻灯片自动切换
     startSlideshow() {
       if (this.slideInterval) clearInterval(this.slideInterval);
       this.slideInterval = setInterval(() => {
-        if (this.newsData.newsPic.length > 0) {
-          this.currentSlide = (this.currentSlide + 1) % this.newsData.newsPic.length;
+        if (this.newsData.newsPic_right.length > 0) {
+          this.currentSlide = (this.currentSlide + 1) % this.newsData.newsPic_right.length;
         }
       }, 3000);
     },
@@ -87,20 +99,49 @@ export default {
       });
     },
     prevSlide() {
-      if (this.newsData.newsPic.length > 0) {
-        this.currentSlide = (this.currentSlide - 1 + this.newsData.newsPic.length) % this.newsData.newsPic.length;
+      if (this.newsData.newsPic_right.length > 0) {
+        this.currentSlide = (this.currentSlide - 1 + this.newsData.newsPic_right.length) % this.newsData.newsPic_right.length;
         this.resetSlideshowInterval();
       }
     },
     nextSlide() {
-      if (this.newsData.newsPic.length > 0) {
-        this.currentSlide = (this.currentSlide + 1) % this.newsData.newsPic.length;
+      if (this.newsData.newsPic_right.length > 0) {
+        this.currentSlide = (this.currentSlide + 1) % this.newsData.newsPic_right.length;
         this.resetSlideshowInterval();
       }
     },
     resetSlideshowInterval() {
       this.stopSlideshow();
       this.startSlideshow();
+    },
+    // 左侧独立幻灯片自动切换
+    startLeftSlider() {
+      if (this.leftSlideInterval) clearInterval(this.leftSlideInterval);
+      this.leftSlideInterval = setInterval(() => {
+        if (this.newsData.newsPic_left.length > 0) {
+          this.leftSlideIndex = (this.leftSlideIndex + 1) % this.newsData.newsPic_left.length;
+        }
+      }, 3000);
+    },
+    stopLeftSlider() {
+      if (this.leftSlideInterval) clearInterval(this.leftSlideInterval);
+      this.leftSlideInterval = null;
+    },
+    prevLeftSlider() {
+      if (this.newsData.newsPic_left.length > 0) {
+        this.leftSlideIndex = (this.leftSlideIndex - 1 + this.newsData.newsPic_left.length) % this.newsData.newsPic_left.length;
+        this.resetLeftSliderInterval();
+      }
+    },
+    nextLeftSlider() {
+      if (this.newsData.newsPic_left.length > 0) {
+        this.leftSlideIndex = (this.leftSlideIndex + 1) % this.newsData.newsPic_left.length;
+        this.resetLeftSliderInterval();
+      }
+    },
+    resetLeftSliderInterval() {
+      this.stopLeftSlider();
+      this.startLeftSlider();
     },
     focusBox(idx) {
       // 只取前三个栏目
@@ -117,12 +158,21 @@ export default {
     },
   },
   watch: {
-    'newsData.newsPic'(val) {
+    // 监听左右幻灯片数据变化
+    'newsData.newsPic_right'(val) {
       if (val && val.length > 0) {
         this.currentSlide = 0;
         this.startSlideshow();
       } else {
         this.stopSlideshow();
+      }
+    },
+    'newsData.newsPic_left'(val) {
+      if (val && val.length > 0) {
+        this.leftSlideIndex = 0;
+        this.startLeftSlider();
+      } else {
+        this.stopLeftSlider();
       }
     }
   },
@@ -139,6 +189,7 @@ export default {
   },
   // 组件被停用时（使用 keep-alive 后）
   deactivated() {
+    // 保持状态，不清空数据
   },
   // 组件被销毁前
   beforeDestroy() {
@@ -151,12 +202,14 @@ export default {
       news5: []
     };
     this.stopSlideshow();
+    this.stopLeftSlider();
   },
   async mounted() {
     await this.fetchNews(); // 页面载完成时直接读取新闻数据
     await this.runPythonScript(); // 页面加载完成时调用 Python 脚本
     // 幻灯片自动切换逻辑
     this.initSlideshow();
+    this.startLeftSlider();
   }
 };
 </script>
@@ -190,13 +243,16 @@ export default {
         </ul>
       </div>
     </div>
+
+
+    <!-- 右侧幻灯片，数据源改为 newsPic_right -->
     <div class="right-float-container" v-show="showSlideshow">
       <div class="slideshow">
-        <div v-if="newsData.newsPic.length" class="pic_box">
+        <div v-if="newsData.newsPic_right.length" class="pic_box">
           <button class="hide-slideshow-circle-btn" @click="showSlideshow = false" aria-label="隐藏幻灯片">×</button>
-          <a :href="newsData.newsPic[currentSlide].href" class="img-tu" target="_blank" rel="noopener noreferrer">
-            <img :src="newsData.newsPic[currentSlide].pic_href"/>
-            <span>{{ newsData.newsPic[currentSlide].title }}</span>
+          <a :href="newsData.newsPic_right[currentSlide].href" class="img-tu" target="_blank" rel="noopener noreferrer">
+            <img :src="newsData.newsPic_right[currentSlide].pic_href"/>
+            <span>{{ newsData.newsPic_right[currentSlide].title }}</span>
           </a>
           <button class="slide-btn left" @click="prevSlide" aria-label="上一张">&#8592;</button>
           <button class="slide-btn right" @click="nextSlide" aria-label="下一张">&#8594;</button>
@@ -204,6 +260,22 @@ export default {
       </div>
     </div>
     <button v-if="!showSlideshow" class="show-slideshow-btn" @click="showSlideshow = true" style="position:fixed;right:50px;top:50%;transform:translateY(-50%);z-index:1001;">显示图片</button>
+
+    <!-- 左侧幻灯片，数据源改为 newsPic_left -->
+    <div class="left-slider-container" v-show="showLeftSlider">
+      <div class="left-slider">
+        <div v-if="newsData.newsPic_left.length" class="left-slider-pic-box">
+          <button class="hide-left-slider-btn" @click="showLeftSlider = false" aria-label="隐藏左侧幻灯片">×</button>
+          <a :href="newsData.newsPic_left[leftSlideIndex].href" class="left-slider-img-tu" target="_blank" rel="noopener noreferrer">
+            <img :src="newsData.newsPic_left[leftSlideIndex].pic_href"/>
+            <span>{{ newsData.newsPic_left[leftSlideIndex].title }}</span>
+          </a>
+          <button class="left-slider-btn left" @click="prevLeftSlider" aria-label="上一张">&#8592;</button>
+          <button class="left-slider-btn right" @click="nextLeftSlider" aria-label="下一张">&#8594;</button>
+        </div>
+      </div>
+    </div>
+    <button v-if="!showLeftSlider" class="show-left-slider-btn" @click="showLeftSlider = true" style="position:fixed;left:50px;top:50%;transform:translateY(-50%);z-index:1001;">显示图片</button>
   </div>
 </template>
 
@@ -228,7 +300,7 @@ export default {
   .box {
     width: 720px; /* Fixed width */
     height: 375px; /* 45px * 7 +60px */
-    background-color: #d3e3a9;
+    background-color: #ffffff;
     border-radius: 50px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     overflow: auto;
@@ -244,6 +316,7 @@ export default {
     }
   }
 }
+
 .right-float-container {
   position: fixed;
   right: 50px;
@@ -527,5 +600,140 @@ export default {
       }
     }
   }
+}
+
+/* 左侧幻灯片样式 */
+.left-slider-container {
+  position: fixed;
+  left: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 216px;
+  height: 406px;
+}
+.left-slider {
+  position: relative;
+  width: 216px;
+  height: 406px;
+  margin: 0 auto 32px auto;
+  .left-slider-pic-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 216px;
+    height: 406px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    overflow: hidden;
+    z-index: 2;
+    a.left-slider-img-tu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+      position: relative;
+      img {
+        width: 216px;
+        height: 406px;
+        object-fit: cover;
+        display: block;
+      }
+      span {
+        width: 100%;
+        min-height: 60px;
+        background: rgba(255,255,255,0.85);
+        color: #333;
+        font-size: 16px;
+        text-align: center;
+        margin-top: 0;
+        padding: 16px 0 12px 0;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        z-index: 3;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        line-height: 1.4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        word-break: break-all;
+        overflow: hidden;
+      }
+    }
+    .left-slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.3);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 22px;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.2s;
+      &:hover {
+        background: rgba(0,0,0,0.6);
+      }
+    }
+    .left-slider-btn.left {
+      left: 10px;
+    }
+    .left-slider-btn.right {
+      right: 10px;
+    }
+  }
+}
+.show-left-slider-btn {
+  background: #67c23a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: background 0.2s;
+}
+.show-left-slider-btn:hover {
+  background: #529b2e;
+}
+.hide-left-slider-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  color: #666;
+  border: none;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  transition: background 0.2s;
+}
+.hide-left-slider-btn:hover {
+  background: #bdbdbd;
+  color: #333;
 }
 </style>
