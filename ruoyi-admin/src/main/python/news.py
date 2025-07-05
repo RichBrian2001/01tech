@@ -129,16 +129,7 @@ if __name__ == "__main__":
                 for link in nongye_sections[2].find_all('a', class_='img-tu'):
                     save_to_mysql('news5', "http://www.nkb.com.cn" + link.get('href'), link.get_text(strip=True))
 
-
-
             print("数据抓取和存储完成！")
-
-
-
-            '''<div class="main8_z_3_nr_z"> <a href="/2025/0626/504237.html" class="img-tu" target="_blank" rel="noopener noreferrer">  <img src="http://nkimage.nkb.com.cn/20250626/20250626233824141-40-71966.jpeg!740x460"   width="216" heigth="406" />
-   <span>咸阳聚力"八场硬仗"推动高质量发展迈上新台阶</span>
-    </a></div>
-    '''
 
         else:
             print(f"请求失败，状态码: {response.status_code}")
