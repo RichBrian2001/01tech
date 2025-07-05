@@ -10,13 +10,19 @@ export default {
         news2: [],
         news3: [],
         // news4: [],
-        // news5: []
+        // news5: [],
         newsPic: []
       },
       loading: false,
       currentSlide: 0,
       slideInterval: null,
       showSlideshow: true,
+      boxTitles: ['要闻速览', '惠农政策', '各地动态'/*, '农业科技', '聚焦杨凌'*/],
+      focus: {
+        visible: false,
+        title: '',
+        style: {},
+      },
     };
   },
   methods: {
@@ -49,7 +55,7 @@ export default {
       this.loading = true;
       try {
         await runPythonScript();
-        this.$message.success('已更新新闻数据！');
+        this.$message.success('已获取最新新闻数据！');
         await this.fetchNews();
       } finally {
         this.loading = false;
@@ -83,13 +89,32 @@ export default {
     prevSlide() {
       if (this.newsData.newsPic.length > 0) {
         this.currentSlide = (this.currentSlide - 1 + this.newsData.newsPic.length) % this.newsData.newsPic.length;
+        this.resetSlideshowInterval();
       }
     },
     nextSlide() {
       if (this.newsData.newsPic.length > 0) {
         this.currentSlide = (this.currentSlide + 1) % this.newsData.newsPic.length;
+        this.resetSlideshowInterval();
       }
-    }
+    },
+    resetSlideshowInterval() {
+      this.stopSlideshow();
+      this.startSlideshow();
+    },
+    focusBox(idx) {
+      // 只取前三个栏目
+      const newsList = [this.newsData.news1, this.newsData.news2, this.newsData.news3/*, this.newsData.news4, this.newsData.news5*/][idx];
+      if (!newsList.length) return;
+      this.focus = {
+        visible: true,
+        boxTitle: this.boxTitles[idx],
+        newsList,
+      };
+    },
+    closeFocus() {
+      this.focus.visible = false;
+    },
   },
   watch: {
     'newsData.newsPic'(val) {
@@ -114,7 +139,6 @@ export default {
   },
   // 组件被停用时（使用 keep-alive 后）
   deactivated() {
-    // 保持状态，不清空数���
   },
   // 组件被销毁前
   beforeDestroy() {
@@ -123,8 +147,8 @@ export default {
       news1: [],
       news2: [],
       news3: [],
-      // news4: [],
-      // news5: []
+      news4: [],
+      news5: []
     };
     this.stopSlideshow();
   },
@@ -140,50 +164,36 @@ export default {
 <template>
   <div class="news-page">
     <div class="boxes-container">
-      <div class="box">
-        <div class="box-title">要闻速览</div>
+      <div
+        class="box"
+        v-for="(newsList, idx) in [newsData.news1, newsData.news2, newsData.news3]"
+        :key="idx"
+        @click="focusBox(idx)"
+      >
+        <div class="box-title">{{ boxTitles[idx] }}</div>
         <ul>
-          <li v-for="item in newsData.news1" :key="item.href">
-            <a :href="item.href" class="title" target="_blank">{{ item.title }}</a>
+          <li v-for="item in newsList" :key="item.href">
+            <a :href="item.href" class="title" target="_blank" @click.stop>{{ item.title }}</a>
           </li>
         </ul>
       </div>
-      <div class="box">
-        <div class="box-title">惠农政策</div>
-        <ul>
-          <li v-for="item in newsData.news2" :key="item.href">
-            <a :href="item.href" class="title" target="_blank">{{ item.title }}</a>
+    </div>
+    <!-- 聚焦对话框 -->
+    <div v-if="focus.visible" class="focus-dialog-mask">
+      <div class="focus-dialog">
+        <button class="focus-close-btn" @click="closeFocus">×</button>
+        <div class="focus-dialog-title">{{ focus.boxTitle }}</div>
+        <ul class="focus-news-list">
+          <li v-for="item in focus.newsList" :key="item.href">
+            <a :href="item.href" target="_blank">{{ item.title }}</a>
           </li>
         </ul>
       </div>
-      <div class="box">
-        <div class="box-title">各地动态</div>
-        <ul>
-          <li v-for="item in newsData.news3" :key="item.href">
-            <a :href="item.href" class="title" target="_blank">{{ item.title }}</a>
-          </li>
-        </ul>
-      </div>
-      <!-- <div class="box">
-        <div class="box-title">农业科技</div>
-        <ul>
-          <li v-for="item in newsData.news4" :key="item.href">
-            <a :href="item.href" class="title" target="_blank">{{ item.title }}</a>
-          </li>
-        </ul>
-      </div>
-      <div class="box">
-        <div class="box-title">聚焦杨凌</div>
-        <ul>
-          <li v-for="item in newsData.news5" :key="item.href">
-            <a :href="item.href" class="title" target="_blank">{{ item.title }}</a>
-          </li>
-        </ul>
-      </div> -->
     </div>
     <div class="right-float-container" v-show="showSlideshow">
       <div class="slideshow">
         <div v-if="newsData.newsPic.length" class="pic_box">
+          <button class="hide-slideshow-circle-btn" @click="showSlideshow = false" aria-label="隐藏幻灯片">×</button>
           <a :href="newsData.newsPic[currentSlide].href" class="img-tu" target="_blank" rel="noopener noreferrer">
             <img :src="newsData.newsPic[currentSlide].pic_href"/>
             <span>{{ newsData.newsPic[currentSlide].title }}</span>
@@ -191,10 +201,9 @@ export default {
           <button class="slide-btn left" @click="prevSlide" aria-label="上一张">&#8592;</button>
           <button class="slide-btn right" @click="nextSlide" aria-label="下一张">&#8594;</button>
         </div>
-        <button class="hide-slideshow-btn" @click="showSlideshow = false">隐藏幻灯片</button>
       </div>
     </div>
-    <button v-if="!showSlideshow" class="show-slideshow-btn" @click="showSlideshow = true" style="position:fixed;right:50px;top:50%;transform:translateY(-50%);z-index:1001;">显示幻灯片</button>
+    <button v-if="!showSlideshow" class="show-slideshow-btn" @click="showSlideshow = true" style="position:fixed;right:50px;top:50%;transform:translateY(-50%);z-index:1001;">显示图片</button>
   </div>
 </template>
 
@@ -209,13 +218,12 @@ export default {
 }
 
 .boxes-container {
-  width: 10vw; // 占页面宽度的1/10
-  min-width: 200px; // 最小宽度，防止过窄
-  max-width: 720px;
+  width: 720px;
   display: flex;
   flex-direction: column;
   gap: 50px;
-  align-items: flex-start; // 靠左对齐
+  align-items: center; /* 居中对齐 */
+  margin: 0 auto; /* 水平居中 */
 
   .box {
     width: 720px; /* Fixed width */
@@ -225,6 +233,7 @@ export default {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     overflow: auto;
     color: #5886c8;
+    cursor: pointer; /* 鼠标悬停变为手指 */
 
     .box-title {
       text-align: center;
@@ -420,5 +429,103 @@ export default {
 }
 .show-slideshow-btn:hover {
   background: #529b2e;
+}
+
+.hide-slideshow-circle-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  color: #666;
+  border: none;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  transition: background 0.2s;
+}
+.hide-slideshow-circle-btn:hover {
+  background: #bdbdbd;
+  color: #333;
+}
+
+.focus-dialog-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.focus-dialog {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  padding: 32px;
+  width: 90%;
+  max-width: 800px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .focus-close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    font-size: 36px;
+    color: #888;
+    cursor: pointer;
+    z-index: 10;
+  }
+  .focus-close-btn:hover {
+    color: #d9534f;
+  }
+  .focus-dialog-title {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 32px;
+    color: #2d2d2d;
+    text-align: center;
+    width: 100%;
+  }
+  .focus-news-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    display: block;
+
+    li {
+      margin-bottom: 24px;
+      font-size: 26px;
+      text-align: left;
+      width: 100%;
+      a {
+        color: #337ab7;
+        text-decoration: none;
+        transition: color 0.2s;
+        font-size: 26px;
+      }
+      a:hover {
+        color: #d9534f;
+        text-decoration: underline;
+      }
+    }
+  }
 }
 </style>
