@@ -554,14 +554,30 @@ export default {
 
           const years = sortedData.map(item => item.year);
           const data = sortedData.map(item => item.yield);
-          const lastActualValue = data[data.length - 1];
 
-          // 添加2024年预测数据
-          const predictedValue = this.getPredictedYield;
-          if (predictedValue > 0) {
-            years.push('2024');
-            data.push(predictedValue);
+          // 检查是否符合预测条件：左侧<=2020且右侧==2023
+          const showPrediction =
+            this.lineChartYearRange[0] <= 2020 &&
+            this.lineChartYearRange[1] === 2023;
+
+          // 添加2024年预测数据（仅在符合条件时）
+          let predictionData = [];
+          if (showPrediction) {
+            const predictedValue = this.getPredictedYield;
+            if (predictedValue > 0) {
+              years.push('2024');
+              data.push(predictedValue);
+
+              // 构建预测数据数组：前面为空，最后两个点为实际值和预测值
+              predictionData = new Array(data.length - 2).fill('-')
+                .concat([data[data.length - 2], data[data.length - 1]]);
+            }
           }
+
+          // 实际数据系列（始终显示）
+          const actualData = showPrediction
+            ? data.slice(0, -1) // 包含预测时去除最后一个预测值
+            : data;             // 不包含预测时使用全部数据
 
           const option = {
             title: {
@@ -573,6 +589,7 @@ export default {
               formatter: (params) => {
                 const dataPoint = Array.isArray(params) ? params[0] : params;
                 const year = dataPoint.name;
+                // 2024年显示预测提示
                 if (year === '2024') {
                   return `${year}年\n预测产量: ${dataPoint.value.toFixed(2)}万吨`;
                 }
@@ -610,27 +627,31 @@ export default {
               }
             },
             series: [
-              {
-                name: '预测产量',
-                type: 'line',
-                data: new Array(data.length - 2).fill('-').concat([lastActualValue, predictedValue]),
-                smooth: false,
-                symbol: 'circle',
-                symbolSize: 6,
-                lineStyle: {
-                  type: 'dashed',
-                  width: 2,
-                  color: '#ff4d4f'
-                },
-                itemStyle: {
-                  color: '#ff4d4f'
-                },
-                z: 1  // 设置较低的z值，让预测线在下层
-              },
+              // 预测系列（仅在符合条件时显示）
+              ...(showPrediction ? [
+                {
+                  name: '预测产量',
+                  type: 'line',
+                  data: predictionData,
+                  smooth: false,
+                  symbol: 'circle',
+                  symbolSize: 6,
+                  lineStyle: {
+                    type: 'dashed',
+                    width: 2,
+                    color: '#ff4d4f'
+                  },
+                  itemStyle: {
+                    color: '#ff4d4f'
+                  },
+                  z: 1
+                }
+              ] : []),
+              // 实际数据系列（始终显示）
               {
                 name: '实际产量',
                 type: 'line',
-                data: data.slice(0, -1),
+                data: actualData,
                 smooth: false,
                 symbol: 'circle',
                 symbolSize: 6,
@@ -645,7 +666,7 @@ export default {
                     { type: 'average', name: '平均值' }
                   ]
                 },
-                z: 2  // 设置较高的z值，让实际数据线在上层
+                z: 2
               }
             ]
           };
