@@ -1,8 +1,8 @@
 <template>
-  <div :class="classObj" class="app-wrapper" :style="{'--current-color': theme}">
+  <div class="app-wrapper" :style="{'--current-color': theme}">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
-    <sidebar v-if="!sidebar.hide" class="sidebar-container"/>
-    <div :class="{hasTagsView:needTagsView,sidebarHide:sidebar.hide}" class="main-container">
+    <!-- <sidebar v-if="!sidebar.hide" class="sidebar-container"/> -->
+    <div :class="{hasTagsView:needTagsView}" class="main-container">
       <div :class="{'fixed-header':fixedHeader}">
         <navbar @setLayout="setLayout"/>
         <tags-view v-if="needTagsView"/>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { AppMain, Navbar, Settings, Sidebar, TagsView } from './components'
+import { AppMain, Navbar, Settings, TagsView } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'
 import variables from '@/assets/styles/variables.scss'
@@ -25,7 +25,6 @@ export default {
     AppMain,
     Navbar,
     Settings,
-    Sidebar,
     TagsView
   },
   mixins: [ResizeMixin],
@@ -40,8 +39,8 @@ export default {
     }),
     classObj() {
       return {
-        hideSidebar: !this.sidebar.opened,
-        openSidebar: this.sidebar.opened,
+        hideSidebar: false,
+        openSidebar: false,
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === 'mobile'
       }
@@ -92,12 +91,12 @@ export default {
     top: 0;
     right: 0;
     z-index: 9;
-    width: calc(100% - #{$base-sidebar-width});
+    width: 100%;
     transition: width 0.28s;
   }
 
   .hideSidebar .fixed-header {
-    width: calc(100% - 54px);
+    width: 100%;
   }
 
   .sidebarHide .fixed-header {
@@ -106,5 +105,10 @@ export default {
 
   .mobile .fixed-header {
     width: 100%;
+  }
+
+  .main-container {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
   }
 </style>

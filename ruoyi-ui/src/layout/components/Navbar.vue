@@ -1,14 +1,15 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <img src="@/assets/logo/logo.png" class="navbar-logo" />
+    <div class="navbar-menu-gap"></div>
 
-    <breadcrumb v-if="!topNav" id="breadcrumb-container" class="breadcrumb-container" />
     <top-nav v-if="topNav" id="topmenu-container" class="topmenu-container" />
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
+        <!-- <search id="header-search" class="right-menu-item" /> -->
 
+        <!--
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
           <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
         </el-tooltip>
@@ -16,6 +17,7 @@
         <el-tooltip content="文档地址" effect="dark" placement="bottom">
           <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
         </el-tooltip>
+        -->
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
@@ -40,9 +42,9 @@
         </el-dropdown-menu>
       </el-dropdown>
 
-      <div class="right-menu-item hover-effect setting" @click="setLayout" v-if="setting">
+      <!-- <div class="right-menu-item hover-effect setting" @click="setLayout" v-if="setting">
         <svg-icon icon-class="more-up" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -112,14 +114,14 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-  height: 50px;
+  height: 70px;
   overflow: hidden;
   position: relative;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {
-    line-height: 46px;
+    line-height: 66px;
     height: 100%;
     float: left;
     cursor: pointer;
@@ -135,9 +137,47 @@ export default {
     float: left;
   }
 
+  .navbar-logo {
+    height: 60px;
+    margin: 7px 40px 7px 10px;
+    float: left;
+  }
+
+  .navbar-menu-gap {
+    display: inline-block;
+    width: 40px;
+  }
+
   .topmenu-container {
-    position: absolute;
-    left: 50px;
+    margin-left: 38vw;
+    margin-right: auto;
+    margin-top: 10px;
+    padding-left: 0;
+    display: inline-block;
+    vertical-align: middle;
+    height: 70px;
+
+    >>> .el-menu--horizontal {
+      height: 70px;
+      line-height: 70px;
+    }
+
+    >>> .el-menu-item {
+      font-size: 18px;         // 字体大小
+      padding: 0 32px;         // 左右内边距
+      font-weight: 500;        // 字体粗细
+      color: #222;             // 字体颜色
+      // 你可以继续添加其他样式
+    }
+    >>> .el-menu-item:hover {
+      background: #f5f7fa;
+      color: #1890ff;
+    }
+    >>> .el-menu-item.is-active {
+      color: #1890ff;
+      border-bottom: 2px solid #1890ff;
+      background: #e6f7ff;
+    }
   }
 
   .errLog-container {
