@@ -339,7 +339,7 @@ export default {
             position: function(params) {
               return params.value >= 0 ? 'right' : 'left';
             },
-            distance: 15, // 从5增加到10
+            distance: 15,
             fontSize: 12,
             color: '#000000', // 黑色
             fontWeight: 'bold',

@@ -1,4 +1,4 @@
-package com.ruoyi.system.crawler.controller;
+package com.ruoyi.system.controller;
 
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
