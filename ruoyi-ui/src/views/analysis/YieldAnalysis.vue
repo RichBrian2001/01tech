@@ -597,7 +597,7 @@ export default {
               left: 'center'
             },
             tooltip: {
-              trigger: 'axis',
+              trigger: 'item',
               formatter: (params) => {
                 const dataPoint = Array.isArray(params) ? params[0] : params;
                 const year = dataPoint.name;
@@ -656,10 +656,17 @@ export default {
                   itemStyle: {
                     color: '#ff4d4f'
                   },
+                  emphasis: {
+                    itemStyle: {
+                      color: '#ff4d4f',
+                      borderWidth: 2,
+                      shadowBlur: 10,
+                      shadowColor: 'rgba(255, 77, 79, 0.5)'
+                    }
+                  },
                   z: 1
                 }
               ] : []),
-              // 实际数据系列（始终显示）
               {
                 name: '实际产量',
                 type: 'line',
@@ -673,6 +680,14 @@ export default {
                 lineStyle: {
                   width: 2
                 },
+                emphasis: {
+                  itemStyle: {
+                    color: '#1890ff',
+                    borderWidth: 2,
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(24, 144, 255, 0.5)'
+                  }
+                },
                 markLine: {
                   data: [
                     { type: 'average', name: '平均值' }
@@ -685,7 +700,7 @@ export default {
           this.lineChart.setOption(option);
         }
       } catch (error) {
-        console.error('获取历���产量数据异常:', error);
+        console.error('获取历年产量数据异常:', error);
       } finally {
         this.loading = false;
       }
