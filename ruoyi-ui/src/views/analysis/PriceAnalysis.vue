@@ -67,7 +67,7 @@
       </div>
     </div>
     <div v-if="dataSource" style="color: #409EFF; font-weight: bold; margin-top: 10px;">当前数据来源：{{ dataSource }}</div>
-    <div v-if="redisKey" style="color: #67C23A; margin-top: 6px; word-break: break-all;">Redis Key: {{ redisKey }}</div>
+        <div v-if="redisKey" style="color: #67C23A; margin-top: 6px; word-break: break-all;">Redis Key: {{ redisKey }}</div>
     <div v-if="redisValue" style="color: #909399; margin-top: 2px; word-break: break-all; max-width: 100%; white-space: pre-wrap;">Redis Value: {{ redisValue }}</div>
     <div v-if="errorDetail" style="color: red; margin-top: 10px; white-space: pre-wrap;">
       <strong>详细错误信息：</strong>
@@ -399,7 +399,7 @@ export default {
         this.deviationChart.resize();
       });
     },
-    // 添加窗口大小变化时更新图��的方法
+    // 添加窗口大小变化时更新图表的方法
     handleResize() {
       if (this.deviationChart) {
         this.deviationChart.resize();
@@ -424,7 +424,7 @@ export default {
       handler(newVal) {
         if (newVal) {
           sessionStorage.setItem('selectedCrop', newVal)
-          // 当选择新作物时��自动获��其数据
+          // 当选择新作物时自动获取其数据
           this.refreshData()
         } else {
           sessionStorage.removeItem('selectedCrop')
@@ -471,7 +471,7 @@ export default {
   flex-direction: column;
 }
 
-/* 减小卡片标题区��的高度 */
+/* 减小卡片标题区域的高度 */
 .box-card >>> .el-card__header {
   padding: 10px;
   min-height: 20px;
@@ -508,7 +508,7 @@ export default {
 
 /* 优化按钮和选择器 */
 .el-select {
-  width: 120px;  /* 限制选择器���度 */
+  width: 120px;  /* 限制选择器宽度 */
 }
 
 .el-button--small {
