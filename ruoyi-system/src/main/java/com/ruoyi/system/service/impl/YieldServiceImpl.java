@@ -8,23 +8,45 @@ import java.util.Map;
 import com.ruoyi.system.mapper.YieldMapper;
 import java.util.ArrayList;
 import java.util.HashMap;
+import com.ruoyi.common.core.redis.RedisCache;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 @Service
 public class YieldServiceImpl implements YieldService {
     @Autowired
     private YieldMapper yieldMapper;
 
+    @Autowired
+    private RedisCache redisCache;
+
     @Override
     public List<Map<String, Object>> getProvinceYieldByYearAndCrop(String crop, Integer year) {
+        String redisKey = "yield_map_" + crop + "_" + year;
+        List<Map<String, Object>> cache = redisCache.getCacheObject(redisKey);
+        if (cache != null) {
+            System.out.println("[Redis] 省份产量命中缓存: " + redisKey);
+            return cache;
+        }
         System.out.println("查询作物地图数据: crop=" + crop + ", year=" + year);
-        return yieldMapper.selectProvinceYieldByYearAndCrop(crop, year);
+        List<Map<String, Object>> result = yieldMapper.selectProvinceYieldByYearAndCrop(crop, year);
+        redisCache.setCacheObject(redisKey, result);
+        return result;
     }
 
     @Override
     public List<Map<String, Object>> getAverageYieldByCropAndYear(String crop, Integer year, String province) {
-        if (province == null || province.trim().isEmpty()) {  // 修改：使用 trim() 确保空字符���也被视为空
+        String redisKey = "yield_avg_" + (crop != null ? crop : "all") + "_" + year + (province != null ? ("_" + province) : "");
+        List<Map<String, Object>> cache = redisCache.getCacheObject(redisKey);
+        if (cache != null) {
+            System.out.println("[Redis] 平均产量命中缓存: " + redisKey);
+            return cache;
+        }
+        if (province == null || province.trim().isEmpty()) {
             System.out.println("查询全国平均产量: year=" + year + ", crop=" + crop);
-            return yieldMapper.selectAverageYieldByCropAndYear(crop, year, province);
+            List<Map<String, Object>> result = yieldMapper.selectAverageYieldByCropAndYear(crop, year, province);
+            redisCache.setCacheObject(redisKey, result);
+            return result;
         } else {
             System.out.println("查询省份产量: province=" + province + ", year=" + year);
             List<Map<String, Object>> result = new ArrayList<>();
@@ -39,14 +61,23 @@ public class YieldServiceImpl implements YieldService {
                 map.put("yield", yield != null ? yield : 0);
                 result.add(map);
             }
+            redisCache.setCacheObject(redisKey, result);
             return result;
         }
     }
 
     @Override
     public List<Map<String, Object>> getYieldHistory(String crop, Integer startYear, Integer endYear, String province) {
+        String redisKey = "yield_history_" + crop + "_" + startYear + "_" + endYear + (province != null ? ("_" + province) : "");
+        List<Map<String, Object>> cache = redisCache.getCacheObject(redisKey);
+        if (cache != null) {
+            System.out.println("[Redis] 历史产量命中缓存: " + redisKey);
+            return cache;
+        }
         System.out.println("查询历年产量数据: crop=" + crop + ", startYear=" + startYear + ", endYear=" + endYear + ", province=" + province);
         String tableName = crop + "_yield";
-        return yieldMapper.selectYieldHistory(tableName, startYear, endYear, province);
+        List<Map<String, Object>> result = yieldMapper.selectYieldHistory(tableName, startYear, endYear, province);
+        redisCache.setCacheObject(redisKey, result);
+        return result;
     }
 }
