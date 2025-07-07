@@ -1,5 +1,11 @@
 <template>
   <div class="analysis-page">
+    <!-- 顶部Redis命中缓存日志展示区 -->
+    <div v-if="redisLogs && redisLogs.length" class="redis-log-bar" style="background:#f6faff;border-bottom:1px solid #dbeafe;padding:6px 16px;color:#2d8cf0;font-size:14px;">
+      <span v-for="(log, idx) in redisLogs" :key="idx" style="margin-right:24px;white-space:pre;">
+        {{ log }}
+      </span>
+    </div>
     <div class="top-section">
       <div class="top-col top-col-1">
         <div class="top-col-1-inner">
@@ -127,6 +133,10 @@
         <div id="line-chart" class="line-chart-fixed"></div>
       </div>
     </div>
+    <div v-if="mapDataSource" style="color: #409EFF; font-weight: bold; margin-top: 10px;">地图数据来源：{{ mapDataSource === 'redis' ? 'Redis缓存' : '数据库' }}</div>
+    <div v-if="mapRedisKey" style="color: #67C23A; margin-top: 6px; word-break: break-all;">Redis Key: {{ mapRedisKey }}</div>
+    <div v-if="lineDataSource" style="color: #409EFF; font-weight: bold; margin-top: 10px;">趋势数据来源：{{ lineDataSource === 'redis' ? 'Redis缓存' : '数据库' }}</div>
+    <div v-if="lineRedisKey" style="color: #67C23A; margin-top: 6px; word-break: break-all;">Redis Key: {{ lineRedisKey }}</div>
   </div>
 </template>
 
@@ -155,7 +165,7 @@ export default {
         { value: 'wheat', label: '小麦' },
         { value: 'soybean', label: '大豆' }
       ],
-      year: 2023,
+      year: 2022,
       yearRange: [2000, 2023],
       selectedYear: 2023,
       yearOptions: Array.from({length: 2023-2000+1}, (_,i)=>2000+i),
@@ -174,55 +184,53 @@ export default {
         '西藏自治区', '陕西省', '甘肃省', '青海省', '宁夏回族自治区',
         '新疆维吾尔自治区'
       ].sort(),
+      mapDataSource: '', // 地图数据来源
+      mapRedisKey: '',
+      lineDataSource: '', // 折线图数据来源
+      lineRedisKey: '',
+      redisLogs: [] // Redis日志
     };
   },
   computed: {
     getMaxYield() {
-      if (!this.historyData.length) return { value: 0, year: 0 };
+      if (!this.historyData.length) return { value: 0, year: '' };
       const sortedData = [...this.historyData].sort((a, b) => b.yield - a.yield);
       return {
         value: sortedData[0].yield,
-        year: sortedData[0].year
+        year: this.formatYear(sortedData[0].year)
       };
     },
     getMinYield() {
-      if (!this.historyData.length) return { value: 0, year: 0 };
+      if (!this.historyData.length) return { value: 0, year: '' };
       const sortedData = [...this.historyData].sort((a, b) => a.yield - b.yield);
       return {
         value: sortedData[0].yield,
-        year: sortedData[0].year
+        year: this.formatYear(sortedData[0].year)
       };
     },
     getMaxGrowthRate() {
-      if (this.historyData.length < 2) return { rate: 0, year: 0 };
-
+      if (!this.historyData.length || this.historyData.length < 2) return { rate: 0, year: '' };
       let maxRate = -Infinity;
-      let maxRateYear = 0;
-
-      // 按年份排序
-      const sortedData = [...this.historyData]
-        .sort((a, b) => a.year - b.year);
-
-      // 计算每年的增长率
-      for (let i = 1; i < sortedData.length; i++) {
-        const prevYear = sortedData[i - 1];
-        const currentYear = sortedData[i];
-        const growthRate = (currentYear.yield - prevYear.yield) / prevYear.yield;
-
-        if (growthRate > maxRate) {
-          maxRate = growthRate;
-          maxRateYear = currentYear.year;
+      let maxYear = '';
+      for (let i = 1; i < this.historyData.length; i++) {
+        const prev = this.historyData[i - 1];
+        const curr = this.historyData[i];
+        if (prev && prev.yield && curr && curr.yield) {
+          const rate = (curr.yield - prev.yield) / prev.yield;
+          if (rate > maxRate) {
+            maxRate = rate;
+            maxYear = this.formatYear(curr.year);
+          }
         }
       }
-
-      return {
-        rate: maxRate,
-        year: maxRateYear
-      };
+      if (!isFinite(maxRate) || isNaN(maxRate)) {
+        maxRate = 0;
+        maxYear = '';
+      }
+      return { rate: maxRate, year: maxYear };
     },
     getPredictedYield() {
       if (this.historyData.length < 4) return 0;
-
       // 获取2020-2023年的数据
       const recentData = this.historyData
         .filter(item => {
@@ -230,9 +238,7 @@ export default {
           return year >= 2020 && year <= 2023;
         })
         .sort((a, b) => a.year - b.year);
-
       if (recentData.length < 4) return 0;
-
       // 计算平均增长率
       let totalGrowthRate = 0;
       for (let i = 1; i < recentData.length; i++) {
@@ -242,10 +248,11 @@ export default {
         totalGrowthRate += growthRate;
       }
       const avgGrowthRate = totalGrowthRate / (recentData.length - 1);
-
       // 使用2023年的产量和平均增长率预测2024年产量
       const latestYield = recentData[recentData.length - 1].yield;
-      return latestYield * (1 + avgGrowthRate);
+      const predicted = latestYield * (1 + avgGrowthRate);
+      if (!isFinite(predicted) || isNaN(predicted)) return 0;
+      return predicted;
     }
   },
   mounted() {
@@ -297,35 +304,30 @@ export default {
       this.chinaMapChart = echarts.init(chartDom);
 
       try {
-        // 获取后端数据，传入当前选中的作物和年份
+        // 获取后端数据，传入当前选中的作物���年份
         console.log('请求地图数据:', this.crop, this.year);
         const result = await getYieldMapData(this.crop, this.year);
         console.log('地图数据返回:', result);
-        if (result.code === 200) {
-          console.log('原始数据:', result.data);
-          this.mapData = result.data.map(item => ({
+        if (result.code === 200 && result.data) {
+          // 兼容后端返回结构
+          const dataArr = Array.isArray(result.data) ? result.data : (result.data.data || []);
+          this.mapData = dataArr.map(item => ({
             name: item.province,
             value: item.yield
           }));
-          console.log('处理后数据:', this.mapData);
-
-          // 检查是否有非零数据
-          const hasNonZeroData = this.mapData.some(item => item.value > 0);
-          console.log('是否存在非零数据:', hasNonZeroData);
-        }
-
-        if (result.code === 200) {
-          this.mapData = result.data.map(item => ({
-            name: item.province,
-            value: item.yield
-          }));
+          this.mapDataSource = result.data.source || '';
+          this.mapRedisKey = result.data.redisKey || '';
         } else {
           this.mapData = [];
+          this.mapDataSource = '';
+          this.mapRedisKey = '';
           console.warn('获取地图数据失败:', result.msg);
         }
       } catch (error) {
         console.error('获取地图数据异常:', error);
         this.mapData = [];
+        this.mapDataSource = '';
+        this.mapRedisKey = '';
       }
 
       // 计算最大产量
@@ -334,7 +336,7 @@ export default {
         tooltip: {
           show: true,
           formatter: params => {
-            return params.name + ': ' + (params.value || 0).toFixed(2) + '万吨';
+            return params.name + ': ' + (params.value || 0).toFixed(2) + '万��';
           }
         },
         visualMap: {
@@ -393,7 +395,7 @@ export default {
         const res = await getAverageYield(this.crop, this.year, province);
         if (res && res.code === 200 && res.data && res.data.length > 0) {
           this.provinceRadarData = res.data;
-          // 获取全国数据进行对比
+          // 获取全国数据进行���比
           const nationalRes = await getAverageYield(this.crop, this.year);
           if (nationalRes && nationalRes.code === 200 && nationalRes.data) {
             this.radarData = nationalRes.data;
@@ -413,7 +415,7 @@ export default {
       console.log('获取全国平均产量');
       try {
         const res = await getAverageYield('', this.year);
-        console.log('全国平均产量返回：', res);
+        console.log('全国平均产量返回：', JSON.stringify(res)); // 关键：以字符串形式输出
         if (res && res.data && res.data.length > 0) {
           this.radarData = res.data;
           // 计算各年各作物最大产量
@@ -426,7 +428,7 @@ export default {
           console.warn('全国平均产量无数据');
         }
       } catch (e) {
-        console.error('获取全��平均产量异常', e);
+        console.error('获取全国平均产量异常', e);
         this.radarData = [];
       }
     },
@@ -553,18 +555,43 @@ export default {
           this.lineChartYearRange[1],
           this.lineChartProvince
         );
-
         if (result.code === 200 && result.data) {
-          this.historyData = result.data;
-          // 处理日期格式，确保只显示年份
-          const sortedData = result.data.map(item => ({
-            ...item,
-            year: typeof item.year === 'string' ?
-              (item.year.includes('-') ? item.year.split('-')[0] : item.year) :
-              item.year.toString()
-          })).sort((a, b) => a.year - b.year);
+          // 兼容后端返回结构
+          const dataArr = Array.isArray(result.data) ? result.data : (result.data.data || []);
+          // 统一处理年份为字符串，避免[object Object]问题
+          const sortedData = dataArr.map(item => {
+            let y = item.year;
+            if (typeof y === 'object' && y !== null) {
+              if ('year' in y) y = y.year;
+              else if ('value' in y) y = y.value;
+              else if ('@type' in y && y['@type'] === 'java.sql.Date' && 'val' in y) {
+                // 处理java.sql.Date格式
+                const d = new Date(Number(y.val));
+                y = d.getFullYear();
+              } else y = JSON.stringify(y);
+            }
+            // 处理xxxx-01-01等格式
+            if (typeof y === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(y)) {
+              y = y.slice(0, 4);
+            }
+            // 新增：处理2017/01/01等格式
+            if (typeof y === 'string' && /^\d{4}[/\\-]\d{2}[/\\-]\d{2}$/.test(y)) {
+              y = y.slice(0, 4);
+            }
+            // 新增：处理20170101等格式
+            if (typeof y === 'string' && /^\d{8}$/.test(y)) {
+              y = y.slice(0, 4);
+            }
+            return {
+              ...item,
+              year: String(y)
+            };
+          }).sort((a, b) => parseInt(a.year) - parseInt(b.year));
+          this.historyData = sortedData;
+          this.lineDataSource = result.data.source || '';
+          this.lineRedisKey = result.data.redisKey || '';
 
-          const years = sortedData.map(item => item.year);
+          const years = sortedData.map(item => String(item.year));
           const data = sortedData.map(item => item.yield);
 
           // 检查是否符合预测条件：左侧<=2020且右侧==2023
@@ -579,8 +606,6 @@ export default {
             if (predictedValue > 0) {
               years.push('2024');
               data.push(predictedValue);
-
-              // 构建预测数据数组：前面为空，最后两个点为实际值和预测值
               predictionData = new Array(data.length - 2).fill('-')
                 .concat([data[data.length - 2], data[data.length - 1]]);
             }
@@ -601,7 +626,6 @@ export default {
               formatter: (params) => {
                 const dataPoint = Array.isArray(params) ? params[0] : params;
                 const year = dataPoint.name;
-                // 2024年显示预测提示
                 if (year === '2024') {
                   return `${year}年\n预测产量: ${dataPoint.value.toFixed(2)}万吨`;
                 }
@@ -704,7 +728,6 @@ export default {
       } finally {
         this.loading = false;
       }
-
       this.resizeLineChart();
     },
     resizeChinaMap() {
@@ -747,7 +770,7 @@ export default {
     },
     async fetchData() {
       try {
-        // 调用爬取数据的接口
+        // 调用���取数据的接口
         await this.crawlLatestData();
         // 确保页面不会初始化
         console.log('数据爬取成功，无需初始化页面');
@@ -769,12 +792,12 @@ export default {
       console.log('页面初始化完成');
     },
     formatYear(year) {
-      if (!year) return '';
-      // 处理带有日期格式的年份
-      if (typeof year === 'string') {
-        return year.split('-')[0];
+      if (typeof year === 'object' && year !== null) {
+        if ('year' in year) return String(year.year);
+        if ('value' in year) return String(year.value);
+        return JSON.stringify(year);
       }
-      return year.toString();
+      return String(year);
     }
   }
 };
@@ -1060,5 +1083,19 @@ export default {
 .trend-info.empty-panel i {
   font-size: 24px;
   margin-bottom: 8px;
+}
+
+/* Redis日志展示区样式 */
+.redis-log-bar {
+  margin-bottom: 16px;
+  padding: 8px 16px;
+  background: #f6faff;
+  border: 1px solid #dbeafe;
+  border-radius: 4px;
+  color: #2d8cf0;
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 </style>

@@ -66,6 +66,13 @@
         </el-card>
       </div>
     </div>
+    <div v-if="dataSource" style="color: #409EFF; font-weight: bold; margin-top: 10px;">当前数据来源：{{ dataSource }}</div>
+    <div v-if="redisKey" style="color: #67C23A; margin-top: 6px; word-break: break-all;">Redis Key: {{ redisKey }}</div>
+    <div v-if="redisValue" style="color: #909399; margin-top: 2px; word-break: break-all; max-width: 100%; white-space: pre-wrap;">Redis Value: {{ redisValue }}</div>
+    <div v-if="errorDetail" style="color: red; margin-top: 10px; white-space: pre-wrap;">
+      <strong>详细错误信息：</strong>
+      <div>{{ errorDetail }}</div>
+    </div>
   </div>
 </template>
 
@@ -87,6 +94,10 @@ export default {
       needRefresh: false,
       deviationChart: null, // 价格偏差图表实例
       averagePrice: 0, // 平均价格
+      errorDetail: '', // 新增：用于显示详细错误信息
+      dataSource: '', // 数据来源
+      redisKey: '',   // Redis的key
+      redisValue: '', // Redis的value
     }
   },
   // 组件被 keep-alive 缓存时调用
@@ -203,7 +214,39 @@ export default {
           const data = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
 
           // 1. 先处理原始数据
-          const rawData = data.data || [];
+          let rawData = (data.data && data.data.data) ? data.data.data : [];
+          // 兼容后端返回字符串或对象
+          if (typeof rawData === 'string') {
+            try {
+              rawData = JSON.parse(rawData);
+            } catch (e) {
+              this.$message.error('价格数据内容解析失败');
+              console.error('价格数据内容解析失败', e)
+              rawData = [];
+            }
+          }
+          if (!Array.isArray(rawData)) {
+            this.$message.error('价格数据格式异常，无法显示');
+            console.error('价格数据格式异常，data:', data, 'rawData:', rawData);
+            rawData = [];
+          }
+          if (rawData.length === 0) {
+            this.$message.warning('价格数据为空，文件路径已在日志中显示');
+            console.error('价格数据为空，文件路径已在日志中显示');
+            console.log('后端返回的data内容:', data);
+          }
+
+          // 数据来源弹窗提示
+          if (data.source) {
+            this.$message.success('数据来源：' + (data.source === 'redis' ? 'Redis缓存' : 'JSON文件'));
+            this.dataSource = data.source === 'redis' ? 'Redis缓存' : 'JSON文件';
+            this.redisKey = data.redisKey || (data.data && data.data.redisKey) || '';
+            this.redisValue = data.redisValue || (data.data && data.data.redisValue) || '';
+          } else {
+            this.dataSource = '';
+            this.redisKey = '';
+            this.redisValue = '';
+          }
 
           // 2. 计算平均价格
           const prices = rawData.map(item => parseFloat(item.价格));
@@ -254,6 +297,8 @@ export default {
       } catch (error) {
         console.error('获取价格数据出错：', error)
         this.$message.error('获取价格数据失败')
+        // 新增：将详细错误信息输出到页面下方
+        this.errorDetail = error && error.stack ? error.stack : (error && error.message ? error.message : String(error));
       } finally {
         this.loading = false
       }
@@ -354,7 +399,7 @@ export default {
         this.deviationChart.resize();
       });
     },
-    // 添加���口大小变化时更新图��的方法
+    // 添加窗口大小变化时更新图��的方法
     handleResize() {
       if (this.deviationChart) {
         this.deviationChart.resize();
@@ -463,7 +508,7 @@ export default {
 
 /* 优化按钮和选择器 */
 .el-select {
-  width: 120px;  /* 限制选择器宽度 */
+  width: 120px;  /* 限制选择器���度 */
 }
 
 .el-button--small {
@@ -479,4 +524,3 @@ export default {
   margin-right: 8px;
 }
 </style>
-

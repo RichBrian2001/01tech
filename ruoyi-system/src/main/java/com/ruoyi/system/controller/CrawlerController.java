@@ -6,8 +6,10 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,6 +25,9 @@ import java.util.Map;
 public class CrawlerController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(CrawlerController.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     // 更新作物配置
     private static final Map<String, String> CROPS = new HashMap<>();
@@ -56,6 +61,20 @@ public class CrawlerController extends BaseController {
             }
 
             String cropCode = CROPS.get(cropName);
+            String redisKey = "price_" + cropCode;
+            String content = stringRedisTemplate.opsForValue().get(redisKey);
+            if (content != null) {
+                Object jsonData = objectMapper.readTree(content);
+                logger.info("[getPriceData] - 从Redis读取{}价格数据, key={}, value={}", cropName, redisKey, content);
+                // 返回时带上数据来源和redis内容
+                Map<String, Object> result = new HashMap<>();
+                result.put("source", "redis");
+                result.put("data", jsonData);
+                result.put("redisKey", redisKey);
+                result.put("redisValue", content);
+                return AjaxResult.success("获取成功，数据来源：Redis", result);
+            }
+
             File priceFile = new File(PROJECT_ROOT, DATA_DIR + "/price_" + cropCode + ".json");
             logger.info("[getPriceData] - 尝试读取价格数据文件: {}", priceFile.getAbsolutePath());
 
@@ -64,11 +83,16 @@ public class CrawlerController extends BaseController {
                 return AjaxResult.error(cropName + "的价格数据文件不存在");
             }
 
-            String content = new String(Files.readAllBytes(priceFile.toPath()), StandardCharsets.UTF_8);
+            content = new String(Files.readAllBytes(priceFile.toPath()), StandardCharsets.UTF_8);
+            // 写入Redis缓存
+            stringRedisTemplate.opsForValue().set(redisKey, content);
             Object jsonData = objectMapper.readTree(content);
-            logger.info("[getPriceData] - 成功读取{}价格数据", cropName);
-
-            return AjaxResult.success("获取成功", jsonData);
+            logger.info("[getPriceData] - 成功读取{}价格数据并写入Redis", cropName);
+            // 返回时带上数据来源
+            Map<String, Object> result = new HashMap<>();
+            result.put("source", "json");
+            result.put("data", jsonData);
+            return AjaxResult.success("获取成功，数据来源：JSON文件", result);
         } catch (Exception e) {
             logger.error("[getPriceData] - 读取{}价格数据失败", cropName, e);
             return AjaxResult.error("读取价格数据失败: " + e.getMessage());
@@ -102,7 +126,6 @@ public class CrawlerController extends BaseController {
                 return AjaxResult.error("爬虫脚本文件不存在");
             }
 
-            // 确保data目录存在
             File dataDir = new File(PROJECT_ROOT, DATA_DIR);
             if (!dataDir.exists()) {
                 dataDir.mkdirs();
