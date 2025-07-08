@@ -304,7 +304,7 @@ export default {
       this.chinaMapChart = echarts.init(chartDom);
 
       try {
-        // 获取后端数据，传入当前选中的作物���年份
+        // 获取后端数据，传入当前选中的作物的年份
         console.log('请求地图数据:', this.crop, this.year);
         const result = await getYieldMapData(this.crop, this.year);
         console.log('地图数据返回:', result);
@@ -336,7 +336,7 @@ export default {
         tooltip: {
           show: true,
           formatter: params => {
-            return params.name + ': ' + (params.value || 0).toFixed(2) + '万��';
+            return params.name + ': ' + (params.value || 0).toFixed(2) + '万吨';
           }
         },
         visualMap: {
@@ -395,7 +395,7 @@ export default {
         const res = await getAverageYield(this.crop, this.year, province);
         if (res && res.code === 200 && res.data && res.data.length > 0) {
           this.provinceRadarData = res.data;
-          // 获取全国数据进行���比
+          // 获取全国数据进行对比
           const nationalRes = await getAverageYield(this.crop, this.year);
           if (nationalRes && nationalRes.code === 200 && nationalRes.data) {
             this.radarData = nationalRes.data;
@@ -500,8 +500,25 @@ export default {
       const option = {
         tooltip: {
           trigger: 'item',
+          // 悬停显示详细信息，位置调整到鼠标左下角
+          position: function (point, params, dom, rect, size) {
+            // point: 鼠标位置 [x, y]
+            // size: {contentSize: [w, h], viewSize: [vw, vh]}
+            const x = point[0] - size.contentSize[0] - 20;
+            const y = point[1] + 20;
+            return [Math.max(x, 0), Math.min(y, size.viewSize[1] - size.contentSize[1])];
+          },
           formatter: (params) => {
-            return `${params.name}<br/>${params.marker}${params.value.toFixed(2)}万吨`;
+            if (Array.isArray(params.value)) {
+              let tooltip = `${params.name}<br/>`;
+              (params.value || []).forEach((val, idx) => {
+                const indicator = indicators[idx];
+                tooltip += `${indicator.name}：${val.toFixed(2)} 万吨<br/>`;
+              });
+              return tooltip;
+            } else {
+              return `${params.name}<br/>${params.marker}${params.value.toFixed(2)} 万吨`;
+            }
           }
         },
         legend: {
@@ -770,7 +787,7 @@ export default {
     },
     async fetchData() {
       try {
-        // 调用���取数据的接口
+        // 调用读取数据的接口
         await this.crawlLatestData();
         // 确保页面不会初始化
         console.log('数据爬取成功，无需初始化页面');

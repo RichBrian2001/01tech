@@ -87,7 +87,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      // 初始化所���图表
+      // 初始化所有图表
       this.initCharts();
       this.loadData(this.selectedYear);
       window.addEventListener('resize', this.resizeCharts);
@@ -103,7 +103,7 @@ export default {
         this.cycleChart = echarts.init(cycleChartDom);
         this.cycleChart.setOption({
           title: {
-            text: '作物生��周期',
+            text: '作物生长周期',
             left: 'center'
           }
         });

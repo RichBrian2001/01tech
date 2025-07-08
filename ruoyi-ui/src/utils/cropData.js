@@ -92,7 +92,7 @@ export const cropRecommendations = {
   '谷子': {
     recommendMonths: '5-6月',
     suitableRegions: '北方旱地区域（内蒙古、山西）等地区',
-    description: '谷子适宜在晚��播种，主要在5-6月份进行。北方旱地区域降水较少，但谷子抗旱性强，适合在这些地区种植。'
+    description: '谷子适宜在晚春播种，主要在5-6月份进行。北方旱地区域降水较少，但谷子抗旱性强，适合在这些地区种植。'
   },
   '花生': {
     recommendMonths: '4-5月',
