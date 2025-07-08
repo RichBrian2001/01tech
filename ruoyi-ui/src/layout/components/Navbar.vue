@@ -2,6 +2,11 @@
   <div class="navbar">
     <!-- <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" /> -->
 
+    <div class="navbar-logo">
+      <img src="@/assets/logo/logo.png" alt="logo" class="logo-img" />
+      <div class="logo-text">01tech</div>
+    </div>
+
     <breadcrumb v-if="!topNav" id="breadcrumb-container" class="breadcrumb-container" />
     <top-nav v-if="topNav" id="topmenu-container" class="topmenu-container" />
 
@@ -83,7 +88,7 @@ export default {
   overflow: hidden;
   position: relative;
   background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 2px 8px var(--vp-c-shadow);
 
   // .hamburger-container {
   //   line-height: 46px;
@@ -102,6 +107,33 @@ export default {
     float: left;
   }
 
+  .navbar-logo {
+    float: left;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 200px;
+    padding-left: 16px;
+    margin-right: 16px;
+  }
+  .logo-img {
+    height: 38px;
+    width: 38px;
+    //margin-right: 8px;
+    margin-top: 2px;
+  }
+  .logo-text {
+    font-size: 18px;
+    font-weight: bold;
+    float: left;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-left: 16px;
+    margin-right: 16px;
+    color: #333;
+  }
+
   .topmenu-container {
     position: absolute;
     left: 50px;
@@ -116,6 +148,10 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
+    margin-right: 16px;
+
+
+    padding-top: 1px;
 
     &:focus {
       outline: none;
