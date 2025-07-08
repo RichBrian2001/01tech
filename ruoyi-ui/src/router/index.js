@@ -64,12 +64,12 @@ export const constantRoutes = [
   {
     path: '',
     component: Layout,
-    redirect: 'index',
+    redirect: '/in-index/myxindex',
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/index'),
-        name: 'Index',
+        path: '/in-index/myxindex',
+        component: () => import('@/views/in-index/myxindex'),
+        name: 'myxindex',
         meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
@@ -131,6 +131,21 @@ export const constantRoutes = [
         component: () => import('@/views/news/News'),
         name: 'News',
         meta: { title: '新闻', icon: 'chart' }
+      }
+    ]
+  }
+  ,
+  {
+    path: '/in-index',
+    component: Layout,
+    meta: { title: '首页', icon: 'chart' },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'myxindex',
+        component: () => import('@/views/in-index/myxindex'),
+        name: 'myxindex',
+        meta: { title: '首页', icon: 'chart' }
       }
     ]
   }

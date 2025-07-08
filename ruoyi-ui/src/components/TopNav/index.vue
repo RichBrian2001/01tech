@@ -167,6 +167,10 @@ export default {
 </script>
 
 <style lang="scss">
+.topmenu-container.el-menu--horizontal.el-menu {
+  padding-left: 26% !important;
+}
+
 .topmenu-container.el-menu--horizontal > .el-menu-item {
   float: left;
   height: 50px !important;
