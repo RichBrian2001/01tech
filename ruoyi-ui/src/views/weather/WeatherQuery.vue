@@ -121,7 +121,6 @@ export default {
     async getAISuggest() {
       if (!this.weather) return;
       this.aiSuggest = [];
-      // 只保留AI需要的字段
       const weatherData = {
         city: this.weather.city,
         weather: this.weather.weather,
@@ -131,15 +130,10 @@ export default {
         humidity: this.weather.humidity
       };
       try {
-        // POST天气数据给后端
         const res = await axios.post('/system/crawler/aiSuggest', weatherData);
-        console.log('AI推荐返回:', res.data.data); // 添加调试输出
-        if (res.data && res.data.code === 200) {
-          this.aiSuggest = Array.isArray(res.data.data) ? res.data.data : [];
-        } else {
-          this.aiSuggest = [];
-          this.$message.error(res.data.msg || 'AI推荐获取失败');
-        }
+        // 直接展示AI返回的纯文本
+        const aiText = res.data && res.data.msg ? res.data.msg : (res.data && res.data.data ? res.data.data : '');
+        this.aiSuggest = [{ crop: 'AI推荐', reason: aiText }];
       } catch (e) {
         this.aiSuggest = [];
         this.$message.error('AI推荐服务异常');

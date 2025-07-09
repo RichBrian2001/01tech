@@ -175,7 +175,7 @@ public class CrawlerController extends BaseController {
             if (weather == null || weather.isEmpty()) {
                 return AjaxResult.error("天气数据为空");
             }
-            String pyPath = "E:/GitPro/ruoyi-system/src/main/java/com/ruoyi/system/crawler/spark-lite.py";
+            String pyPath = "ruoyi-system/src/main/java/com/ruoyi/system/crawler/spark-lite.py";
             String weatherJson = objectMapper.writeValueAsString(weather);
             String encoded = java.net.URLEncoder.encode(weatherJson, java.nio.charset.StandardCharsets.UTF_8.name());
             ProcessBuilder pb = new ProcessBuilder("python", pyPath, encoded);
@@ -194,13 +194,14 @@ public class CrawlerController extends BaseController {
             // 新增：将Python输出转为List返回，保证前端拿到的是数组
             String result = output.toString().trim();
             System.out.println("AI原始输出: " + result);
-            Object data;
+            // 尝试将原始输出转为JSON对象返回，前端可直接用data字段
             try {
-                data = objectMapper.readValue(result, java.util.List.class);
-            } catch (Exception ex) {
-                data = new java.util.ArrayList<>();
+                Object json = objectMapper.readValue(result, Object.class);
+                return AjaxResult.success(json);
+            } catch (Exception e) {
+                // 如果不是标准JSON，直接返回字符串
+                return AjaxResult.success(result);
             }
-            return AjaxResult.success(data);
         } catch (Exception e) {
             logger.error("AI推荐异常", e);
             return AjaxResult.error("AI推荐异常: " + e.getMessage());
