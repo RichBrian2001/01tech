@@ -17,13 +17,13 @@ module.exports = {
   /**
    * 是否显示顶部导航
    */
-  topNav: false,
+  topNav: true,
 
   /**
    * 是否显示 tagsView
    */
-  tagsView: true,
-  
+  tagsView: false,
+
   /**
    * 显示页签图标
    */
