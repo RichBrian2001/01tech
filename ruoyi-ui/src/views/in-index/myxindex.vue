@@ -14,28 +14,25 @@
       </div>
     </div>
 
-    <!-- 功能介绍卡片 -->
-    <main class="flex-grow py-20 bg-gradient-to-br from-white to-gray-100">
-      <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-bold text-gray-800 mb-14 text-center tracking-wide">平台核心功能</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-          <div v-for="(feature, index) in features" :key="index" class="bg-white/90 rounded-[28px] p-10 text-center shadow-xl hover:shadow-2xl transform hover:-translate-y-2 transition-all border border-gray-100 flex flex-col items-center">
-            <div class="flex items-center justify-center mb-6 rounded-full bg-gradient-to-br from-green-100 to-green-300 w-20 h-20 shadow-lg">
-              <i :class="feature.icon" class="text-4xl text-green-600"></i>
-            </div>
-            <h3 class="text-2xl font-semibold text-gray-800 mb-3">{{ feature.title }}</h3>
-            <p class="text-gray-600 mb-6 text-base min-h-[56px]">{{ feature.description }}</p>
-            <a v-if="feature.link" :href="feature.link" class="inline-block px-6 py-2 bg-gradient-to-r from-green-500 to-green-400 text-white font-semibold rounded-full shadow hover:from-green-600 hover:to-green-500 transition-all duration-200">
-              了解更多
-            </a>
+    <!-- 功能介绍卡片（重写为div布局，两行两列） -->
+    <div class="features-section">
+      <h2 class="features-title">农业产品数据分析系统</h2>
+      <div class="features-grid">
+        <div v-for="(feature, index) in features" :key="index" class="feature-card" @click="goFeature(feature.link)">
+          <div class="feature-icon">
+            <i :class="feature.icon"></i>
+          </div>
+          <div class="feature-content">
+            <h3 class="feature-title">{{ feature.title }}</h3>
+            <p class="feature-desc">{{ feature.description }}</p>
           </div>
         </div>
       </div>
-    </main>
+    </div>
 
     <!-- 页脚 -->
-    <footer class="py-6 text-center bg-white/80 rounded-t-[32px] shadow-inner border-t border-gray-200 mt-10">
-      <p class="text-base text-gray-500 tracking-wide">© 2025 智慧农业平台 版权所有</p>
+    <footer class="py-6 text-center bg-white/80 rounded-t-[32px] shadow-inner border-t border-gray-200 mt-10" >
+      <p class="footer-text">© 2025 智慧农业平台 版权所有</p>
     </footer>
   </div>
 </template>
@@ -50,25 +47,25 @@ export default {
           title: '产地分析',
           description: '可视化展示全国各地主要农作物产地分布，助力科学选址与区域规划。',
           icon: 'el-icon-location',
-          link: '#/origin-analysis'
+          link: '/analysis/origin'
         },
         {
           title: '产量趋势',
           description: '多维度分析作物产量变化趋势，支持历史数据对比与预测。',
           icon: 'el-icon-data-analysis',
-          link: '#/yield-analysis'
+          link: '/analysis/yield'
         },
         {
           title: '价格监测',
           description: '实时监测农产品市场价格波动，辅助农户和企业决策。',
           icon: 'el-icon-money',
-          link: '#/price-analysis'
+          link: '/analysis/price'
         },
         {
           title: '农业资讯',
           description: '聚合最新农业政策、行业动态与技术资讯，助力信息获取。',
           icon: 'el-icon-news',
-          link: '#/news'
+          link: '/news/news'
         }
       ]
     }
@@ -83,6 +80,14 @@ export default {
         position: 'relative',
         overflow: 'hidden',
       };
+    }
+  },
+  methods: {
+    goFeature(link) {
+      if (link) {
+        // window.location.href = link;
+        this.$router.push(link);  //无刷新跳转
+      }
     }
   }
 }
@@ -114,8 +119,62 @@ html, body {
   letter-spacing: 1px;
 }
 
-.ltext{
-    font-family: 'Brush Script Std', 'Dancing Script', 'Pacifico', cursive;
+.features-section {
+  padding: 10px 0;
+  margin-bottom: 25vh;
+  text-align: center;
+}
 
+.features-title {
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.features-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 40px 80px;
+}
+
+.feature-card {
+  background: white;
+  border-radius: 16px;
+  width: 520px;
+  padding: 50px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.feature-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.feature-desc {
+  font-size: 14px;
+  color: #666;
+}
+
+.footer-text {
+  color: #aaa;
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin: 0;
 }
 </style>

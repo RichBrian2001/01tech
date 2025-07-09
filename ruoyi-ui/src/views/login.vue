@@ -56,7 +56,7 @@
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2025 ruoyi.vip All Rights Reserved.</span>
+      <span>© 2025 智慧农业平台 版权所有</span>
     </div>
   </div>
 </template>
@@ -65,6 +65,7 @@
 import { getCodeImg } from "@/api/login"
 import Cookies from "js-cookie"
 import { encrypt, decrypt } from '@/utils/jsencrypt'
+import index from "vuex";
 
 export default {
   name: "Login",
@@ -142,7 +143,7 @@ export default {
             Cookies.remove('rememberMe')
           }
           this.$store.dispatch("Login", this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || "/" }).catch(()=>{})
+            this.$router.push({ path: this.in-index || "/" }).catch(()=>{})
           }).catch(() => {
             this.loading = false
             if (this.captchaEnabled) {
