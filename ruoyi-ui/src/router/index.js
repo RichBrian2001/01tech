@@ -113,7 +113,7 @@ export const constantRoutes = [
         meta: {
           title: '作物价格分析',
           icon: 'money',
-          keepAlive: true,     // 启用组件缓存
+          keepAlive: true,     // 启���组件缓存
           noCache: false       // 允许缓存
         }
       }
@@ -160,6 +160,19 @@ export const constantRoutes = [
         component: () => import('@/views/in-index/myxindex'),
         name: 'myxindex',
         meta: { title: '首页', icon: 'chart' }
+      }
+    ]
+  }
+  ,
+  {
+    path: '/comment',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/comment/index'),
+        name: 'index',
+        meta: { title: '用户评论', icon: 'message' }
       }
     ]
   }
