@@ -138,14 +138,14 @@ export const constantRoutes = [
   {
     path: '/weather',
     component: Layout,
-    meta: { title: '实时天气', icon: 'cloud' },
+    meta: { title: '实时天气', icon: 'chart' },
     alwaysShow: true,
     children: [
       {
         path: 'query',
         component: () => import('@/views/weather/WeatherQuery'),
         name: 'WeatherQuery',
-        meta: { title: '天气数据查询', icon: 'cloudy' }
+        meta: { title: '天气数据查询', icon: 'search' }
       }
     ]
   },
