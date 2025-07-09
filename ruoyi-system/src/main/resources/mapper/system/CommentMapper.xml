@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 在原有内容基础上新增以下内容 -->
+<mapper namespace="com.ruoyi.system.mapper.CommentMapper">
+    <!-- 原有映射保持不变 -->
+
+    <!-- 新增评论功能映射 -->
+    <select id="selectCommentsByPostId" resultType="com.ruoyi.system.domain.Comment">
+        SELECT id, content, user_id AS userId, post_id AS postId, parent_id AS parentId, likes, created_at AS createdAt, updated_at AS updatedAt
+        FROM comment WHERE post_id = #{postId} ORDER BY created_at DESC
+    </select>
+
+    <select id="selectCommentById" parameterType="long" resultType="com.ruoyi.system.domain.Comment">
+        SELECT id, content, user_id AS userId, post_id AS postId, parent_id AS parentId, likes, created_at AS createdAt, updated_at AS updatedAt
+        FROM comment WHERE id = #{id}
+    </select>
+
+    <update id="likeComment" parameterType="long">
+        UPDATE comment SET likes = likes + 1 WHERE id = #{commentId}
+    </update>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO comment (content, user_id, post_id, parent_id, likes)
+        VALUES (#{content}, #{userId}, #{postId}, #{parentId}, #{likes})
+    </insert>
+</mapper>
