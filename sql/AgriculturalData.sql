@@ -1,7 +1,7 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : 01tech
+ Source Server         : agriculturaldata
  Source Server Type    : MySQL
  Source Server Version : 80042 (8.0.42)
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80042 (8.0.42)
  File Encoding         : 65001
 
- Date: 09/07/2025 10:03:23
+ Date: 09/07/2025 15:14:41
 */
 
 SET NAMES utf8mb4;
@@ -29,7 +29,7 @@ CREATE TABLE `average_yield`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_crop`(`crop` ASC) USING BTREE,
   INDEX `idx_year`(`year` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 305 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 305 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of average_yield
@@ -277,6 +277,55 @@ INSERT INTO `average_yield` VALUES (303, 'soybean', 2023, 49.7065);
 INSERT INTO `average_yield` VALUES (304, 'soybean', 2024, 16.2000);
 
 -- ----------------------------
+-- Table structure for comment
+-- ----------------------------
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE `comment`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `content` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint NOT NULL,
+  `post_id` bigint NOT NULL,
+  `parent_id` bigint NULL DEFAULT NULL,
+  `created_at` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `likes` int NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of comment
+-- ----------------------------
+INSERT INTO `comment` VALUES (1, '好厉害呀', 0, 12345, NULL, '2025-07-08 13:57:10', '2025-07-08 13:57:10', 0);
+INSERT INTO `comment` VALUES (2, '完美', 0, 12345, 1, '2025-07-08 13:57:17', '2025-07-08 13:57:17', 0);
+INSERT INTO `comment` VALUES (3, '我列个豆啊', 0, 12345, NULL, '2025-07-08 13:57:27', '2025-07-08 13:57:27', 0);
+INSERT INTO `comment` VALUES (4, '贺英洲是全世界最帅的，没有之一', 0, 12345, NULL, '2025-07-08 13:57:53', '2025-07-08 13:58:15', 0);
+INSERT INTO `comment` VALUES (5, '同意', 0, 12345, 4, '2025-07-08 13:57:58', '2025-07-08 13:57:58', 0);
+INSERT INTO `comment` VALUES (6, '我也同意', 0, 12345, 4, '2025-07-08 13:58:05', '2025-07-08 13:58:05', 0);
+INSERT INTO `comment` VALUES (7, '我列个豆啊', 0, 12345, NULL, '2025-07-09 11:47:16', '2025-07-09 11:47:16', 0);
+INSERT INTO `comment` VALUES (8, '111', 0, 12345, NULL, '2025-07-09 13:16:57', '2025-07-09 13:16:57', 0);
+INSERT INTO `comment` VALUES (9, '221', 0, 12345, NULL, '2025-07-09 13:17:01', '2025-07-09 13:17:01', 0);
+INSERT INTO `comment` VALUES (10, '我列个豆啊', 0, 12345, NULL, '2025-07-09 13:23:40', '2025-07-09 13:38:08', 6);
+INSERT INTO `comment` VALUES (11, '我去', 0, 12345, NULL, '2025-07-09 13:40:42', '2025-07-09 13:40:42', 0);
+INSERT INTO `comment` VALUES (12, '666', 0, 12345, 11, '2025-07-09 13:51:11', '2025-07-09 13:51:11', 0);
+INSERT INTO `comment` VALUES (13, '666', 0, 12345, 12, '2025-07-09 13:51:15', '2025-07-09 13:51:15', 0);
+INSERT INTO `comment` VALUES (14, '666', 0, 12345, 13, '2025-07-09 13:52:32', '2025-07-09 13:52:32', 0);
+INSERT INTO `comment` VALUES (15, '666', 0, 12345, 14, '2025-07-09 13:52:38', '2025-07-09 13:52:38', 0);
+INSERT INTO `comment` VALUES (16, '唉', 0, 12345, 15, '2025-07-09 13:53:06', '2025-07-09 13:53:06', 0);
+INSERT INTO `comment` VALUES (17, '666', 0, 12345, 16, '2025-07-09 13:53:09', '2025-07-09 13:53:09', 0);
+INSERT INTO `comment` VALUES (18, '66', 0, 12345, 17, '2025-07-09 13:55:58', '2025-07-09 13:55:58', 0);
+INSERT INTO `comment` VALUES (19, '666', 0, 12345, 18, '2025-07-09 13:57:38', '2025-07-09 13:57:38', 0);
+INSERT INTO `comment` VALUES (20, '为我\n', 0, 12345, 19, '2025-07-09 13:58:16', '2025-07-09 13:58:16', 0);
+INSERT INTO `comment` VALUES (21, '666', 0, 12345, 20, '2025-07-09 13:59:19', '2025-07-09 13:59:19', 0);
+INSERT INTO `comment` VALUES (22, '我去', 0, 12345, 21, '2025-07-09 13:59:42', '2025-07-09 13:59:42', 0);
+INSERT INTO `comment` VALUES (23, '我去\n', 0, 12345, 22, '2025-07-09 13:59:52', '2025-07-09 13:59:52', 0);
+INSERT INTO `comment` VALUES (24, '我列个都\n', 0, 12345, 23, '2025-07-09 14:00:52', '2025-07-09 14:00:52', 0);
+INSERT INTO `comment` VALUES (25, '666', 0, 12345, 24, '2025-07-09 14:02:35', '2025-07-09 14:02:35', 0);
+INSERT INTO `comment` VALUES (26, '无敌\n', 0, 12345, 25, '2025-07-09 14:02:59', '2025-07-09 14:07:50', 1);
+INSERT INTO `comment` VALUES (27, '牛逼', 0, 12345, 26, '2025-07-09 14:07:54', '2025-07-09 14:07:58', 2);
+INSERT INTO `comment` VALUES (28, '无敌', 0, 12345, 27, '2025-07-09 15:09:25', '2025-07-09 15:09:25', 0);
+INSERT INTO `comment` VALUES (29, '666', 0, 12345, NULL, '2025-07-09 15:13:56', '2025-07-09 15:13:56', 0);
+
+-- ----------------------------
 -- Table structure for corn_planting_area
 -- ----------------------------
 DROP TABLE IF EXISTS `corn_planting_area`;
@@ -289,7 +338,7 @@ CREATE TABLE `corn_planting_area`  (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_region_year`(`region` ASC, `year` ASC) USING BTREE COMMENT '地区和年份联合索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 737 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '玉米播种面积表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 737 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '玉米播种面积表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of corn_planting_area
@@ -1806,7 +1855,7 @@ CREATE TABLE `cotton_planting_area`  (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_region_year`(`region` ASC, `year` ASC) USING BTREE COMMENT '地区和年份联合索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 662 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '棉花播种面积表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 662 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '棉花播种面积表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cotton_planting_area
@@ -3262,7 +3311,7 @@ CREATE TABLE `gen_table`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`table_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '代码生成业务表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '代码生成业务表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gen_table
@@ -3296,7 +3345,7 @@ CREATE TABLE `gen_table_column`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`column_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gen_table_column
@@ -3316,7 +3365,7 @@ CREATE TABLE `millet_planting_area`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_region`(`region` ASC) USING BTREE,
   INDEX `idx_year`(`year` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 611 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '谷子播种面积统计表(分省年度数据)' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 611 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '谷子播种面积统计表(分省年度数据)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of millet_planting_area
@@ -4089,7 +4138,7 @@ CREATE TABLE `peanut_planting_area`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_region`(`region` ASC) USING BTREE,
   INDEX `idx_year`(`year` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 745 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花生播种面积统计表(分省年度数据)' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 745 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '花生播种面积统计表(分省年度数据)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of peanut_planting_area
@@ -5614,7 +5663,7 @@ CREATE TABLE `potato_planting_area`  (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_region_year`(`region` ASC, `year` ASC) USING BTREE COMMENT '地区和年份联合索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 638 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '马铃薯播种面积表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 638 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '马铃薯播种面积表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of potato_planting_area
@@ -7029,7 +7078,7 @@ CREATE TABLE `products`  (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '记录创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name`(`name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '农产品种类表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '农产品种类表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of products
@@ -8038,7 +8087,7 @@ CREATE TABLE `sorghum_planting_area`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_region`(`region` ASC) USING BTREE,
   INDEX `idx_year`(`year` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 659 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '高粱播种面积统计表(分省年度数据)' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 659 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '高粱播种面积统计表(分省年度数据)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sorghum_planting_area
@@ -9496,7 +9545,7 @@ CREATE TABLE `soybean_planting_area`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_region`(`region` ASC) USING BTREE,
   INDEX `idx_year`(`year` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 745 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '大豆播种面积统计表(分省年度数据)' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 745 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '大豆播种面积统计表(分省年度数据)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of soybean_planting_area
@@ -11022,7 +11071,7 @@ CREATE TABLE `sugarcane_planting_area`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_region`(`region` ASC) USING BTREE,
   INDEX `idx_year`(`year` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 612 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '甘蔗播种面积统计表(分省年度数据)' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 612 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '甘蔗播种面积统计表(分省年度数据)' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sugarcane_planting_area
@@ -12596,7 +12645,7 @@ CREATE TABLE `sys_job_log`  (
   `exception_info` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '异常信息',
   `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`job_log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '定时任务调度日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '定时任务调度日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_job_log
@@ -12619,7 +12668,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status` ASC) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 175 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 168 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '系统访问记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -12669,36 +12718,29 @@ INSERT INTO `sys_logininfor` VALUES (141, 'admin', '127.0.0.1', '内网IP', 'Chr
 INSERT INTO `sys_logininfor` VALUES (142, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-07 14:13:02');
 INSERT INTO `sys_logininfor` VALUES (143, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-08 09:37:54');
 INSERT INTO `sys_logininfor` VALUES (144, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-08 13:08:55');
-INSERT INTO `sys_logininfor` VALUES (145, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 08:55:09');
-INSERT INTO `sys_logininfor` VALUES (146, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 09:36:33');
-INSERT INTO `sys_logininfor` VALUES (147, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '1', '验证码错误', '2025-07-09 09:37:36');
-INSERT INTO `sys_logininfor` VALUES (148, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 09:37:38');
-INSERT INTO `sys_logininfor` VALUES (149, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 09:37:43');
-INSERT INTO `sys_logininfor` VALUES (150, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 09:38:00');
-INSERT INTO `sys_logininfor` VALUES (151, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 09:44:07');
-INSERT INTO `sys_logininfor` VALUES (152, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 09:44:31');
-INSERT INTO `sys_logininfor` VALUES (153, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 09:44:41');
-INSERT INTO `sys_logininfor` VALUES (154, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 09:44:44');
-INSERT INTO `sys_logininfor` VALUES (155, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 09:45:28');
-INSERT INTO `sys_logininfor` VALUES (156, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 09:45:35');
-INSERT INTO `sys_logininfor` VALUES (157, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 09:49:53');
-INSERT INTO `sys_logininfor` VALUES (158, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 09:50:11');
-INSERT INTO `sys_logininfor` VALUES (159, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 09:53:12');
-INSERT INTO `sys_logininfor` VALUES (160, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 09:53:14');
-INSERT INTO `sys_logininfor` VALUES (161, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 09:53:20');
-INSERT INTO `sys_logininfor` VALUES (162, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 09:53:22');
-INSERT INTO `sys_logininfor` VALUES (163, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 09:54:37');
-INSERT INTO `sys_logininfor` VALUES (164, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 09:54:40');
-INSERT INTO `sys_logininfor` VALUES (165, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 09:54:52');
-INSERT INTO `sys_logininfor` VALUES (166, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 09:54:54');
-INSERT INTO `sys_logininfor` VALUES (167, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 09:57:42');
-INSERT INTO `sys_logininfor` VALUES (168, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 09:57:54');
-INSERT INTO `sys_logininfor` VALUES (169, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 09:57:58');
-INSERT INTO `sys_logininfor` VALUES (170, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 09:58:20');
-INSERT INTO `sys_logininfor` VALUES (171, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 10:01:41');
-INSERT INTO `sys_logininfor` VALUES (172, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 10:01:45');
-INSERT INTO `sys_logininfor` VALUES (173, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 10:01:49');
-INSERT INTO `sys_logininfor` VALUES (174, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 10:01:52');
+INSERT INTO `sys_logininfor` VALUES (145, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-08 14:38:48');
+INSERT INTO `sys_logininfor` VALUES (146, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-08 15:07:22');
+INSERT INTO `sys_logininfor` VALUES (147, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 08:45:38');
+INSERT INTO `sys_logininfor` VALUES (148, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 09:59:17');
+INSERT INTO `sys_logininfor` VALUES (149, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 10:03:52');
+INSERT INTO `sys_logininfor` VALUES (150, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 10:23:46');
+INSERT INTO `sys_logininfor` VALUES (151, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 10:27:14');
+INSERT INTO `sys_logininfor` VALUES (152, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '1', '验证码错误', '2025-07-09 10:27:22');
+INSERT INTO `sys_logininfor` VALUES (153, '1', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '1', '验证码错误', '2025-07-09 10:27:26');
+INSERT INTO `sys_logininfor` VALUES (154, '1', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '1', '用户不存在/密码错误', '2025-07-09 10:27:31');
+INSERT INTO `sys_logininfor` VALUES (155, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 10:27:53');
+INSERT INTO `sys_logininfor` VALUES (156, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 10:29:02');
+INSERT INTO `sys_logininfor` VALUES (157, 'admi', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '1', '用户不存在/密码错误', '2025-07-09 10:29:09');
+INSERT INTO `sys_logininfor` VALUES (158, 'admi', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '1', '验证码错误', '2025-07-09 10:30:22');
+INSERT INTO `sys_logininfor` VALUES (159, 'admi', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '1', '验证码错误', '2025-07-09 10:30:28');
+INSERT INTO `sys_logininfor` VALUES (160, 'admi', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '1', '验证码错误', '2025-07-09 10:31:25');
+INSERT INTO `sys_logininfor` VALUES (161, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '1', '验证码错误', '2025-07-09 10:31:29');
+INSERT INTO `sys_logininfor` VALUES (162, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 10:31:34');
+INSERT INTO `sys_logininfor` VALUES (163, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '退出成功', '2025-07-09 10:34:59');
+INSERT INTO `sys_logininfor` VALUES (164, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 10:35:04');
+INSERT INTO `sys_logininfor` VALUES (165, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 11:41:34');
+INSERT INTO `sys_logininfor` VALUES (166, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 13:16:35');
+INSERT INTO `sys_logininfor` VALUES (167, 'admin', '127.0.0.1', '内网IP', 'Chrome 13', 'Windows 10', '0', '登录成功', '2025-07-09 15:04:04');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -12726,7 +12768,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2005 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2006 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '菜单权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -12819,8 +12861,9 @@ INSERT INTO `sys_menu` VALUES (1060, '生成代码', 116, 6, '#', '', '', '', 1,
 INSERT INTO `sys_menu` VALUES (2000, '产地分析', 0, 1, 'analysis/origin', NULL, NULL, '', 1, 0, 'C', '0', '0', '', 'international', 'admin', '2025-07-07 09:42:59', 'admin', '2025-07-07 09:43:56', '');
 INSERT INTO `sys_menu` VALUES (2001, '产量分析', 0, 2, 'analysis/yield', NULL, NULL, '', 1, 0, 'C', '0', '0', NULL, 'chart', 'admin', '2025-07-07 09:44:58', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (2002, '价格分析', 0, 3, 'analysis/price', NULL, NULL, '', 1, 0, 'C', '0', '0', NULL, 'money', 'admin', '2025-07-07 09:46:47', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2003, '农业新闻', 0, 4, 'news/news', NULL, NULL, '', 1, 0, 'C', '0', '0', NULL, 'monitor', 'admin', '2025-07-07 09:47:30', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2003, '农业新闻', 0, 4, 'news/news', NULL, NULL, '', 1, 0, 'C', '0', '0', '', 'monitor', 'admin', '2025-07-07 09:47:30', 'admin', '2025-07-08 14:57:40', '');
 INSERT INTO `sys_menu` VALUES (2004, '首页', 0, 0, 'in-index/myxindex', NULL, NULL, '', 1, 0, 'C', '0', '0', '', 'list', 'admin', '2025-07-07 10:12:01', 'admin', '2025-07-07 10:13:26', '');
+INSERT INTO `sys_menu` VALUES (2005, '用户评论', 0, 5, 'comment/index', NULL, NULL, '', 1, 0, 'C', '0', '0', '', 'edit', 'admin', '2025-07-08 13:51:02', 'admin', '2025-07-09 14:28:47', '');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -12872,7 +12915,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_sys_oper_log_bt`(`business_type` ASC) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status` ASC) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 126 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 136 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -12899,10 +12942,20 @@ INSERT INTO `sys_oper_log` VALUES (118, '菜单管理', 2, 'com.ruoyi.web.contro
 INSERT INTO `sys_oper_log` VALUES (119, '用户头像', 2, 'com.ruoyi.web.controller.system.SysProfileController.avatar()', 'POST', 1, 'admin', '研发部门', '/system/user/profile/avatar', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"imgUrl\":\"/profile/avatar/2025/07/08/4dc183b7336d479eb8f37092c2da64ca.jpg\",\"code\":200}', 0, NULL, '2025-07-08 10:34:19', 64);
 INSERT INTO `sys_oper_log` VALUES (120, '个人信息', 2, 'com.ruoyi.web.controller.system.SysProfileController.updateProfile()', 'PUT', 1, 'admin', '研发部门', '/system/user/profile', '127.0.0.1', '内网IP', '{\"admin\":false,\"email\":\"01@163.com\",\"nickName\":\"01Tech\",\"params\":{},\"phonenumber\":\"15888888888\",\"sex\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-08 10:34:21', 6);
 INSERT INTO `sys_oper_log` VALUES (121, '爬虫管理', 0, 'com.ruoyi.system.controller.CrawlerController.runCrawler()', 'POST', 1, 'admin', '研发部门', '/system/crawler/run/%E7%A8%BB%E8%B0%B7', '127.0.0.1', '内网IP', '\"稻谷\"', '{\"msg\":\"爬虫执行成功\",\"code\":200}', 0, NULL, '2025-07-08 10:46:52', 6892);
-INSERT INTO `sys_oper_log` VALUES (122, '用户头像', 2, 'com.ruoyi.web.controller.system.SysProfileController.avatar()', 'POST', 1, 'admin', '研发部门', '/system/user/profile/avatar', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"imgUrl\":\"/profile/avatar/2025/07/08/09bf71fb54e6498682f4a3fd52defce8.png\",\"code\":200}', 0, NULL, '2025-07-08 14:14:55', 120);
-INSERT INTO `sys_oper_log` VALUES (123, '用户头像', 2, 'com.ruoyi.web.controller.system.SysProfileController.avatar()', 'POST', 1, 'admin', '研发部门', '/system/user/profile/avatar', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"imgUrl\":\"/profile/avatar/2025/07/08/d126a9658e6442b3b9156f4fa705af0b.png\",\"code\":200}', 0, NULL, '2025-07-08 14:16:22', 9);
-INSERT INTO `sys_oper_log` VALUES (124, '用户头像', 2, 'com.ruoyi.web.controller.system.SysProfileController.avatar()', 'POST', 1, 'admin', '研发部门', '/system/user/profile/avatar', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"imgUrl\":\"/profile/avatar/2025/07/09/36ea48abd7a148cbb55e781407cc166f.JPG\",\"code\":200}', 0, NULL, '2025-07-09 09:33:11', 93);
-INSERT INTO `sys_oper_log` VALUES (125, '用户头像', 2, 'com.ruoyi.web.controller.system.SysProfileController.avatar()', 'POST', 1, 'admin', '研发部门', '/system/user/profile/avatar', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"imgUrl\":\"/profile/avatar/2025/07/09/84d611b723214944b85638d7efd35b11.JPG\",\"code\":200}', 0, NULL, '2025-07-09 09:57:18', 42);
+INSERT INTO `sys_oper_log` VALUES (122, '菜单管理', 1, 'com.ruoyi.web.controller.system.SysMenuController.add()', 'POST', 1, 'admin', '研发部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createBy\":\"admin\",\"icon\":\"edit\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"用户评论\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"l\",\"status\":\"0\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-08 13:51:02', 289);
+INSERT INTO `sys_oper_log` VALUES (123, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', '研发部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2025-07-08 13:51:02\",\"icon\":\"edit\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2005,\"menuName\":\"用户评论\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"comment/index\",\"perms\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-08 14:40:43', 26);
+INSERT INTO `sys_oper_log` VALUES (124, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', '研发部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2025-07-07 09:47:30\",\"icon\":\"monitor\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2003,\"menuName\":\"农业新闻\",\"menuType\":\"C\",\"orderNum\":4,\"params\":{},\"parentId\":0,\"path\":\"news/news\",\"perms\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-08 14:57:40', 52);
+INSERT INTO `sys_oper_log` VALUES (125, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', '研发部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2025-07-08 13:51:02\",\"icon\":\"edit\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2005,\"menuName\":\"用户评论\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"232p\",\"perms\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-08 14:58:31', 49);
+INSERT INTO `sys_oper_log` VALUES (126, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', '研发部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2025-07-08 13:51:02\",\"icon\":\"edit\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2005,\"menuName\":\"用户评论\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"comment/index\",\"perms\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-08 14:59:10', 37);
+INSERT INTO `sys_oper_log` VALUES (127, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', '研发部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2025-07-08 13:51:02\",\"icon\":\"edit\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2005,\"menuName\":\"用户评论\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"comment/index\",\"perms\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-08 15:04:11', 22);
+INSERT INTO `sys_oper_log` VALUES (128, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', '研发部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2025-07-08 13:51:02\",\"icon\":\"edit\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2005,\"menuName\":\"用户评论\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"system/comment\",\"perms\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-09 09:16:17', 45);
+INSERT INTO `sys_oper_log` VALUES (129, '爬虫管理', 0, 'com.ruoyi.system.controller.CrawlerController.runCrawler()', 'POST', 1, 'admin', '研发部门', '/system/crawler/run/%E7%94%98%E8%94%97', '127.0.0.1', '内网IP', '\"甘蔗\"', '{\"msg\":\"爬虫执行失败: Traceback (most recent call last):\\n  File \\\"E:\\\\shixun\\\\11111\\\\01tech\\\\ruoyi-system\\\\src\\\\main\\\\java\\\\com\\\\ruoyi\\\\system\\\\crawler\\\\search.py\\\", line 1, in <module>\\n    import requests\\nModuleNotFoundError: No module named \'requests\'\\n\",\"code\":500}', 0, NULL, '2025-07-09 10:52:33', 100);
+INSERT INTO `sys_oper_log` VALUES (130, '爬虫管理', 0, 'com.ruoyi.system.controller.CrawlerController.runCrawler()', 'POST', 1, 'admin', '研发部门', '/system/crawler/run/%E7%A8%BB%E8%B0%B7', '127.0.0.1', '内网IP', '\"稻谷\"', '{\"msg\":\"爬虫执行失败: Traceback (most recent call last):\\n  File \\\"E:\\\\shixun\\\\11111\\\\01tech\\\\ruoyi-system\\\\src\\\\main\\\\java\\\\com\\\\ruoyi\\\\system\\\\crawler\\\\search.py\\\", line 1, in <module>\\n    import requests\\nModuleNotFoundError: No module named \'requests\'\\n\",\"code\":500}', 0, NULL, '2025-07-09 10:53:57', 89);
+INSERT INTO `sys_oper_log` VALUES (131, '爬虫管理', 0, 'com.ruoyi.system.controller.CrawlerController.runCrawler()', 'POST', 1, 'admin', '研发部门', '/system/crawler/run/%E7%A8%BB%E8%B0%B7', '127.0.0.1', '内网IP', '\"稻谷\"', '{\"msg\":\"爬虫执行失败: Traceback (most recent call last):\\n  File \\\"E:\\\\shixun\\\\11111\\\\01tech\\\\ruoyi-system\\\\src\\\\main\\\\java\\\\com\\\\ruoyi\\\\system\\\\crawler\\\\search.py\\\", line 1, in <module>\\n    import requests\\nModuleNotFoundError: No module named \'requests\'\\n\",\"code\":500}', 0, NULL, '2025-07-09 10:54:37', 87);
+INSERT INTO `sys_oper_log` VALUES (132, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', '研发部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2025-07-08 13:51:02\",\"icon\":\"edit\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2005,\"menuName\":\"用户评论\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"/comment\",\"perms\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-09 11:44:04', 18);
+INSERT INTO `sys_oper_log` VALUES (133, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', '研发部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2025-07-08 13:51:02\",\"icon\":\"edit\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2005,\"menuName\":\"用户评论\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"/comment/index\",\"perms\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-09 11:44:31', 8);
+INSERT INTO `sys_oper_log` VALUES (134, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', '研发部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2025-07-08 13:51:02\",\"icon\":\"edit\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2005,\"menuName\":\"用户评论\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"comment/index\",\"perms\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-09 11:44:45', 16);
+INSERT INTO `sys_oper_log` VALUES (135, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', '研发部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2025-07-08 13:51:02\",\"icon\":\"edit\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2005,\"menuName\":\"用户评论\",\"menuType\":\"C\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"comment/index\",\"perms\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-09 14:28:47', 72);
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -13105,7 +13158,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '01Tech', '00', '01@163.com', '15888888888', '0', '/profile/avatar/2025/07/09/84d611b723214944b85638d7efd35b11.JPG', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-07-09 10:01:53', '2025-06-27 14:50:21', 'admin', '2025-06-27 14:50:21', '', '2025-07-09 10:01:52', '管理员');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '01Tech', '00', '01@163.com', '15888888888', '0', '/profile/avatar/2025/07/08/4dc183b7336d479eb8f37092c2da64ca.jpg', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-07-09 15:04:04', '2025-06-27 14:50:21', 'admin', '2025-06-27 14:50:21', '', '2025-07-09 15:04:04', '管理员');
 INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-06-27 14:50:21', '2025-06-27 14:50:21', 'admin', '2025-06-27 14:50:21', '', NULL, '测试员');
 
 -- ----------------------------
@@ -13153,7 +13206,7 @@ CREATE TABLE `tobacco_planting_area`  (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_region_year`(`region` ASC, `year` ASC) USING BTREE COMMENT '地区和年份联合索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 708 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '烟叶播种面积表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 708 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '烟叶播种面积表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of tobacco_planting_area
@@ -14641,7 +14694,7 @@ CREATE TABLE `wheat_planting_area`  (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_region_year`(`region` ASC, `year` ASC) USING BTREE COMMENT '地区和年份联合索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 734 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '小麦播种面积表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 734 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '小麦播种面积表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of wheat_planting_area
