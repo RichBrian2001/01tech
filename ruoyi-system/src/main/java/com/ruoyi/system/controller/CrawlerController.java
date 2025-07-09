@@ -165,4 +165,45 @@ public class CrawlerController extends BaseController {
             return AjaxResult.error("运行爬虫脚本失败: " + e.getMessage());
         }
     }
+
+    /**
+     * AI农业推荐接口，接收天气JSON，调用spark-lite.py获取智能推荐
+     */
+    @PostMapping("/aiSuggest")
+    public AjaxResult getAISuggest(@RequestBody Map<String, Object> weather) {
+        try {
+            if (weather == null || weather.isEmpty()) {
+                return AjaxResult.error("天气数据为空");
+            }
+            String pyPath = "E:/GitPro/ruoyi-system/src/main/java/com/ruoyi/system/crawler/spark-lite.py";
+            String weatherJson = objectMapper.writeValueAsString(weather);
+            String encoded = java.net.URLEncoder.encode(weatherJson, java.nio.charset.StandardCharsets.UTF_8.name());
+            ProcessBuilder pb = new ProcessBuilder("python", pyPath, encoded);
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+            StringBuilder output = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append("\n");
+            }
+            int exitCode = process.waitFor();
+            if (exitCode != 0) {
+                return AjaxResult.error("AI推荐服务异常: " + output.toString().trim());
+            }
+            // 新增：将Python输出转为List返回，保证前端拿到的是数组
+            String result = output.toString().trim();
+            System.out.println("AI原始输出: " + result);
+            Object data;
+            try {
+                data = objectMapper.readValue(result, java.util.List.class);
+            } catch (Exception ex) {
+                data = new java.util.ArrayList<>();
+            }
+            return AjaxResult.success(data);
+        } catch (Exception e) {
+            logger.error("AI推荐异常", e);
+            return AjaxResult.error("AI推荐异常: " + e.getMessage());
+        }
+    }
 }

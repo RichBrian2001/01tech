@@ -136,6 +136,20 @@ export const constantRoutes = [
   }
   ,
   {
+    path: '/weather',
+    component: Layout,
+    meta: { title: '实时天气', icon: 'cloud' },
+    alwaysShow: true,
+    children: [
+      {
+        path: 'query',
+        component: () => import('@/views/weather/WeatherQuery'),
+        name: 'WeatherQuery',
+        meta: { title: '天气数据查询', icon: 'cloudy' }
+      }
+    ]
+  },
+  {
     path: '/in-index',
     component: Layout,
     meta: { title: '首页', icon: 'chart' },
