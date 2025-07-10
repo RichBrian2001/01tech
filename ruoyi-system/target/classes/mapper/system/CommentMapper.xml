@@ -8,6 +8,7 @@
 
     <!-- 新增评论功能映射 -->
     <select id="selectCommentsByPostId" resultType="com.ruoyi.system.domain.Comment">
+<<<<<<< HEAD
         SELECT id, content, user_id AS userId, post_id AS postId, parent_id AS parentId, likes, created_at AS createdAt, updated_at AS updatedAt
         FROM comment WHERE post_id = #{postId} ORDER BY created_at DESC
     </select>
@@ -15,6 +16,19 @@
     <select id="selectCommentById" parameterType="long" resultType="com.ruoyi.system.domain.Comment">
         SELECT id, content, user_id AS userId, post_id AS postId, parent_id AS parentId, likes, created_at AS createdAt, updated_at AS updatedAt
         FROM comment WHERE id = #{id}
+=======
+        SELECT c.id, c.content, c.user_id AS userId, u.nick_name AS nickname, u.avatar AS avatar, c.post_id AS postId, c.parent_id AS parentId, c.likes, c.created_at AS createdAt, c.updated_at AS updatedAt
+        FROM comment c
+        LEFT JOIN sys_user u ON c.user_id = u.user_id
+        WHERE c.post_id = #{postId} ORDER BY c.created_at DESC
+    </select>
+
+    <select id="selectCommentById" parameterType="long" resultType="com.ruoyi.system.domain.Comment">
+        SELECT c.id, c.content, c.user_id AS userId, u.nick_name AS nickname, u.avatar AS avatar, c.post_id AS postId, c.parent_id AS parentId, c.likes, c.created_at AS createdAt, c.updated_at AS updatedAt
+        FROM comment c
+        LEFT JOIN sys_user u ON c.user_id = u.user_id
+        WHERE c.id = #{id}
+>>>>>>> 2751631524fb163253db82ea453139a971a96959
     </select>
 
     <update id="likeComment" parameterType="long">
