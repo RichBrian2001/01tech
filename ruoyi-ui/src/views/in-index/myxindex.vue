@@ -27,6 +27,26 @@
             <p class="feature-desc">{{ feature.description }}</p>
           </div>
         </div>
+        <!-- 新增：天气查询卡片 -->
+        <div class="feature-card" @click="goFeature('/weather/query')">
+          <div class="feature-icon">
+            <i class="el-icon-sunny"></i>
+          </div>
+          <div class="feature-content">
+            <h3 class="feature-title">天气查询</h3>
+            <p class="feature-desc">实时获取城市天气信息，AI智能推荐适宜农作物。</p>
+          </div>
+        </div>
+        <!-- 新增：评论互动卡片 -->
+        <div class="feature-card" @click="goFeature('/comment/index')">
+          <div class="feature-icon">
+            <i class="el-icon-chat-dot-square"></i>
+          </div>
+          <div class="feature-content">
+            <h3 class="feature-title">评论互动</h3>
+            <p class="feature-desc">畅所欲言，参与农业话题评论与互动。</p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -121,7 +141,7 @@ html, body {
 
 .features-section {
   padding: 10px 0;
-  margin-bottom: 25vh;
+  margin-bottom: 13vh;
   text-align: center;
 }
 
