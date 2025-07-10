@@ -43,12 +43,6 @@
             <span class="like-btn" @click="handleLike(reply)" :class="{ liked: reply.liked }">
               👍 <span>{{ reply.likeCount || reply.likes || 0 }}</span>
             </span>
-            <span class="reply-btn" @click="showReplyBox(reply.id)">回复</span>
-            <div v-if="replyBoxVisible && replyTargetId === reply.id" class="reply-box">
-              <textarea v-model="replyContent" placeholder="回复评论..." />
-              <button @click="submitReply(reply.id)">提交回复</button>
-              <button class="cancel-btn" @click="cancelReply">取消</button>
-            </div>
           </div>
         </div>
       </div>

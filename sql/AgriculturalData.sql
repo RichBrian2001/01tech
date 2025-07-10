@@ -11,7 +11,7 @@
  Target Server Version : 80042 (8.0.42)
  File Encoding         : 65001
 
- Date: 10/07/2025 09:58:30
+ Date: 10/07/2025 10:29:24
 */
 
 SET NAMES utf8mb4;
@@ -290,7 +290,7 @@ CREATE TABLE `comment`  (
   `updated_at` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `likes` int NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 66 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 74 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of comment
@@ -360,6 +360,14 @@ INSERT INTO `comment` VALUES (62, '222', 1, 12345, 34, '2025-07-10 09:43:45', '2
 INSERT INTO `comment` VALUES (63, '111', 1, 12345, 56, '2025-07-10 09:54:14', '2025-07-10 09:54:14', 0);
 INSERT INTO `comment` VALUES (64, '111', 1, 12345, 56, '2025-07-10 09:54:16', '2025-07-10 09:54:16', 0);
 INSERT INTO `comment` VALUES (65, '111', 1, 12345, 2, '2025-07-10 09:57:01', '2025-07-10 09:57:01', 0);
+INSERT INTO `comment` VALUES (66, '11', 1, 12345, 56, '2025-07-10 10:12:38', '2025-07-10 10:12:38', 0);
+INSERT INTO `comment` VALUES (67, '222', 1, 12345, 56, '2025-07-10 10:12:41', '2025-07-10 10:12:41', 0);
+INSERT INTO `comment` VALUES (68, '222', 1, 12345, 2, '2025-07-10 10:16:33', '2025-07-10 10:16:33', 0);
+INSERT INTO `comment` VALUES (69, '222', 1, 12345, 2, '2025-07-10 10:16:36', '2025-07-10 10:16:36', 0);
+INSERT INTO `comment` VALUES (70, '111', 1, 12345, 56, '2025-07-10 10:22:19', '2025-07-10 10:22:19', 0);
+INSERT INTO `comment` VALUES (71, '1', 1, 12345, 2, '2025-07-10 10:27:27', '2025-07-10 10:27:27', 0);
+INSERT INTO `comment` VALUES (72, '666', 1, 12345, 42, '2025-07-10 10:28:49', '2025-07-10 10:28:49', 0);
+INSERT INTO `comment` VALUES (73, '111', 1, 12345, 42, '2025-07-10 10:28:52', '2025-07-10 10:28:52', 0);
 
 -- ----------------------------
 -- Table structure for corn_planting_area
