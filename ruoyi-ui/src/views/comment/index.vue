@@ -162,22 +162,22 @@ export default {
 }
 .comment-input {
   margin-bottom: 30px;
-  background: #ffe4ec; /* 粉色 */
+  background: #D3D3D3; /* 蓝色 */
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
   padding: 24px 24px 16px 24px;
-  border: 1px solid #f8b6d2;
+  border: 1px solid #fff; /* 改为白色边框 */
 }
 .comment-input textarea {
   width: 100%;
   height: 100px;
   padding: 14px;
   font-size: 16px;
-  border: 1px solid #ddd;
+  border: 1px solid #fff; /* 改为白色边框 */
   border-radius: 6px;
   resize: vertical;
   margin-bottom: 10px;
-  background: #fff0f6;
+  background: #fff;
 }
 .comment-input button {
   background-color: #409eff;
@@ -198,7 +198,7 @@ export default {
   max-height: 600px;
   min-height: 300px;
   overflow-y: auto;
-  background: #e6f0ff; /* 蓝色 */
+  background: #D3D3D3; /* 蓝色 */
   border-radius: 8px;
   border: 1px solid #b3d1ff;
   padding: 24px;

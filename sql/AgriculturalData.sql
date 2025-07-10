@@ -1,7 +1,7 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : 01tech
+ Source Server         : agriculturaldata
  Source Server Type    : MySQL
  Source Server Version : 80042 (8.0.42)
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80042 (8.0.42)
  File Encoding         : 65001
 
- Date: 10/07/2025 13:45:48
+ Date: 10/07/2025 13:56:31
 */
 
 SET NAMES utf8mb4;
@@ -290,7 +290,7 @@ CREATE TABLE `comment`  (
   `updated_at` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `likes` int NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of comment
@@ -330,6 +330,8 @@ INSERT INTO `comment` VALUES (32, '直接进数据库吗 数据库怎么同步�
 INSERT INTO `comment` VALUES (33, '32', 1, 12345, NULL, '2025-07-10 13:25:24', '2025-07-10 13:25:24', 0);
 INSERT INTO `comment` VALUES (34, '2', 1, 12345, NULL, '2025-07-10 13:25:27', '2025-07-10 13:25:27', 0);
 INSERT INTO `comment` VALUES (35, '323', 1, 12345, NULL, '2025-07-10 13:27:43', '2025-07-10 13:27:43', 0);
+INSERT INTO `comment` VALUES (36, '11', 1, 12345, NULL, '2025-07-10 13:52:25', '2025-07-10 13:52:25', 0);
+INSERT INTO `comment` VALUES (37, '111', 1, 12345, NULL, '2025-07-10 13:52:55', '2025-07-10 13:52:55', 0);
 
 -- ----------------------------
 -- Table structure for corn_planting_area
@@ -12928,7 +12930,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_sys_oper_log_bt`(`business_type` ASC) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status` ASC) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 141 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 145 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '操作日志记录' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -12974,6 +12976,10 @@ INSERT INTO `sys_oper_log` VALUES (137, '菜单管理', 2, 'com.ruoyi.web.contro
 INSERT INTO `sys_oper_log` VALUES (138, '爬虫管理', 0, 'com.ruoyi.system.controller.CrawlerController.runCrawler()', 'POST', 1, 'admin', '研发部门', '/system/crawler/run/%E7%94%98%E8%94%97', '127.0.0.1', '内网IP', '\"甘蔗\"', '{\"msg\":\"爬虫执行成功\",\"code\":200}', 0, NULL, '2025-07-09 15:43:01', 5598);
 INSERT INTO `sys_oper_log` VALUES (139, '用户头像', 2, 'com.ruoyi.web.controller.system.SysProfileController.avatar()', 'POST', 1, 'admin', '研发部门', '/system/user/profile/avatar', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"imgUrl\":\"/profile/avatar/2025/07/09/d18b58efad1c42ebb70fa5b570fe68d7.jpg\",\"code\":200}', 0, NULL, '2025-07-09 15:54:43', 67);
 INSERT INTO `sys_oper_log` VALUES (140, '菜单管理', 2, 'com.ruoyi.web.controller.system.SysMenuController.edit()', 'PUT', 1, 'admin', '研发部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createTime\":\"2025-06-27 14:50:21\",\"icon\":\"system\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1,\"menuName\":\"系统管理\",\"menuType\":\"M\",\"orderNum\":6,\"params\":{},\"parentId\":0,\"path\":\"system\",\"perms\":\"\",\"query\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"1\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-10 13:44:57', 9);
+INSERT INTO `sys_oper_log` VALUES (141, '爬虫管理', 0, 'com.ruoyi.system.controller.CrawlerController.runCrawler()', 'POST', 1, 'admin', '研发部门', '/system/crawler/run/%E7%A8%BB%E8%B0%B7', '127.0.0.1', '内网IP', '\"稻谷\"', '{\"msg\":\"爬虫执行失败: Traceback (most recent call last):\\n  File \\\"E:\\\\shixun\\\\11111\\\\01tech\\\\ruoyi-system\\\\src\\\\main\\\\java\\\\com\\\\ruoyi\\\\system\\\\crawler\\\\search.py\\\", line 2, in <module>\\n    from bs4 import BeautifulSoup\\nModuleNotFoundError: No module named \'bs4\'\\n\",\"code\":500}', 0, NULL, '2025-07-10 13:51:37', 483);
+INSERT INTO `sys_oper_log` VALUES (142, '爬虫管理', 0, 'com.ruoyi.system.controller.CrawlerController.runCrawler()', 'POST', 1, 'admin', '研发部门', '/system/crawler/run/%E7%A8%BB%E8%B0%B7', '127.0.0.1', '内网IP', '\"稻谷\"', '{\"msg\":\"爬虫执行失败: Traceback (most recent call last):\\n  File \\\"E:\\\\shixun\\\\11111\\\\01tech\\\\ruoyi-system\\\\src\\\\main\\\\java\\\\com\\\\ruoyi\\\\system\\\\crawler\\\\search.py\\\", line 2, in <module>\\n    from bs4 import BeautifulSoup\\nModuleNotFoundError: No module named \'bs4\'\\n\",\"code\":500}', 0, NULL, '2025-07-10 13:51:40', 496);
+INSERT INTO `sys_oper_log` VALUES (143, '用户头像', 2, 'com.ruoyi.web.controller.system.SysProfileController.avatar()', 'POST', 1, 'admin', '研发部门', '/system/user/profile/avatar', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"imgUrl\":\"/profile/avatar/2025/07/10/fd9b3b06af8d4325b430970afe06e7ea.png\",\"code\":200}', 0, NULL, '2025-07-10 13:52:48', 63);
+INSERT INTO `sys_oper_log` VALUES (144, '个人信息', 2, 'com.ruoyi.web.controller.system.SysProfileController.updateProfile()', 'PUT', 1, 'admin', '研发部门', '/system/user/profile', '127.0.0.1', '内网IP', '{\"admin\":false,\"email\":\"01@163.com\",\"nickName\":\"zx\",\"params\":{},\"phonenumber\":\"15888888888\",\"sex\":\"0\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2025-07-10 13:52:50', 15);
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -13176,7 +13182,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '01Tech', '00', '01@163.com', '15888888888', '0', '/profile/avatar/2025/07/09/d18b58efad1c42ebb70fa5b570fe68d7.jpg', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-07-10 13:40:33', '2025-06-27 14:50:21', 'admin', '2025-06-27 14:50:21', '', '2025-07-10 13:40:32', '管理员');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', 'zx', '00', '01@163.com', '15888888888', '0', '/profile/avatar/2025/07/10/fd9b3b06af8d4325b430970afe06e7ea.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-07-10 08:38:44', '2025-06-27 14:50:21', 'admin', '2025-06-27 14:50:21', '', '2025-07-10 13:52:50', '管理员');
 INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2025-06-27 14:50:21', '2025-06-27 14:50:21', 'admin', '2025-06-27 14:50:21', '', NULL, '测试员');
 
 -- ----------------------------
