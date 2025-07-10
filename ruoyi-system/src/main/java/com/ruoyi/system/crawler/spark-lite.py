@@ -15,7 +15,8 @@ SPARKAI_API_KEY = '0c918d5382ead7c3c9be9fd8ed076205'
 SPARKAI_DOMAIN = 'lite'
 
 def build_prompt(weather):
-    return f"当前城市：{weather['city']}，天气：{weather['weather']}，温度：{weather['temperature']}℃，风向：{weather['winddirection']}，风力：{weather['windpower']}，湿度：{weather['humidity']}。请根据这些信息，推荐此城市在此天气下适宜种植的农作物，并说明原因。"
+    return (f"当前城市：{weather['city']}，天气：{weather['weather']}，温度：{weather['temperature']}℃，风向：{weather['winddirection']}，"
+            f"风力：{weather['windpower']}，湿度：{weather['humidity']}。请根据这些信息，推荐此城市在此天气下适宜种植的农作物，并说明原因。")
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
@@ -42,6 +43,5 @@ if __name__ == '__main__':
     )]
     result = spark.generate([messages])
     raw_text = result.generations[0][0].text.strip()
-    # 直接输出原始文本为reason字段，不再做作物/原因结构化
-    suggestions = [{"crop": "AI推荐", "reason": raw_text}]
-    print(json.dumps(suggestions, ensure_ascii=False))
+    # 只输出AI回答的文本
+    print(raw_text)

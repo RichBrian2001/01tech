@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ public class PlantingDataController extends BaseController {
      */
     @GetMapping("/data/{year}")
     public AjaxResult getPlantingDataByYear(@PathVariable Integer year) {
-        List<PlantingData> list = plantingDataService.getPlantingDataByYear(year);
-        return AjaxResult.success(list);
+        Map<String, Object> result = plantingDataService.getPlantingDataByYear(year);
+        return AjaxResult.success(result);
     }
 }
