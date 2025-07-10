@@ -62,11 +62,22 @@ public class CrawlerController extends BaseController {
 
             String cropCode = CROPS.get(cropName);
             String redisKey = "price_" + cropCode;
+            String redisTimeKey = redisKey + ":mtime";
+            File priceFile = new File(PROJECT_ROOT, DATA_DIR + "/price_" + cropCode + ".json");
+            long fileMTime = priceFile.exists() ? priceFile.lastModified() : 0L;
+            String redisMTimeStr = stringRedisTemplate.opsForValue().get(redisTimeKey);
+            long redisMTime = 0L;
+            if (redisMTimeStr != null) {
+                try {
+                    redisMTime = Long.parseLong(redisMTimeStr);
+                } catch (NumberFormatException ignore) {}
+            }
             String content = stringRedisTemplate.opsForValue().get(redisKey);
-            if (content != null) {
+            logger.info("[getPriceData] - 文件路径: {}，文件mtime: {}，Redis mtime: {}", priceFile.getAbsolutePath(), fileMTime, redisMTime);
+            // 如果redis有缓存且mtime一致，直接返回redis
+            if (content != null && fileMTime == redisMTime) {
                 Object jsonData = objectMapper.readTree(content);
                 logger.info("[getPriceData] - 从Redis读取{}价格数据, key={}, value={}", cropName, redisKey, content);
-                // 返回时带上数据来源和redis内容
                 Map<String, Object> result = new HashMap<>();
                 result.put("source", "redis");
                 result.put("data", jsonData);
@@ -74,21 +85,17 @@ public class CrawlerController extends BaseController {
                 result.put("redisValue", content);
                 return AjaxResult.success("获取成功，数据来源：Redis", result);
             }
-
-            File priceFile = new File(PROJECT_ROOT, DATA_DIR + "/price_" + cropCode + ".json");
-            logger.info("[getPriceData] - 尝试读取价格数据文件: {}", priceFile.getAbsolutePath());
-
+            // 否则读取文件并刷新redis
             if (!priceFile.exists()) {
                 logger.error("[getPriceData] - 价格数据文件不存在: {}", priceFile.getAbsolutePath());
                 return AjaxResult.error(cropName + "的价格数据文件不存在");
             }
-
             content = new String(Files.readAllBytes(priceFile.toPath()), StandardCharsets.UTF_8);
-            // 写入Redis缓存
             stringRedisTemplate.opsForValue().set(redisKey, content);
+            stringRedisTemplate.opsForValue().set(redisTimeKey, String.valueOf(fileMTime));
+            logger.info("[getPriceData] - 已写入Redis: key={}, mtime={}, 内容前100字: {}", redisKey, fileMTime, content.substring(0, Math.min(100, content.length())));
             Object jsonData = objectMapper.readTree(content);
             logger.info("[getPriceData] - 成功读取{}价格数据并写入Redis", cropName);
-            // 返回时带上数据来源
             Map<String, Object> result = new HashMap<>();
             result.put("source", "json");
             result.put("data", jsonData);

@@ -9,8 +9,6 @@ export default {
         news1: [],
         news2: [],
         news3: [],
-        // news4: [],
-        // news5: [],
         newsPic: [],
         newsPic_left: [],
         newsPic_right: []
@@ -22,7 +20,7 @@ export default {
       leftSlideIndex: 0,
       leftSlideInterval: null,
       showLeftSlider: true,
-      boxTitles: ['要闻速览', '惠农政策', '各地动态'/*, '农业科技', '聚焦杨凌'*/],
+      boxTitles: ['要闻速览', '惠农政策', '各地动态'],
       focus: {
         visible: false,
         title: '',
@@ -42,11 +40,6 @@ export default {
         const response3 = await getNews3();
         this.newsData.news3 = response3 || [];
 
-        // const response4 = await getNews4();
-        // this.newsData.news4 = response4 || [];
-
-        // const response5 = await getNews5();
-        // this.newsData.news5 = response5 || [];
 
         const responsePic = await getNewsPic();
         const allPics = responsePic || [];

@@ -17,14 +17,15 @@ export function getComments() {
 /**
  * 添加评论
  * @param {string} content - 评论内容
+ * @param {number|string} userId - 用户ID
  */
-export function addComment(content) {
+export function addComment(content, userId) {
   return request({
     url: '/system/comment/add',
     method: 'post',
     data: {
       content,
-      userId: null, // 明确传null，后端可自动处理
+      userId, // 传递用户id
       postId: 12345  // 强制传12345，保证能查到
     }
   }).catch(error => {
@@ -37,15 +38,16 @@ export function addComment(content) {
  * 添加回复
  * @param {string} content - 回复内容
  * @param {number|string} parentId - 父评论ID
+ * @param {number|string} userId - 用户ID
  */
-export function addReply(content, parentId) {
+export function addReply(content, parentId, userId) {
   return request({
     url: '/system/comment/reply',
     method: 'post',
     data: {
       content,
       parentId,
-      userId: null, // 明确传null
+      userId, // 传递用户id
       postId: 12345 // 强制传12345
     }
   }).catch(error => {
