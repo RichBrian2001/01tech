@@ -48,6 +48,10 @@
         <h2>AI推荐</h2>
         <p>AI将根据天气数据为您推荐适宜种植的农作物。</p>
       </div>
+      <div v-else-if="aiLoading && weather" class="placeholder">
+        <h2>AI推荐</h2>
+        <p>AI推荐内容生成中，请稍候...</p>
+      </div>
       <div v-else-if="aiSuggest.length">
         <div class="ai-suggest-card ai-suggest-white">
           <div class="el-card__body">
@@ -72,7 +76,8 @@ export default {
     return {
       query: { city: '' },
       weather: null,
-      aiSuggest: []
+      aiSuggest: [],
+      aiLoading: false // 新增，AI推荐生成中状态
     };
   },
   methods: {
@@ -121,6 +126,7 @@ export default {
     async getAISuggest() {
       if (!this.weather) return;
       this.aiSuggest = [];
+      this.aiLoading = true; // 开始生成时设为true
       const weatherData = {
         city: this.weather.city,
         weather: this.weather.weather,
@@ -137,6 +143,8 @@ export default {
       } catch (e) {
         this.aiSuggest = [];
         this.$message.error('AI推荐服务异常');
+      } finally {
+        this.aiLoading = false; // 结束时设为false
       }
     }
   }
