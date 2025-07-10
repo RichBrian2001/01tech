@@ -1,5 +1,8 @@
 <template>
   <div class="analysis-page">
+    <!-- 数据来源和Redis Key展示区 -->
+    <div v-if="dataSource" style="color: #409EFF; font-weight: bold; margin-bottom: 10px;">数据来源：{{ dataSource === 'redis' ? 'Redis缓存' : '数据库' }}</div>
+    <div v-if="redisKey" style="color: #67C23A; margin-bottom: 16px; word-break: break-all;">Redis Key: {{ redisKey }}</div>
     <div class="columns">
       <div class="column">
         <div class="section section-top chart-container">
@@ -82,7 +85,9 @@ export default {
       cropRecommendations,
       currentData: null, // 存储当前年份的完整数据
       selectedRegion: null,
-      regionSummary: null
+      regionSummary: null,
+      dataSource: '', // 新增：数据来源（redis/数据库）
+      redisKey: ''    // 新增：redis key
     };
   },
   mounted() {
@@ -97,7 +102,7 @@ export default {
     initCharts() {
       this.initSankeyChart();
 
-      // 初始化生长周期图表
+      // ���始化生长周期图表
       const cycleChartDom = document.getElementById('cycle-chart');
       if (cycleChartDom) {
         this.cycleChart = echarts.init(cycleChartDom);
@@ -128,33 +133,40 @@ export default {
       try {
         this.loading = true;
         const response = await getPlantingDataByYear(year);
-        if (response.code === 200) {
-          this.currentData = response.data; // 保存当前数据
-
-          // 处理数据为桑基图所需格式
-          const nodes = new Set();
-          const links = [];
-
-          // 收集所有节点
-          response.data.forEach(item => {
-            nodes.add(item.productName);
-            nodes.add(item.region);
-          });
-
-          // 转换数据格式
-          const sankeyData = {
-            data: Array.from(nodes).map(name => ({ name })),
-            links: response.data.map(item => ({
-              source: item.productName,
-              target: item.region,
-              value: item.area
-            }))
-          };
-
-          this.updateChartData(year, sankeyData);
-        } else {
-          this.$message.error("获取数据失败");
+        // 新增：兼容后端返回结构，提取source和redisKey
+        let dataArr = response.data;
+        let source = '';
+        let redisKey = '';
+        if (response.data && typeof response.data === 'object' && (response.data.data || response.data.source || response.data.redisKey)) {
+          dataArr = response.data.data || [];
+          source = response.data.source || '';
+          redisKey = response.data.redisKey || '';
         }
+        this.dataSource = source;
+        this.redisKey = redisKey;
+        this.currentData = dataArr; // 保存当前数据
+
+        // 处理数据为桑基图所需格式
+        const nodes = new Set();
+        const links = [];
+
+        // 收集所有节点
+        dataArr.forEach(item => {
+          nodes.add(item.productName);
+          nodes.add(item.region);
+        });
+
+        // 转换数据格式
+        const sankeyData = {
+          data: Array.from(nodes).map(name => ({ name })),
+          links: dataArr.map(item => ({
+            source: item.productName,
+            target: item.region,
+            value: item.area
+          }))
+        };
+
+        this.updateChartData(year, sankeyData);
       } catch (error) {
         console.error("加载数据失败：", error);
         this.$message.error("加载数据失败");
@@ -210,7 +222,7 @@ export default {
             { source: '玉米', target: '西北地区', value: 500 },
 
             // 水稻种植分布
-            { source: '水稻', target: '东南地区', value: 850 },
+            { source: '��稻', target: '东南地区', value: 850 },
             { source: '水稻', target: '西南地区', value: 620 },
             { source: '水稻', target: '中部地区', value: 580 },
 
@@ -678,7 +690,7 @@ export default {
       // 获取播种面积最大的作物数据
       const topCropData = regionData[0];
 
-      // 计算该地区总播种面积
+      // 计算���地区总播种面积
       const totalArea = regionData.reduce((sum, item) => sum + item.area, 0);
 
       // 计算最大作物的占比

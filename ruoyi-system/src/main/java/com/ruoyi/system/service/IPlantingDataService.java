@@ -1,6 +1,7 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+import java.util.Map;
 import com.ruoyi.system.domain.PlantingData;
 
 /**
@@ -10,5 +11,5 @@ public interface IPlantingDataService {
     /**
      * 查询指定年份的种植数据
      */
-    public List<PlantingData> getPlantingDataByYear(Integer year);
+    public Map<String, Object> getPlantingDataByYear(Integer year);
 }
