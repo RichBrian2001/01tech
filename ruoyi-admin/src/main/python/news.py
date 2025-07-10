@@ -118,17 +118,6 @@ if __name__ == "__main__":
                 for link in gedi_section.find_all('a', class_='img-tu'):
                     save_to_mysql('news3', "http://www.nkb.com.cn" + link.get('href'), link.get_text(strip=True))
 
-            # 处理"农业科技"（存入news4）
-            nongye_sections = soup.find_all('div', class_='main8_z_3_nr_y')
-            if len(nongye_sections) > 2:
-                for link in nongye_sections[1].find_all('a', class_='img-tu'):
-                    save_to_mysql('news4', "http://www.nkb.com.cn" + link.get('href'), link.get_text(strip=True))
-
-            # 处理"聚焦杨凌"（存入news5）
-            if len(nongye_sections) > 2:
-                for link in nongye_sections[2].find_all('a', class_='img-tu'):
-                    save_to_mysql('news5', "http://www.nkb.com.cn" + link.get('href'), link.get_text(strip=True))
-
             print("数据抓取和存储完成！")
 
         else:

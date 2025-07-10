@@ -4,7 +4,6 @@ D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysDictType
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysMenuService.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysRoleMapper.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysOperLogServiceImpl.java
-D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\crawler\controller\CrawlerController.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\domain\vo\RouterVo.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysRoleDept.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\service\NewsService.java
@@ -49,6 +48,7 @@ D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysLogi
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysRoleMenu.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysUserRole.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\mapper\YieldMapper.java
+D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\controller\CrawlerController.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysConfigService.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysUserMapper.java
 D:\Code\SCUproj\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysRoleService.java

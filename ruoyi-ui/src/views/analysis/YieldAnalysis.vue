@@ -1,5 +1,10 @@
 <template>
   <div class="analysis-page">
+    <!-- 数据来源显示，左上角 -->
+    <div v-if="mapDataSource" class="data-source-bar" style="position:absolute;left:16px;top:16px;z-index:10;font-size:13px;color:#409EFF;font-weight:bold;background:rgba(255,255,255,0.9);padding:4px 12px;border-radius:4px;box-shadow:0 2px 8px #f0f1f2;">
+      地图数据来源：{{ mapDataSource === 'redis' ? 'Redis缓存' : '数据库' }}
+      <span v-if="mapRedisKey" style="color:#67C23A;font-weight:normal;margin-left:12px;">Redis Key: {{ mapRedisKey }}</span>
+    </div>
     <!-- 顶部Redis命中缓存日志展示区 -->
     <div v-if="redisLogs && redisLogs.length" class="redis-log-bar" style="background:#f6faff;border-bottom:1px solid #dbeafe;padding:6px 16px;color:#2d8cf0;font-size:14px;">
       <span v-for="(log, idx) in redisLogs" :key="idx" style="margin-right:24px;white-space:pre;">
@@ -133,8 +138,6 @@
         <div id="line-chart" class="line-chart-fixed"></div>
       </div>
     </div>
-    <div v-if="mapDataSource" style="color: #409EFF; font-weight: bold; margin-top: 10px;">地图数据来源：{{ mapDataSource === 'redis' ? 'Redis缓存' : '数据库' }}</div>
-    <div v-if="mapRedisKey" style="color: #67C23A; margin-top: 6px; word-break: break-all;">Redis Key: {{ mapRedisKey }}</div>
     <div v-if="lineDataSource" style="color: #409EFF; font-weight: bold; margin-top: 10px;">趋势数据来源：{{ lineDataSource === 'redis' ? 'Redis缓存' : '数据库' }}</div>
     <div v-if="lineRedisKey" style="color: #67C23A; margin-top: 6px; word-break: break-all;">Redis Key: {{ lineRedisKey }}</div>
   </div>
@@ -767,46 +770,15 @@ export default {
       this.initChinaMap();
       this.initRadarChart();
     },
-    handleYearChange(newYear) {
-      this.selectedYear = newYear;
-      this.year = newYear;
-      this.yearRange = [newYear, newYear];
-      this.onCropOrYearChange();
-      this.initLineChart();
-    },
-    handleYearRangeChange(newRange) {
-      this.yearRange = newRange;
-      this.year = newRange[1];
-      this.selectedYear = newRange[1];
-      this.onCropOrYearChange();
-      this.initLineChart();
-    },
     getCropLabel(crop) {
       const obj = this.cropOptions.find(c => c.value === crop);
       return obj ? obj.label : crop;
     },
     async fetchData() {
-      try {
-        // 调用读取数据的接口
-        await this.crawlLatestData();
-        // 确保页面不会初始化
-        console.log('数据爬取成功，无需初始化页面');
-      } catch (error) {
-        console.error('数据爬取失败:', error);
-      }
-    },
-    async crawlLatestData() {
-      // 模拟爬取数据的接口调用
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          console.log('数据爬取成功');
-          resolve();
-        }, 1000);
-      });
-    },
-    initializePage() {
-      // 页面初始化逻辑
-      console.log('页面初始化完成');
+      // 页面初始化时加载地图、雷达图和折线图数据
+      await this.initChinaMap();
+      await this.initRadarChart();
+      await this.initLineChart();
     },
     formatYear(year) {
       if (typeof year === 'object' && year !== null) {
@@ -818,7 +790,6 @@ export default {
     }
   }
 };
-
 </script>
 
 <style scoped>
@@ -1114,5 +1085,20 @@ export default {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+}
+
+/* 数据来源显示样式 */
+.data-source-bar {
+  font-size: 13px;
+  color: #409EFF;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 12px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px #f0f1f2;
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  z-index: 10;
 }
 </style>

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class NewsService {
+public class                                                                                                                                                                                                                                                                         NewsService {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
