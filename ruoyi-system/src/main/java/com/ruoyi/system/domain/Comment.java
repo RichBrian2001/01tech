@@ -13,10 +13,11 @@ public class Comment implements Serializable {
 
     private Long id;
     private String content;
-    private Long userId;
+    private Long userId; // 新增用户id字段
     private Long postId;
     private Long parentId;
     private Integer likes = 0;
+    private String nickname; // 新增昵称字段
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
@@ -42,6 +43,9 @@ public class Comment implements Serializable {
 
     public Integer getLikes() { return likes; }
     public void setLikes(Integer likes) { this.likes = likes; }
+
+    public String getNickname() { return nickname; }
+    public void setNickname(String nickname) { this.nickname = nickname; }
 
     public Date getCreatedAt() { return createdAt; }
     public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
