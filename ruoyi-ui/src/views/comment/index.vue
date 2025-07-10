@@ -14,9 +14,9 @@
       </div>
       <div v-for="comment in comments" :key="comment.id" class="comment-content-item">
         <div class="comment-content-header">
-          <img class="comment-avatar" src="https://static.hdslb.com/images/favicon.ico" alt="avatar" />
+          <img class="comment-avatar" :src="comment.avatar ? comment.avatar : 'https://static.hdslb.com/images/favicon.ico'" alt="avatar" />
           <span class="comment-content-username">
-            {{ (comment.userId === 0 || comment.userId == null || comment.userId === undefined) ? '*' : comment.userId }}
+            {{ comment.nickname ? comment.nickname : '*' }}
           </span>
           <span class="comment-content-time">{{ formatTime(comment.createdAt) }}</span>
         </div>
@@ -33,45 +33,16 @@
           <button class="cancel-btn" @click="cancelReply">取消</button>
         </div>
         <div v-if="comment.replies && comment.replies.length" class="comment-reply-list">
-          <div v-for="reply in comment.replies" :key="reply.id" class="comment-reply-item-wrapper">
-            <div class="comment-reply-item">
-              <img class="comment-avatar" src="https://static.hdslb.com/images/favicon.ico" alt="avatar" />
-              <span class="comment-reply-username">
-                {{ (reply.userId === 0 || reply.userId == null || reply.userId === undefined) ? '*' : reply.userId }}
-              </span>
-              <span class="comment-reply-time">{{ formatTime(reply.createdAt) }}</span>
-              <span class="comment-reply-content">{{ reply.content }}</span>
-              <span class="like-btn" @click="handleLike(reply)" :class="{ liked: reply.liked }">
-                👍 <span>{{ reply.likeCount || reply.likes || 0 }}</span>
-              </span>
-              <span class="reply-btn" @click="showReplyBox(reply.id)">回复</span>
-              <div v-if="replyBoxVisible && replyTargetId === reply.id" class="reply-box">
-                <textarea v-model="replyContent" placeholder="回复评论..." />
-                <button @click="submitReply(reply.id)">提交回复</button>
-                <button class="cancel-btn" @click="cancelReply">取消</button>
-              </div>
-            </div>
-            <!-- 递归渲染子回复，右下角缩进显示 -->
-            <div v-if="reply.replies && reply.replies.length" class="comment-reply-list child-reply-list">
-              <div v-for="child in reply.replies" :key="child.id" class="comment-reply-item">
-                <img class="comment-avatar" src="https://static.hdslb.com/images/favicon.ico" alt="avatar" />
-                <span class="comment-reply-username">
-                  {{ (child.userId === 0 || child.userId == null || child.userId === undefined) ? '*' : child.userId }}
-                </span>
-                <span class="comment-reply-time">{{ formatTime(child.createdAt) }}</span>
-                <span class="comment-reply-content">{{ child.content }}</span>
-                <span class="like-btn" @click="handleLike(child)" :class="{ liked: child.liked }">
-                  👍 <span>{{ child.likeCount || child.likes || 0 }}</span>
-                </span>
-                <span class="reply-btn" @click="showReplyBox(child.id)">回复</span>
-                <div v-if="replyBoxVisible && replyTargetId === child.id" class="reply-box">
-                  <textarea v-model="replyContent" placeholder="回复评论..."></textarea>
-                  <button @click="submitReply(child.id)">提交回复</button>
-                  <button class="cancel-btn" @click="cancelReply">取消</button>
-                </div>
-              </div>
-              <!-- 可继续递归... -->
-            </div>
+          <div v-for="reply in comment.replies" :key="reply.id" class="comment-reply-item">
+            <img class="comment-avatar" :src="reply.avatar ? reply.avatar : 'https://static.hdslb.com/images/favicon.ico'" alt="avatar" />
+            <span class="comment-reply-username">
+              {{ reply.nickname ? reply.nickname : '*' }}
+            </span>
+            <span class="comment-reply-time">{{ formatTime(reply.createdAt) }}</span>
+            <span class="comment-reply-content">{{ reply.content }}</span>
+            <span class="like-btn" @click="handleLike(reply)" :class="{ liked: reply.liked }">
+              👍 <span>{{ reply.likeCount || reply.likes || 0 }}</span>
+            </span>
           </div>
         </div>
       </div>
@@ -87,25 +58,58 @@ export default {
     return {
       comments: [],
       newComment: "",
+      likeLoading: false,
       replyBoxVisible: false,
-      replyContent: "",
       replyTargetId: null,
-      likeLoading: false
+      replyContent: ""
     };
   },
   methods: {
     async fetchComments() {
       const res = await getComments();
-      // 兼容后端返回数组或��象
+      // 兼容后端返回数组或对象
       if (Array.isArray(res)) {
-        this.comments = res;
+        this.comments = this.formatComments(res);
       } else if (Array.isArray(res.data)) {
-        this.comments = res.data;
+        this.comments = this.formatComments(res.data);
       }
+    },
+    formatComments(list) {
+      // 递归分组，主评论parentId为null，回复parentId为主评论id
+      const map = {};
+      const userMap = {};
+      const roots = [];
+      // 先建立userId到nickname/avatar的映射
+      list.forEach(item => {
+        if (item.userId) {
+          userMap[item.userId] = userMap[item.userId] || { nickname: item.nickname, avatar: item.avatar };
+        }
+      });
+      list.forEach(item => {
+        item.replies = [];
+        map[item.id] = item;
+      });
+      list.forEach(item => {
+        // 让每个item都强制带上userMap映射的nickname/avatar
+        if (item.userId && userMap[item.userId]) {
+          item.nickname = userMap[item.userId].nickname;
+          item.avatar = userMap[item.userId].avatar;
+        }
+        if (item.parentId) {
+          if (map[item.parentId]) {
+            map[item.parentId].replies.push(item);
+          }
+        } else {
+          roots.push(item);
+        }
+      });
+      return roots;
     },
     async submitComment() {
       if (!this.newComment.trim()) return;
-      await addComment(this.newComment);
+      // 假设登录用户id存储在localStorage.userId
+      const userId = localStorage.getItem('userId');
+      await addComment(this.newComment, userId);
       this.newComment = "";
       await this.fetchComments();
     },
@@ -121,7 +125,8 @@ export default {
     },
     async submitReply(parentId) {
       if (!this.replyContent.trim()) return;
-      await addReply(this.replyContent, parentId);
+      const userId = localStorage.getItem('userId');
+      await addReply(this.replyContent, parentId, userId);
       this.replyContent = "";
       this.replyBoxVisible = false;
       this.replyTargetId = null;

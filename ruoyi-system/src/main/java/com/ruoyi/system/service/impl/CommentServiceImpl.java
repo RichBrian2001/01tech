@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.Comment;
 import com.ruoyi.system.mapper.CommentMapper;
 import com.ruoyi.system.service.ICommentService;
@@ -34,9 +36,18 @@ public class CommentServiceImpl implements ICommentService {
         if (comment.getLikes() == null) {
             comment.setLikes(0);
         }
-        // 如果userId为null，设置为0（匿名用户）
-        if (comment.getUserId() == null) {
-            comment.setUserId(0L);
+        // 若前端未传userId，则自动获取当前登录用户id
+        if (comment.getUserId() == null || comment.getUserId() == 0L) {
+            try {
+                LoginUser loginUser = SecurityUtils.getLoginUser();
+                if (loginUser != null && loginUser.getUserId() != null) {
+                    comment.setUserId(loginUser.getUserId());
+                } else {
+                    comment.setUserId(0L);
+                }
+            } catch (Exception e) {
+                comment.setUserId(0L);
+            }
         }
         // 如果createdAt为null，设置为当前时间
         if (comment.getCreatedAt() == null) {
@@ -57,8 +68,21 @@ public class CommentServiceImpl implements ICommentService {
             reply.setLikes(0);
         }
         // 如果userId为null，设置为0（匿名用户）
-        if (reply.getUserId() == null) {
-            reply.setUserId(0L);
+        if (reply.getUserId() == null || reply.getUserId() == 0L) {
+            try {
+                LoginUser loginUser = SecurityUtils.getLoginUser();
+                if (loginUser != null && loginUser.getUserId() != null) {
+                    reply.setUserId(loginUser.getUserId());
+                } else {
+                    reply.setUserId(0L);
+                }
+            } catch (Exception e) {
+                reply.setUserId(0L);
+            }
+        }
+        // 如果createdAt为null，设置为当前时间
+        if (reply.getCreatedAt() == null) {
+            reply.setCreatedAt(new java.util.Date());
         }
         commentMapper.insert(reply);
         return reply;
